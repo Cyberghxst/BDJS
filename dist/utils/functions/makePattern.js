@@ -2,17 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
 /**
- * Creates the patterns object of a BDJS instruction.
- * @param foremost - Foremost pattern of the instruction.
- * @param brackets - Whether function must include brackets.
- * @param inside - Specific "function inside" pattern.
+ * Makes a foremost pattern for a BDJS instruction.
+ * @param pattern - Pattern to be created.
+ * @param brackets - Whether this function must have brackets.
  * @returns {Patterns}
  */
-function default_1(foremost, brackets = true, inside) {
+function default_1(pattern, brackets = false) {
     return {
-        foremost,
+        foremost: pattern instanceof RegExp
+            ? pattern
+            : new RegExp(pattern.startsWith("\\$")
+                ? pattern
+                : "\\$" + pattern.replace(/[^a-zA-Z]/, "")),
         opener: brackets ? /\[/ : undefined,
         closer: brackets ? /\]/ : undefined,
-        inside: brackets && inside ? inside : undefined
     };
 }

@@ -14,8 +14,7 @@ const Nodes_1 = require("./Nodes");
 const isMathConditionOperator_1 = __importDefault(require("../../utils/functions/isMathConditionOperator"));
 const akore_1 = require("akore");
 const getConditionOperators_1 = __importDefault(require("../../utils/functions/getConditionOperators"));
-const fs_1 = require("fs");
-const path_1 = require("path");
+const loadInstructions_1 = require("../../utils/functions/loadInstructions");
 /**
  * The main transpiler class.
  */
@@ -25,7 +24,7 @@ class Transpiler extends akore_1.BaseTranspiler {
      */
     constructor() {
         super({
-            logger: new akore_1.Logger({ from: 'BDJS' }),
+            logger: new akore_1.Logger({ from: 'TRANSPILER', prefix: 'BDJS' }),
             schemas: {
                 [Nodes_1.NodeType.Program]: new akore_1.Schema(Nodes_1.NodeType.Program, [Nodes_1.BaseNode]),
                 [Nodes_1.NodeType.Literal]: new akore_1.Schema(Nodes_1.NodeType.Literal, 'string'),
@@ -209,11 +208,10 @@ class Transpiler extends akore_1.BaseTranspiler {
 }
 exports.Transpiler = Transpiler;
 _Transpiler_instances = new WeakSet(), _Transpiler_loadFunctions = function _Transpiler_loadFunctions() {
-    const files = (0, fs_1.readdirSync)(this.instructions_path)
-        .sort((a, b) => b.length - a.length);
-    for (const file of files) {
-        const content = require((0, path_1.join)(this.instructions_path, file));
-        const instruction = new content.default(this);
-        this.declare(instruction);
-    }
+    (0, loadInstructions_1.loadInstructions)(this.instructions_path, (ins) => {
+        ins.forEach((i) => {
+            const definition = new i(this);
+            this.declare(definition);
+        });
+    });
 };

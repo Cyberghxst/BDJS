@@ -1,10 +1,8 @@
 import { BaseNode, CallNode, LiteralNode, NodeType, OperatorNode, ProgramNode } from './Nodes'
 import isMathConditionOperator from '@functions/isMathConditionOperator'
-import { BaseTranspiler, Logger, Registry, Schema, Token } from 'akore'
+import { BaseTranspiler, Lexer, LexerOptions, Logger, Registry, Schema, Token } from 'akore'
 import getConditionOperators from '@functions/getConditionOperators'
-import { BaseInstruction } from '@structures/BaseInstruction'
-import { lstatSync, readdirSync } from 'fs'
-import { join } from 'path'
+import { loadInstructions } from '@functions/loadInstructions'
 
 /**
  * The main transpiler class.
@@ -13,14 +11,14 @@ export class Transpiler extends BaseTranspiler {
     /**
      * Creates an schema registry.
      */
-    registry: Registry<NodeType>
+    declare registry: Registry<NodeType>
 
     /**
      * Creates a new instance of the Transpiler class.
      */
     constructor() {
         super({
-            logger: new Logger({ from: 'BDJS' }),
+            logger: new Logger({ from: 'TRANSPILER', prefix: 'BDJS' }),
             schemas: {
                 [NodeType.Program]: new Schema(NodeType.Program, [BaseNode]),
                 [NodeType.Literal]: new Schema(NodeType.Literal, 'string'),
@@ -213,15 +211,12 @@ export class Transpiler extends BaseTranspiler {
      * Load built-in functions from folders.
      */
     #loadFunctions() {
-        const files = readdirSync(this.instructions_path)
-            .sort((a, b) => b.length - a.length)
-
-        for (const file of files) {
-            const content = require(join(this.instructions_path, file))
-            const instruction: BaseInstruction = new content.default(this)
-
-            this.declare(instruction as any)
-        }
+        loadInstructions(this.instructions_path, (ins) => {
+            ins.forEach((i: any) => {
+                const definition = new i(this)
+                this.declare(definition)
+            })
+        })
     }
 
     /**

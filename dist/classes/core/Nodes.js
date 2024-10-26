@@ -101,7 +101,7 @@ class AssignmentNode extends OperatorNode {
      * @param right The right side of the assignment node.
      */
     constructor(left, right) {
-        super({ elements: [left, right], operator: " = " }, false);
+        super({ elements: [left, right], operator: ' = ' }, false);
     }
     /**
      * Gets the left side of the assignment node.
@@ -163,7 +163,7 @@ class BlockNode extends BaseNode {
      * @returns The serialized string representation of the block node.
      */
     serialize() {
-        return `{ ${this.nodes.map((node) => node.serialize()).join("\n")} }`;
+        return `{ ${this.nodes.map((node) => node.serialize()).join('\n')} }`;
     }
 }
 exports.BlockNode = BlockNode;
@@ -284,7 +284,7 @@ class ProgramNode extends BaseNode {
         return this.nodes.map((node) => {
             const serialized = node.serialize();
             return node.semicolon ? `${serialized};` : serialized;
-        }).join("\n");
+        }).join('\n');
     }
 }
 exports.ProgramNode = ProgramNode;

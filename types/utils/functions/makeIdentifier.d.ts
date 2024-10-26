@@ -1,2 +1,7 @@
-import { BaseInstruction } from '../../classes/structures/BaseInstruction';
-export default function (instruction: BaseInstruction): string;
+import { Patterns } from "akore";
+/**
+ * Makes an instruction identifier.
+ * @param patterns - Instruction patterns.
+ * @returns {string}
+ */
+export default function (patterns: Patterns): string;

@@ -1,17 +1,22 @@
-import { Patterns } from 'akore'
+import { Patterns } from "akore";
 
 /**
- * Creates the patterns object of a BDJS instruction.
- * @param foremost - Foremost pattern of the instruction.
- * @param brackets - Whether function must include brackets.
- * @param inside - Specific "function inside" pattern.
+ * Makes a foremost pattern for a BDJS instruction.
+ * @param pattern - Pattern to be created.
+ * @param brackets - Whether this function must have brackets.
  * @returns {Patterns}
  */
-export default function (foremost: RegExp, brackets = true, inside?: RegExp) {
-    return <Patterns>{
-        foremost,
+export default function(pattern: RegExp | string, brackets = false): Patterns {
+    return {
+        foremost:
+            pattern instanceof RegExp
+                ? pattern
+                : new RegExp(
+                    pattern.startsWith("\\$")
+                        ? pattern
+                        : "\\$" + pattern.replace(/[^a-zA-Z]/, "")
+                ),
         opener: brackets ? /\[/ : undefined,
         closer: brackets ? /\]/ : undefined,
-        inside: brackets && inside ? inside : undefined
-    }
+    };
 }

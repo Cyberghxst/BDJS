@@ -1,4 +1,4 @@
-import { Node } from "akore";
+import { Node } from 'akore';
 /**
  * Represents a node type in the AST.
  */

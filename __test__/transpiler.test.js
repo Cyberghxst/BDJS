@@ -1,6 +1,7 @@
-const { Transpiler } = require('../dist/classes/core/Transpiler')
+const { loadInstructions, Transpiler } = require('../dist')
 
 const transpiler = new Transpiler()
-const result = transpiler.transpile('$encodeURIComponent[hola amuxe]', false)
+const code = '$ping'
+const transpilation = transpiler.transpile(code)
 
-console.log(result)
+console.log(transpilation)

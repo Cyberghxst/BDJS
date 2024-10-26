@@ -1,5 +1,10 @@
-import { BaseInstruction } from '@structures/BaseInstruction'
+import { Patterns } from "akore";
 
-export default function (instruction: BaseInstruction) {
-    return 'bdjs:' + instruction.patterns.foremost.source.replace(/\\\$/, '')
+/**
+ * Makes an instruction identifier.
+ * @param patterns - Instruction patterns.
+ * @returns {string}
+ */
+export default function(patterns: Patterns) {
+    return 'bdjs:$' + patterns.foremost.source.replace('\\$', '')
 }

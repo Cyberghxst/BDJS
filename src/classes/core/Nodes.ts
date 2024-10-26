@@ -1,17 +1,17 @@
-import { Node } from "akore"
+import { Node } from 'akore'
 
 /**
  * Represents a node type in the AST.
  */
 export enum NodeType {
-    Program = "program",
-    Literal = "literal",
-    Operator = "operator",
-    Call = "call",
-    Assignment = "assignment",
-    ControlFlow = "control-flow",
-    Block = "block",
-    Condition = "condition"
+    Program = 'program',
+    Literal = 'literal',
+    Operator = 'operator',
+    Call = 'call',
+    Assignment = 'assignment',
+    ControlFlow = 'control-flow',
+    Block = 'block',
+    Condition = 'condition'
 }
 
 /**
@@ -110,7 +110,7 @@ export class AssignmentNode<Left extends BaseNode, Right extends BaseNode> exten
      * @param right The right side of the assignment node.
      */
     constructor(left: Left, right: Right) {
-        super({ elements: [left, right], operator: " = " }, false)
+        super({ elements: [left, right], operator: ' = ' }, false)
     }
 
     /**
@@ -179,7 +179,7 @@ export class BlockNode extends BaseNode<NodeType.Block, BaseNode[]> {
      * @returns The serialized string representation of the block node.
      */
     serialize() {
-        return `{ ${this.nodes.map((node) => node.serialize()).join("\n")} }`
+        return `{ ${this.nodes.map((node) => node.serialize()).join('\n')} }`
     }
 }
 
@@ -347,6 +347,6 @@ export class ProgramNode extends BaseNode<NodeType.Program, BaseNode[]> {
         return this.nodes.map((node) => {
             const serialized = node.serialize()
             return node.semicolon ? `${serialized};` : serialized
-        }).join("\n")
+        }).join('\n')
     }
 }

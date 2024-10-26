@@ -1,7 +1,7 @@
 /**
- * Returns an array that includes every condition operator.
+ * Return the condition operators.
  * @returns {string[]}
  */
-export default function () {
-    return ['<=', '>=', '!=', '==', '>', '<']
+export default function() {
+    return ['<=', '>=', '!=', '==', '<', '>']
 }

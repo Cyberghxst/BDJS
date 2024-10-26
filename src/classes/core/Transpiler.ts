@@ -1,6 +1,6 @@
 import { BaseNode, CallNode, LiteralNode, NodeType, OperatorNode, ProgramNode } from './Nodes'
 import isMathConditionOperator from '@functions/isMathConditionOperator'
-import { BaseTranspiler, Lexer, LexerOptions, Logger, Registry, Schema, Token } from 'akore'
+import { BaseTranspiler, Logger, Registry, Schema, Token } from 'akore'
 import getConditionOperators from '@functions/getConditionOperators'
 import { loadInstructions } from '@functions/loadInstructions'
 

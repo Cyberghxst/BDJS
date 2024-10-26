@@ -1,7 +1,22 @@
 /**
  * Return the condition operators.
- * @returns {string[]}
+ * @returns {BDJSOperatorTypes[]}
  */
-export default function() {
+export default function(): BDJSOperatorTypes[] {
     return ['<=', '>=', '!=', '==', '<', '>']
 }
+
+/**
+ * All valid math condition operator types.
+ */
+export type BDJSMathOperatorTypes = '<=' | '>=' | '<' | '>';
+
+/**
+ * All valid logic condition operator types.
+ */
+export type BDJSLogicOperatorTypes = '!=' | '==';
+
+/**
+ * All valid condition operator types.
+ */
+export type BDJSOperatorTypes = BDJSMathOperatorTypes | BDJSLogicOperatorTypes

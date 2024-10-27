@@ -17,7 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isMathConditionOperator = exports.getConditionOperators = exports.loadInstructions = exports.collectFiles = exports.makeIdentifier = exports.makePattern = void 0;
+exports.runCode = exports.createRuntime = exports.isMathConditionOperator = exports.getConditionOperators = exports.loadInstructions = exports.collectFiles = exports.makeIdentifier = exports.makePattern = void 0;
 const makePattern_1 = __importDefault(require("./utils/functions/makePattern"));
 exports.makePattern = makePattern_1.default;
 const makeIdentifier_1 = __importDefault(require("./utils/functions/makeIdentifier"));
@@ -30,8 +30,15 @@ const getConditionOperators_1 = __importDefault(require("./utils/functions/getCo
 exports.getConditionOperators = getConditionOperators_1.default;
 const isMathConditionOperator_1 = __importDefault(require("./utils/functions/isMathConditionOperator"));
 exports.isMathConditionOperator = isMathConditionOperator_1.default;
+const createRuntime_1 = __importDefault(require("./utils/functions/createRuntime"));
+exports.createRuntime = createRuntime_1.default;
+const runCode_1 = __importDefault(require("./utils/functions/runCode"));
+exports.runCode = runCode_1.default;
 __exportStar(require("./classes/core/BaseInstruction"), exports);
 __exportStar(require("./classes/core/Nodes"), exports);
 __exportStar(require("./classes/core/Transpiler"), exports);
 __exportStar(require("./classes/structures/Runtime"), exports);
 __exportStar(require("./classes/structures/DiscordClient"), exports);
+__exportStar(require("./classes/structures/Command"), exports);
+__exportStar(require("./classes/core/BaseEventHandler"), exports);
+__exportStar(require("./classes/core/extended/DiscordEventHandler"), exports);

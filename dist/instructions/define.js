@@ -32,7 +32,7 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     }
     resolve({ inside = '' }) {
         const [name] = this.splitByDelimiter(inside);
-        return new Nodes_1.VariableDeclarationNode(Nodes_1.VariableDeclarationType.Let, new Nodes_1.LiteralNode(name), this.transpiler.resolveString('undefined'));
+        return new Nodes_1.VariableDeclarationNode(Nodes_1.VariableDeclarationType.Let, new Nodes_1.LiteralNode(name), this.transpiler.resolveString(''));
     }
 }
 exports.default = default_1;

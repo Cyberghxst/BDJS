@@ -10,10 +10,10 @@ const command = new TranspiledCommand({
         $define[avatar]
         $let[avatar;$userAvatar[$clientID;4096;jpeg;false]]
         
-        $if[$get[avatar]==undefined;
+        $if[$get[avatar]==;
             $toString[44ikjnkn444]
         ]
-        $elseif[$get[avatar]!=undefined;
+        $elseif[$get[avatar]!=;
             $toString[44ikjnkn444]
         ]
         $else[

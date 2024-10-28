@@ -31,7 +31,7 @@ export default class extends BaseInstruction {
         return new VariableDeclarationNode(
             VariableDeclarationType.Let,
             new LiteralNode(name),
-            this.transpiler.resolveString('undefined')
+            this.transpiler.resolveString('')
         )
     }
 }

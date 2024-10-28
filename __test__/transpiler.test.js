@@ -18,7 +18,10 @@ const command = new TranspiledCommand({
         ]
         $else[
             $let[avatar;byee]
-        ]`,
+        ]
+            
+        $try[$define[ok]]
+        $catch[$let[uwu;$clientName]]`,
     minify: false
 }, transpiler)
 

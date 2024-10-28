@@ -6,7 +6,19 @@ const transpiler = new Transpiler()
 const command = new TranspiledCommand({
     name: /uwu/,
     type: 'prefixed',
-    code: '$define[avatar]\n$let[avatar;$userAvatar[$clientID;4096;jpeg;false]]',
+    code: `
+        $define[avatar]
+        $let[avatar;$userAvatar[$clientID;4096;jpeg;false]]
+        
+        $if[$get[avatar]==undefined;
+            $toString[44ikjnkn444]
+        ]
+        $elseif[$get[avatar]!=undefined;
+            $toString[44ikjnkn444]
+        ]
+        $else[
+            $let[avatar;byee]
+        ]`,
     minify: false
 }, transpiler)
 

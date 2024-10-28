@@ -1,11 +1,11 @@
-import { LiteralNode, VariableDeclarationNode } from '../classes/core/Nodes';
+import { OperatorNode } from '../classes/core/Nodes';
 import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
 import { Transpiler } from '../classes/core/Transpiler';
 import { Token } from 'akore';
 /**
- * @name $define
- * @description Creates a runtime variable.
- * @returns {unknown}
+ * @name $if
+ * @description Executes a JavaScript "if" statement.
+ * @returns {boolean}
  */
 export default class extends BaseInstruction {
     patterns: import("akore").Patterns;
@@ -20,5 +20,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve({ inside }: Token<Transpiler>): VariableDeclarationNode<LiteralNode, LiteralNode | import("../classes/core/Nodes").CallNode>;
+    resolve({ inside }: Token<Transpiler>): OperatorNode;
 }

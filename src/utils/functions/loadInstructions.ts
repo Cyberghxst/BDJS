@@ -7,7 +7,7 @@ import { collectFiles } from './collectFiles'
  */
 export function loadInstructions(dir: string, callback: (instructions: typeof BaseInstruction[]) => void) {
     const loaded: typeof BaseInstruction[] = []
-    const collected = collectFiles(dir)
+    const collected = collectFiles(dir).sort((a, b) => b.name.length - a.name.length)
 
     for (const file of collected) {
         const data: typeof BaseInstruction = require(file.dir).default

@@ -93,6 +93,10 @@ export interface IRawCommand<Type extends string = string> {
      */
     transpiled?: string | null
     /**
+     * The transpiled code without any minification/beautification filter.
+     */
+    rawTranspiledCode: string | null
+    /**
      * The path of this command.
      * If `null`, command was added from main file.
      * Otherwise, it was loaded using the command manager.
@@ -136,6 +140,9 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
 
         // Transpiling the native code.
         let transpiledCode = transpiler.transpile(data.code)
+
+        // Assign the raw output to its property.
+        data.rawTranspiledCode = transpiledCode;
 
         // Checking if it was transpiled.
         if (typeof transpiledCode === 'string') {

@@ -3,25 +3,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Nodes_1 = require("../classes/core/Nodes");
 const BaseInstruction_1 = require("../classes/core/BaseInstruction");
+const Nodes_1 = require("../classes/core/Nodes");
 const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 /**
- * @name $define
- * @description Creates a runtime variable.
+ * @name $else
+ * @description Executes a JavaScript "else" statement.
  * @returns {unknown}
  */
 class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
-        this.patterns = (0, makePattern_1.default)('$define', true);
-        this.description = 'Creates a runtime variable.';
+        this.patterns = (0, makePattern_1.default)('$else', true);
+        this.description = 'Executes a JavaScript "else" statement.';
         this.params = [
             {
-                name: 'Name',
-                description: 'The name of the variable.',
-                type: BaseInstruction_1.ReturnType.String,
+                name: 'Code',
+                description: 'Code to execute if the condition is true.',
+                type: BaseInstruction_1.ReturnType.Unknown,
                 required: true,
                 spread: false
             }
@@ -31,8 +31,15 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
         this.version = '2.0.0';
     }
     resolve({ inside = '' }) {
-        const [name] = this.splitByDelimiter(inside);
-        return new Nodes_1.VariableDeclarationNode(Nodes_1.VariableDeclarationType.Let, new Nodes_1.LiteralNode(name), this.transpiler.resolveString('undefined'));
+        const [code] = this.splitByDelimiter(inside);
+        const codeTokens = [...this.transpiler.lexer.tokenize(code)];
+        return new Nodes_1.OperatorNode({
+            elements: [
+                new Nodes_1.LiteralNode('else'),
+                new Nodes_1.BlockNode(this.transpiler.bulkNodify(codeTokens))
+            ],
+            operator: ' '
+        });
     }
 }
 exports.default = default_1;

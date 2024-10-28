@@ -36,6 +36,10 @@ export interface IRawCommand<Type extends string = string> {
      */
     transpiled?: string | null;
     /**
+     * The transpiled code without any minification/beautification filter.
+     */
+    rawTranspiledCode: string | null;
+    /**
      * The path of this command.
      * If `null`, command was added from main file.
      * Otherwise, it was loaded using the command manager.

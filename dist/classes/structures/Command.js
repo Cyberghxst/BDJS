@@ -41,6 +41,8 @@ class TranspiledCommand {
         this.ensureName(); // Ensure the command name.
         // Transpiling the native code.
         let transpiledCode = transpiler.transpile(data.code);
+        // Assign the raw output to its property.
+        data.rawTranspiledCode = transpiledCode;
         // Checking if it was transpiled.
         if (typeof transpiledCode === 'string') {
             // Minify the command

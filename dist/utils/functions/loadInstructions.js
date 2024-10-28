@@ -8,7 +8,7 @@ const collectFiles_1 = require("./collectFiles");
  */
 function loadInstructions(dir, callback) {
     const loaded = [];
-    const collected = (0, collectFiles_1.collectFiles)(dir);
+    const collected = (0, collectFiles_1.collectFiles)(dir).sort((a, b) => b.name.length - a.name.length);
     for (const file of collected) {
         const data = require(file.dir).default;
         loaded.push(data);

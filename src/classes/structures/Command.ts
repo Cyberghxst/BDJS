@@ -138,7 +138,7 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
         let transpiledCode = transpiler.transpile(data.code)
 
         // Checking if it was transpiled.
-        if (this.isTranspiled()) {
+        if (typeof transpiledCode === 'string') {
             // Minify the command
             if (data.minify) {
                 const minified = minify(transpiledCode)
@@ -161,14 +161,6 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
             // Assign the transpiled code to the command.
             data.transpiled = transpiledCode
         }
-    }
-
-    /**
-     * Return whether command is transpiled.
-     * @returns {boolean}
-     */
-    public isTranspiled() {
-        return typeof this.data.transpiled === 'string'
     }
 
     /**

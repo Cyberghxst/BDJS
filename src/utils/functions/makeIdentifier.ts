@@ -2,9 +2,9 @@ import { Patterns } from "akore";
 
 /**
  * Makes an instruction identifier.
- * @param patterns - Instruction patterns.
+ * @param fileName - Instruction file name.
  * @returns {string}
  */
-export default function(patterns: Patterns) {
-    return 'bdjs:$' + patterns.foremost.source.replace('\\$', '')
+export default function(fileName: string) {
+    return 'bdjs:$' + fileName.split('.')[0]
 }

@@ -10,7 +10,8 @@ export declare enum NodeType {
     Assignment = "assignment",
     ControlFlow = "control-flow",
     Block = "block",
-    Condition = "condition"
+    Condition = "condition",
+    KeyValue = "key-value"
 }
 /**
  * Represents a base node in the AST.
@@ -216,6 +217,26 @@ export declare class ControlFlowNode extends BaseNode<NodeType.ControlFlow, Cont
      * @returns The serialized string representation of the control flow node.
      */
     serialize(): string;
+}
+/**
+ * Represents a key-value node in the AST.
+ */
+export declare class KeyValueNode extends BaseNode<NodeType.KeyValue, BaseNode[][]> {
+    /**
+     * Creates a new instance of the KeyValueNode class.
+     * @param nodes The nodes to be transformed to a key-value pair.
+     * @param semicolon Whether add semicolon to the end.
+     */
+    constructor(nodes: BaseNode[][], semicolon?: boolean);
+    /**
+     * Serializes this node to its string representation.
+     * @returns {string}
+     */
+    serialize(): string;
+    /**
+     * Returns the children nodes contained in the key-value node.
+     */
+    get nodes(): BaseNode<NodeType, unknown>[][];
 }
 /**
  * Represents a program node in the AST.

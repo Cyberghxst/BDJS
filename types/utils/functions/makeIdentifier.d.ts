@@ -1,7 +1,6 @@
-import { Patterns } from "akore";
 /**
  * Makes an instruction identifier.
- * @param patterns - Instruction patterns.
+ * @param fileName - Instruction file name.
  * @returns {string}
  */
-export default function (patterns: Patterns): string;
+export default function (fileName: string): string;

@@ -11,7 +11,8 @@ export enum NodeType {
     Assignment = 'assignment',
     ControlFlow = 'control-flow',
     Block = 'block',
-    Condition = 'condition'
+    Condition = 'condition',
+    KeyValue = 'key-value'
 }
 
 /**
@@ -300,6 +301,41 @@ export class ControlFlowNode extends BaseNode<NodeType.ControlFlow, ControlFlowV
         }
 
         return result
+    }
+}
+
+/**
+ * Represents a key-value node in the AST.
+ */
+export class KeyValueNode extends BaseNode<NodeType.KeyValue, BaseNode[][]> {
+    /**
+     * Creates a new instance of the KeyValueNode class.
+     * @param nodes The nodes to be transformed to a key-value pair.
+     * @param semicolon Whether add semicolon to the end.
+     */
+    constructor(nodes: BaseNode[][], semicolon = false) {
+        super(NodeType.KeyValue, nodes, semicolon)
+    }
+
+    /**
+     * Serializes this node to its string representation.
+     * @returns {string}
+     */
+    serialize() {
+        const all = new BlockNode(
+            this.nodes.map((node) => 
+                new LiteralNode(`${node[0].serialize()}: ${node[1].serialize()},`)
+            )
+        )
+
+        return `${all.serialize()}${this.semicolon ? ';' : ''}`
+    }
+
+    /**
+     * Returns the children nodes contained in the key-value node.
+     */
+    get nodes() {
+        return this.value
     }
 }
 

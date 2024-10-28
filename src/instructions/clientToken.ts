@@ -4,14 +4,14 @@ import makePattern from '@functions/makePattern'
 import { LiteralNode } from '@core/Nodes'
 
 /**
- * @name $ping
- * @description Returns the websocket ping of the client.
+ * @name $clientToken
+ * @description Returns the token of the client.
  * @returns {number}
  */
 export default class extends BaseInstruction {
-    patterns = makePattern('$ping')
+    patterns = makePattern('$clientToken')
     identifier = makeIdentifier(__filename)
     resolve() {
-        return new LiteralNode('runtime.client.ws.ping')
+        return new LiteralNode('runtime.client.token')
     }
 }

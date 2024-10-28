@@ -12,7 +12,7 @@ import { Token } from 'akore'
  */
 export default class extends BaseInstruction {
     patterns = makePattern(/\$([A-z_](\.?[A-z_])*)\*/, true)
-    identifier = makeIdentifier(this.patterns)
+    identifier = makeIdentifier(__filename)
     resolve({ inside, match }: Token<Transpiler>) {
         const tokens = inside ? [...this.transpiler.lexer.tokenize(inside)] : []
 

@@ -16,7 +16,7 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
         this.patterns = (0, makePattern_1.default)(/\$([A-z_](\.?[A-z_])*)\*/, true);
-        this.identifier = (0, makeIdentifier_1.default)(this.patterns);
+        this.identifier = (0, makeIdentifier_1.default)(__filename);
     }
     resolve({ inside, match }) {
         const tokens = inside ? [...this.transpiler.lexer.tokenize(inside)] : [];

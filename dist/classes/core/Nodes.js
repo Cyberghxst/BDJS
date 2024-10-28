@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProgramNode = exports.ControlFlowNode = exports.CallNode = exports.BlockNode = exports.AssignmentNode = exports.OperatorNode = exports.LiteralNode = exports.BaseNode = exports.NodeType = void 0;
+exports.ProgramNode = exports.KeyValueNode = exports.ControlFlowNode = exports.CallNode = exports.BlockNode = exports.AssignmentNode = exports.OperatorNode = exports.LiteralNode = exports.BaseNode = exports.NodeType = void 0;
 const akore_1 = require("akore");
 /**
  * Represents a node type in the AST.
@@ -15,6 +15,7 @@ var NodeType;
     NodeType["ControlFlow"] = "control-flow";
     NodeType["Block"] = "block";
     NodeType["Condition"] = "condition";
+    NodeType["KeyValue"] = "key-value";
 })(NodeType || (exports.NodeType = NodeType = {}));
 /**
  * Represents a base node in the AST.
@@ -244,6 +245,34 @@ class ControlFlowNode extends BaseNode {
     }
 }
 exports.ControlFlowNode = ControlFlowNode;
+/**
+ * Represents a key-value node in the AST.
+ */
+class KeyValueNode extends BaseNode {
+    /**
+     * Creates a new instance of the KeyValueNode class.
+     * @param nodes The nodes to be transformed to a key-value pair.
+     * @param semicolon Whether add semicolon to the end.
+     */
+    constructor(nodes, semicolon = false) {
+        super(NodeType.KeyValue, nodes, semicolon);
+    }
+    /**
+     * Serializes this node to its string representation.
+     * @returns {string}
+     */
+    serialize() {
+        const all = new BlockNode(this.nodes.map((node) => new LiteralNode(`${node[0].serialize()}: ${node[1].serialize()},`)));
+        return `${all.serialize()}${this.semicolon ? ';' : ''}`;
+    }
+    /**
+     * Returns the children nodes contained in the key-value node.
+     */
+    get nodes() {
+        return this.value;
+    }
+}
+exports.KeyValueNode = KeyValueNode;
 /**
  * Represents a program node in the AST.
  */

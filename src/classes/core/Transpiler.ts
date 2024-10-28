@@ -36,7 +36,8 @@ export class Transpiler extends BaseTranspiler {
                     indicator: BaseNode,
                     consequent: [BaseNode]
                 }),
-                [NodeType.Block]: new Schema(NodeType.Block, [BaseNode])
+                [NodeType.Block]: new Schema(NodeType.Block, [BaseNode]),
+                [NodeType.KeyValue]: new Schema(NodeType.KeyValue, [[BaseNode], [BaseNode]])
             }
         })
 

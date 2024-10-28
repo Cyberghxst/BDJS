@@ -42,7 +42,7 @@ class TranspiledCommand {
         // Transpiling the native code.
         let transpiledCode = transpiler.transpile(data.code);
         // Checking if it was transpiled.
-        if (this.isTranspiled()) {
+        if (typeof transpiledCode === 'string') {
             // Minify the command
             if (data.minify) {
                 const minified = (0, uglify_js_1.minify)(transpiledCode);
@@ -61,13 +61,6 @@ class TranspiledCommand {
             // Assign the transpiled code to the command.
             data.transpiled = transpiledCode;
         }
-    }
-    /**
-     * Return whether command is transpiled.
-     * @returns {boolean}
-     */
-    isTranspiled() {
-        return typeof this.data.transpiled === 'string';
     }
     /**
      * Ensure the minification option in the command.

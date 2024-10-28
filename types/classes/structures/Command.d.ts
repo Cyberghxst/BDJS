@@ -63,11 +63,6 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
      */
     constructor(data: Types extends string ? IRawCommand<Types> : Types, transpiler: Transpiler);
     /**
-     * Return whether command is transpiled.
-     * @returns {boolean}
-     */
-    isTranspiled(): boolean;
-    /**
      * Ensure the minification option in the command.
      * @returns {void}
      */

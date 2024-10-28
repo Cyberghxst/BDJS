@@ -225,6 +225,6 @@ export class Transpiler extends BaseTranspiler {
      * Returns the location of the native functions.
      */
     private get instructions_path() {
-        return __dirname.replace(/classes\\core/, 'instructions')
+        return __dirname.replace(/classes(\\|\/)core/, 'instructions')
     }
 }

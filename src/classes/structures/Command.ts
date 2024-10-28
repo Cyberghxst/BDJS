@@ -168,6 +168,7 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
                     compress: false,
                     mangle: false,
                     output: {
+                        comments: "all",
                         beautify: true
                     }
                 })

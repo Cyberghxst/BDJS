@@ -65,6 +65,7 @@ class TranspiledCommand {
                     compress: false,
                     mangle: false,
                     output: {
+                        comments: "all",
                         beautify: true
                     }
                 });

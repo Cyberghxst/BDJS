@@ -7,9 +7,11 @@ const command = new TranspiledCommand({
     name: /uwu/,
     type: 'prefixed',
     code: `
+        $c[Defining a variable and assigning a value.]
         $define[avatar]
         $let[avatar;$userAvatar[$clientID;4096;jpeg;false]]
         
+        $c[Testing if-else-else statements.]
         $if[$get[avatar]==;
             $toString[44ikjnkn444]
         ]
@@ -20,8 +22,14 @@ const command = new TranspiledCommand({
             $let[avatar;byee]
         ]
             
+        $c[Testing the try-catch statements.]
         $try[$define[ok]]
-        $catch[$let[uwu;$clientName]]`,
+        $catch[$let[uwu;$clientName]]
+        
+        $c[Testing a comment eating functions.]
+        $c[$try[$define[ok]]
+        $catch[$let[uwu;$clientName]]]
+        `,
     minify: false
 }, transpiler)
 

@@ -156,6 +156,28 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
 
                 // Assign the minified code.
                 transpiledCode = minified.code
+            } else {
+                const beautified = minify(transpiledCode, {
+                    compress: false,
+                    mangle: false,
+                    output: {
+                        beautify: true
+                    }
+                })
+
+                // Assign the error if any.
+                if (beautified.error instanceof Error) {
+                    this.#logOptions.error = beautified.error
+                    this.#logOptions.pass = false
+                }
+
+                // Assign the warning if any.
+                if (Array.isArray(beautified.warnings)) {
+                    this.#logOptions.warnings = beautified.warnings
+                }
+
+                // Assign the beautified code.
+                transpiledCode = beautified.code
             }
 
             // Assign the transpiled code to the command.

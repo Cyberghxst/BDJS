@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProgramNode = exports.KeyValueNode = exports.ControlFlowNode = exports.CallNode = exports.BlockNode = exports.AssignmentNode = exports.OperatorNode = exports.LiteralNode = exports.BaseNode = exports.NodeType = void 0;
+exports.ProgramNode = exports.KeyValueNode = exports.ControlFlowNode = exports.CallNode = exports.BlockNode = exports.AssignmentNode = exports.VariableDeclarationNode = exports.VariableDeclarationType = exports.OperatorNode = exports.LiteralNode = exports.BaseNode = exports.NodeType = void 0;
 const akore_1 = require("akore");
 /**
  * Represents a node type in the AST.
@@ -16,6 +16,7 @@ var NodeType;
     NodeType["Block"] = "block";
     NodeType["Condition"] = "condition";
     NodeType["KeyValue"] = "key-value";
+    NodeType["VariableDeclaration"] = "variable-declaration";
 })(NodeType || (exports.NodeType = NodeType = {}));
 /**
  * Represents a base node in the AST.
@@ -90,6 +91,57 @@ class OperatorNode extends BaseNode {
     }
 }
 exports.OperatorNode = OperatorNode;
+/**
+ * The variable declaration type.
+ */
+var VariableDeclarationType;
+(function (VariableDeclarationType) {
+    VariableDeclarationType[VariableDeclarationType["Const"] = 0] = "Const";
+    VariableDeclarationType[VariableDeclarationType["Let"] = 1] = "Let";
+})(VariableDeclarationType || (exports.VariableDeclarationType = VariableDeclarationType = {}));
+/**
+ * Represents an assignment node in the AST.
+ * @template Left The type of the left side of the assignment node.
+ * @template Right The type of the right side of the assignment node.
+ */
+class VariableDeclarationNode extends OperatorNode {
+    /**
+     * Creates a new instance of the VariableDeclarationNode class.
+     * @param left The left side of the declaration node.
+     * @param right The right side of the declaration node.
+     */
+    constructor(type, left, right) {
+        super({
+            elements: [
+                new LiteralNode(type === VariableDeclarationType.Const ? 'const' : 'let'),
+                new OperatorNode({ elements: [left, right], operator: ' = ' })
+            ],
+            operator: ' '
+        }, false);
+    }
+    /**
+     * Gets the left side of the declaration node.
+     * @returns The left side of the declaration node.
+     */
+    get left() {
+        return this.elements[0];
+    }
+    /**
+     * Gets the right side of the declaration node.
+     * @returns The right side of the declaration node.
+     */
+    get right() {
+        return this.elements[1];
+    }
+    /**
+     * Serializes the declaration node to a string representation.
+     * @returns The serialized string representation of the declaration node.
+     */
+    serialize() {
+        return super.serialize();
+    }
+}
+exports.VariableDeclarationNode = VariableDeclarationNode;
 /**
  * Represents an assignment node in the AST.
  * @template Left The type of the left side of the assignment node.

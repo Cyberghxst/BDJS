@@ -10,13 +10,16 @@ const Nodes_1 = require("../classes/core/Nodes");
 /**
  * @name $clientID
  * @description Returns the ID of the client.
- * @returns {number}
+ * @returns {string}
  */
 class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
         this.patterns = (0, makePattern_1.default)('$clientID');
+        this.description = 'Returns the ID of the client.';
         this.identifier = (0, makeIdentifier_1.default)(__filename);
+        this.returnType = BaseInstruction_1.ReturnType.String;
+        this.version = '2.0.0';
     }
     resolve() {
         return new Nodes_1.LiteralNode('runtime.client.user.id');

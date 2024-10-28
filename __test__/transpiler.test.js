@@ -6,11 +6,11 @@ const transpiler = new Transpiler()
 const command = new TranspiledCommand({
     name: /uwu/,
     type: 'prefixed',
-    code: '$ping\n$userAvatar[$clientID;4096;jpeg;false]',
-    // minify: false
+    code: '$define[avatar]\n$let[avatar;$userAvatar[$clientID;4096;jpeg;false]]',
+    minify: false
 }, transpiler)
 
-console.log(command)
+console.log(command['data'].transpiled)
 
 /* const keyvalue = new KeyValueNode([
     [new LiteralNode('username'), new LiteralNode('"Cyberghxst"')],

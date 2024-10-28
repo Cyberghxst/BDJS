@@ -1,11 +1,11 @@
-import { CallNode, OperatorNode } from '../classes/core/Nodes';
 import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { type Transpiler } from '../classes/core/Transpiler';
-import { type Token } from 'akore';
+import { AssignmentNode, LiteralNode } from '../classes/core/Nodes';
+import { Transpiler } from '../classes/core/Transpiler';
+import { Token } from 'akore';
 /**
- * @name $userAvatar
- * @description Returns the avatar URL of an user.
- * @returns {string}
+ * @name $let
+ * @description Set the value of a defined runtime variable.
+ * @returns {unknown}
  */
 export default class extends BaseInstruction {
     patterns: import("akore").Patterns;
@@ -20,5 +20,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve({ inside }: Token<Transpiler>): OperatorNode | CallNode;
+    resolve({ inside }: Token<Transpiler>): AssignmentNode<LiteralNode, LiteralNode | import("../classes/core/Nodes").CallNode>;
 }

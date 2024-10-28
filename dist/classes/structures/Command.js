@@ -58,6 +58,26 @@ class TranspiledCommand {
                 // Assign the minified code.
                 transpiledCode = minified.code;
             }
+            else {
+                const beautified = (0, uglify_js_1.minify)(transpiledCode, {
+                    compress: false,
+                    mangle: false,
+                    output: {
+                        beautify: true
+                    }
+                });
+                // Assign the error if any.
+                if (beautified.error instanceof Error) {
+                    __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").error = beautified.error;
+                    __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass = false;
+                }
+                // Assign the warning if any.
+                if (Array.isArray(beautified.warnings)) {
+                    __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").warnings = beautified.warnings;
+                }
+                // Assign the beautified code.
+                transpiledCode = beautified.code;
+            }
             // Assign the transpiled code to the command.
             data.transpiled = transpiledCode;
         }

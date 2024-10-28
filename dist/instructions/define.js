@@ -8,38 +8,31 @@ const BaseInstruction_1 = require("../classes/core/BaseInstruction");
 const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 /**
- * @name $call
- * @description Calls a function from the JavaScript context.
+ * @name $define
+ * @description Creates a runtime variable.
  * @returns {unknown}
  */
 class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
-        this.patterns = (0, makePattern_1.default)(/\$([A-z_](\.?[A-z_])*)\*/, true);
-        this.description = 'Calls a function from the JavaScript context.';
+        this.patterns = (0, makePattern_1.default)('$define', true);
+        this.description = 'Creates a runtime variable.';
         this.params = [
             {
-                name: 'Arguments',
-                description: 'Function arguments to be passed to the function.',
-                type: BaseInstruction_1.ReturnType.Unknown,
-                required: false,
-                spread: true
+                name: 'Name',
+                description: 'The name of the variable.',
+                type: BaseInstruction_1.ReturnType.String,
+                required: true,
+                spread: false
             }
         ];
         this.identifier = (0, makeIdentifier_1.default)(__filename);
         this.returnType = BaseInstruction_1.ReturnType.Unknown;
         this.version = '2.0.0';
     }
-    resolve({ inside, match }) {
-        const tokens = inside ? [...this.transpiler.lexer.tokenize(inside)] : [];
-        return new Nodes_1.CallNode({
-            callee: new Nodes_1.LiteralNode(match[1]),
-            parameters: new Nodes_1.OperatorNode({
-                elements: this.transpiler.bulkNodify(tokens),
-                operator: ', '
-            }),
-            zero: true
-        });
+    resolve({ inside = '' }) {
+        const [name] = this.splitByDelimiter(inside);
+        return new Nodes_1.VariableDeclarationNode(Nodes_1.VariableDeclarationType.Let, new Nodes_1.LiteralNode(name), new Nodes_1.LiteralNode('undefined'));
     }
 }
 exports.default = default_1;

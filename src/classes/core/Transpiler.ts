@@ -37,7 +37,8 @@ export class Transpiler extends BaseTranspiler {
                     consequent: [BaseNode]
                 }),
                 [NodeType.Block]: new Schema(NodeType.Block, [BaseNode]),
-                [NodeType.KeyValue]: new Schema(NodeType.KeyValue, [[BaseNode], [BaseNode]])
+                [NodeType.KeyValue]: new Schema(NodeType.KeyValue, [[BaseNode], [BaseNode]]),
+                [NodeType.VariableDeclaration]: new Schema(NodeType.VariableDeclaration, [BaseNode])
             }
         })
 

@@ -1,5 +1,5 @@
-import { BaseNode, BlockNode, CallNode, KeyValueNode, LiteralNode, OperatorNode } from '@core/Nodes'
-import { BaseInstruction } from '@core/BaseInstruction'
+import { CallNode, KeyValueNode, LiteralNode, OperatorNode } from '@core/Nodes'
+import { BaseInstruction, ReturnType } from '@core/BaseInstruction'
 import makeIdentifier from '@functions/makeIdentifier'
 import { type Transpiler } from '@core/Transpiler'
 import makePattern from '@functions/makePattern'
@@ -7,12 +7,45 @@ import { type Token } from 'akore'
 
 /**
  * @name $userAvatar
- * @description Returns the token of the client.
- * @returns {number}
+ * @description Returns the avatar URL of an user.
+ * @returns {string}
  */
 export default class extends BaseInstruction {
     patterns = makePattern('$userAvatar', true)
+    description = 'Returns the avatar URL of an user.'
+    params = [
+        {
+            name: 'User ID',
+            description: 'The user ID to retrieve the avatar from.',
+            type: ReturnType.String,
+            required: false,
+            spread: false
+        },
+        {
+            name: 'Size',
+            description: 'The size of the avatar.',
+            type: ReturnType.Number,
+            required: false,
+            spread: false
+        },
+        {
+            name: 'Extension',
+            description: 'The extension of the image.',
+            type: ReturnType.String,
+            required: false,
+            spread: false
+        },
+        {
+            name: 'Force Static',
+            description: 'Whether force the image to be static.',
+            type: ReturnType.Boolean,
+            required: false,
+            spread: false
+        }
+    ]
     identifier = makeIdentifier(__filename)
+    returnType = ReturnType.String
+    version = '2.0.0'
     resolve({ inside }: Token<Transpiler>) {
         if (!inside) {
             return new CallNode({

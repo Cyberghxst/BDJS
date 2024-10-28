@@ -1,5 +1,5 @@
 import { BaseInstruction, ReturnType } from '@core/BaseInstruction'
-import { BlockNode, LiteralNode, OperatorNode } from '@core/Nodes'
+import { LiteralNode, OperatorNode } from '@core/Nodes'
 import makeIdentifier from '@functions/makeIdentifier'
 import makePattern from '@functions/makePattern'
 import { Transpiler } from '@core/Transpiler'

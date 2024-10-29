@@ -42,3 +42,4 @@ __exportStar(require("./classes/structures/DiscordClient"), exports);
 __exportStar(require("./classes/structures/Command"), exports);
 __exportStar(require("./classes/core/BaseEventHandler"), exports);
 __exportStar(require("./classes/core/extended/DiscordEventHandler"), exports);
+__exportStar(require("./classes/core/EventManager"), exports);

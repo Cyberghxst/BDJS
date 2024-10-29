@@ -15,6 +15,7 @@ export * from './classes/structures/DiscordClient'
 export * from './classes/structures/Command'
 export * from './classes/core/BaseEventHandler'
 export * from './classes/core/extended/DiscordEventHandler'
+export * from './classes/core/EventManager'
 
 export {
     makePattern,

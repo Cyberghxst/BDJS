@@ -1,7 +1,7 @@
 import { BDJSCommand, DiscordCommandManager, LoadCommandType } from './Command'
-import messageCreate from '../../events/messageCreate'
-import { Client, ClientOptions } from 'discord.js'
+import { Client, ClientEvents, ClientOptions } from 'discord.js'
 import { Transpiler } from '@core/Transpiler'
+import { EventManager } from '@core/EventManager'
 
 /**
  * Setup options for prefix.
@@ -37,6 +37,10 @@ interface PrefixSetupOptions<Compile extends boolean = boolean> {
  */
 export interface DiscordClientSetupOptions extends ClientOptions {
     /**
+     * Events the client must listen to.
+     */
+    events?: (keyof ClientEvents)[]
+    /**
      * Prefix options for the Discord client.
      */
     prefixes: string | string[] | PrefixSetupOptions | null
@@ -58,6 +62,7 @@ export class DiscordClient extends Client {
     constructor(public extraOptions: DiscordClientSetupOptions) {
         super(extraOptions)
         this.#processPrefixes()
+        EventManager.loadBuiltIns()
     }
 
     /**
@@ -105,8 +110,17 @@ export class DiscordClient extends Client {
         }
     }
 
+    /**
+     * Login the client to Discord.
+     * @param token - The token to be used.
+     * @returns {Promise<string>}
+     */
     override login(token: string) {
-        messageCreate.attach(this)
+        // Load the events.
+        if (this.extraOptions.events.length) {
+            EventManager.attach(this, 'built-ins', this.extraOptions.events)
+        }
+
         return super.login(token)
     }
 }

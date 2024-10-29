@@ -4,16 +4,13 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 var _DiscordClient_instances, _DiscordClient_processPrefixes;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscordClient = void 0;
 const Command_1 = require("./Command");
-const messageCreate_1 = __importDefault(require("../../events/messageCreate"));
 const discord_js_1 = require("discord.js");
 const Transpiler_1 = require("../core/Transpiler");
+const EventManager_1 = require("../core/EventManager");
 /**
  * The class representing a Discord client.
  */
@@ -31,6 +28,7 @@ class DiscordClient extends discord_js_1.Client {
          */
         this.commands = new Command_1.DiscordCommandManager(this.transpiler);
         __classPrivateFieldGet(this, _DiscordClient_instances, "m", _DiscordClient_processPrefixes).call(this);
+        EventManager_1.EventManager.loadBuiltIns();
     }
     /**
      * Add commands into the command manager.
@@ -43,8 +41,16 @@ class DiscordClient extends discord_js_1.Client {
         }
         return this;
     }
+    /**
+     * Login the client to Discord.
+     * @param token - The token to be used.
+     * @returns {Promise<string>}
+     */
     login(token) {
-        messageCreate_1.default.attach(this);
+        // Load the events.
+        if (this.extraOptions.events.length) {
+            EventManager_1.EventManager.attach(this, 'built-ins', this.extraOptions.events);
+        }
         return super.login(token);
     }
 }

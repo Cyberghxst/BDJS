@@ -3,6 +3,9 @@ const { config } = require('dotenv')
 
 config()
 const client = new DiscordClient({
+    events: [
+        'messageCreate'
+    ],
     intents: [
         'Guilds',
         'GuildMessages',
@@ -14,7 +17,8 @@ const client = new DiscordClient({
             'uwu',
             'nice',
             'xd',
-            '$userAvatar[$clientID]'
+            '$userAvatar[$clientID]',
+            '.'
         ],
         advancedOptions: {
             transpileValues: true,

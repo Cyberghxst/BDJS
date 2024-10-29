@@ -1,5 +1,5 @@
 import { BDJSCommand, DiscordCommandManager } from './Command';
-import { Client, ClientOptions } from 'discord.js';
+import { Client, ClientEvents, ClientOptions } from 'discord.js';
 import { Transpiler } from '../core/Transpiler';
 /**
  * Setup options for prefix.
@@ -34,6 +34,10 @@ interface PrefixSetupOptions<Compile extends boolean = boolean> {
  */
 export interface DiscordClientSetupOptions extends ClientOptions {
     /**
+     * Events the client must listen to.
+     */
+    events?: (keyof ClientEvents)[];
+    /**
      * Prefix options for the Discord client.
      */
     prefixes: string | string[] | PrefixSetupOptions | null;
@@ -59,6 +63,11 @@ export declare class DiscordClient extends Client {
      * @returns {DiscordClient}
      */
     addCommand(...commands: BDJSCommand[]): this;
+    /**
+     * Login the client to Discord.
+     * @param token - The token to be used.
+     * @returns {Promise<string>}
+     */
     login(token: string): Promise<string>;
 }
 export {};

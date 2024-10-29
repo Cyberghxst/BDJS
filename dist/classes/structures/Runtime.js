@@ -13,6 +13,10 @@ class Runtime {
         this.data = data;
         this.client = client;
         /**
+         * Command arguments.
+         */
+        this.args = [];
+        /**
          * The current command being executed.
          */
         this.command = null;
@@ -20,6 +24,15 @@ class Runtime {
          * Variables this runtime has.
          */
         this.variables = new Map();
+    }
+    /**
+     * Set the arguments for this runtime.
+     * @param args - List of arguments.
+     * @returns {Runtime<Sendable, Cached>}
+     */
+    setArgs(args) {
+        this.args = args;
+        return this;
     }
     /**
      * Set the current command.

@@ -66,6 +66,11 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
     static globalValues = new Map<string, any>()
 
     /**
+     * Command arguments.
+     */
+    public args: string[] = []
+
+    /**
      * The current command being executed.
      */
     public command: TranspiledCommand<any> | null = null
@@ -79,6 +84,16 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      * Creates an instance of Runtime.
      */
     public constructor(private data: T, public client: DiscordClient) {}
+
+    /**
+     * Set the arguments for this runtime.
+     * @param args - List of arguments.
+     * @returns {Runtime<Sendable, Cached>}
+     */
+    public setArgs(args: string[]) {
+        this.args = args
+        return this
+    }
 
     /**
      * Set the current command.

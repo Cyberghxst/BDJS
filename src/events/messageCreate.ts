@@ -22,7 +22,7 @@ export default new DiscordEventHandler({
         const command = commands.find((cmd) => cmd.name instanceof RegExp ? cmd.name.test(commandName) : cmd.name.toLowerCase() === commandName.toLowerCase())
         if (!command) return;
 
-        runtime.setCommand<CommandTypes>(command)
+        runtime.setCommand<CommandTypes>(command).setArgs(args)
         let result = ''
         if (typeof command.code === 'function' && isAsyncFunction(command.code)) {
             const temporal = await command.code(runtime)

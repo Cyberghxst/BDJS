@@ -13,8 +13,6 @@ export default new DiscordEventHandler({
         const commands = this.commands.getType('prefixed')
         if (commands.length === 0) return;
 
-        console.log(runtime.globals)
-
         const prefixes: string[] = this.extraOptions.prefixes === null ? [] : this.extraOptions.prefixes as string[]
         const prefix: string | undefined = prefixes.find((value) => message.content.startsWith(value))
         if (!prefix) return;

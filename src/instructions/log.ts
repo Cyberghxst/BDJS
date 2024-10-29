@@ -11,7 +11,7 @@ import { Token } from 'akore'
  * @returns {unknown}
  */
 export default class extends BaseInstruction {
-    patterns = makePattern('$log')
+    patterns = makePattern('$log', true)
     description = 'Logs a message into the console.'
     params = [
         {

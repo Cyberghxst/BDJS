@@ -141,6 +141,12 @@ class TranspiledCommand {
         return this.data.path;
     }
     /**
+     * Whether send the result of the command evaluation.
+     */
+    get sendResult() {
+        return this.data.sendResult ?? false;
+    }
+    /**
      * Returns the transpiled code.
      */
     get transpiledCode() {

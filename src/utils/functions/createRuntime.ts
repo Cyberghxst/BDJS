@@ -11,6 +11,7 @@ export default function createRuntime(runtime: Runtime) {
         runtime,
         require,
         module,
-        process
+        process,
+        console
     }, { codeGeneration: { wasm: false } })
 }

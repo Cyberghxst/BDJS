@@ -51,6 +51,11 @@ export interface IRawCommand<Type extends string = string> {
      * @default true
      */
     minify?: boolean;
+    /**
+     * Whether send the result of the command evaluation.
+     * @default false
+     */
+    sendResult?: boolean;
 }
 /**
  * A BDJS command.
@@ -97,6 +102,10 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
      * Returns the command path.
      */
     get path(): string;
+    /**
+     * Whether send the result of the command evaluation.
+     */
+    get sendResult(): boolean;
     /**
      * Returns the transpiled code.
      */

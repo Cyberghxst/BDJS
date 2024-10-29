@@ -16,6 +16,10 @@ class Runtime {
          * The current command being executed.
          */
         this.command = null;
+        /**
+         * Variables this runtime has.
+         */
+        this.variables = new Map();
     }
     /**
      * Set the current command.

@@ -1,5 +1,5 @@
 import { BaseInstruction, ReturnType } from '@core/BaseInstruction'
-import { AssignmentNode, LiteralNode } from '@core/Nodes'
+import { CallNode, LiteralNode, OperatorNode } from '@core/Nodes'
 import makeIdentifier from '@functions/makeIdentifier'
 import makePattern from '@functions/makePattern'
 import { Transpiler } from '@core/Transpiler'
@@ -28,6 +28,15 @@ export default class extends BaseInstruction {
     resolve({ inside = '' }: Token<Transpiler>) {
         const [name] = this.splitByDelimiter(inside)
 
-        return new LiteralNode(name)
+        return new CallNode({
+            callee: new LiteralNode('runtime.variables.get'),
+            parameters: new OperatorNode({
+                elements: [
+                    this.transpiler.resolveString(name)
+                ],
+                operator: ', '
+            }),
+            zero: false
+        })
     }
 }

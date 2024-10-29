@@ -16,7 +16,6 @@ exports.default = new DiscordEventHandler_1.DiscordEventHandler({
         const commands = this.commands.getType('prefixed');
         if (commands.length === 0)
             return;
-        console.log(runtime.globals);
         const prefixes = this.extraOptions.prefixes === null ? [] : this.extraOptions.prefixes;
         const prefix = prefixes.find((value) => message.content.startsWith(value));
         if (!prefix)
@@ -43,7 +42,7 @@ exports.default = new DiscordEventHandler_1.DiscordEventHandler({
             if (typeof temporal === 'string' && temporal !== '')
                 result += temporal;
         }
-        if (result !== '')
+        if (command.sendResult && result !== '')
             message.channel.send(result);
     }
 });

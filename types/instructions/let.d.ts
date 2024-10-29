@@ -1,5 +1,5 @@
 import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { AssignmentNode, LiteralNode } from '../classes/core/Nodes';
+import { CallNode } from '../classes/core/Nodes';
 import { Transpiler } from '../classes/core/Transpiler';
 import { Token } from 'akore';
 /**
@@ -20,5 +20,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve({ inside }: Token<Transpiler>): AssignmentNode<LiteralNode, LiteralNode | import("../classes/core/Nodes").CallNode>;
+    resolve({ inside }: Token<Transpiler>): CallNode;
 }

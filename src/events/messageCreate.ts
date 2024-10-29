@@ -35,6 +35,6 @@ export default new DiscordEventHandler({
             if (typeof temporal === 'string' && temporal !== '') result += temporal;
         }
 
-        if (result !== '') message.channel.send(result);
+        if (command.sendResult && result !== '') message.channel.send(result);
     }
 })

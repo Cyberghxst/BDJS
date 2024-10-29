@@ -12,6 +12,7 @@ function createRuntime(runtime) {
         runtime,
         require,
         module,
-        process
+        process,
+        console
     }, { codeGeneration: { wasm: false } });
 }

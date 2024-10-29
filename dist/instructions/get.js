@@ -32,7 +32,16 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     }
     resolve({ inside = '' }) {
         const [name] = this.splitByDelimiter(inside);
-        return new Nodes_1.LiteralNode(name);
+        return new Nodes_1.CallNode({
+            callee: new Nodes_1.LiteralNode('runtime.variables.get'),
+            parameters: new Nodes_1.OperatorNode({
+                elements: [
+                    this.transpiler.resolveString(name)
+                ],
+                operator: ', '
+            }),
+            zero: false
+        });
     }
 }
 exports.default = default_1;

@@ -26,14 +26,7 @@ const client = new DiscordClient({
 client.addCommand({
     name: 'ping',
     type: 'prefixed',
-    async code(runtime) {
-        console.log(runtime.user.username)
-        runtime.globals.set('message', 'wazzzzuuuuup')
-    }
-}, {
-    name: 'pong',
-    type: 'prefixed',
-    code: '$log[$getGlobalValue[message]]'
+    code: '$let[mommy;uwu]\n$log[$get[mommy]]'
 })
 
 client.login(process.env.TOKEN)

@@ -15,7 +15,7 @@ const makePattern_1 = __importDefault(require("../utils/functions/makePattern"))
 class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
-        this.patterns = (0, makePattern_1.default)('$log');
+        this.patterns = (0, makePattern_1.default)('$log', true);
         this.description = 'Logs a message into the console.';
         this.params = [
             {

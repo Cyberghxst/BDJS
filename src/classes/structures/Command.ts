@@ -140,6 +140,11 @@ export interface IRawCommand<Type extends string = string> {
      * @default true
      */
     minify?: boolean
+    /**
+     * Whether send the result of the command evaluation.
+     * @default false
+     */
+    sendResult?: boolean
 }
 
 /**
@@ -298,6 +303,13 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
      */
     public get path() {
         return this.data.path
+    }
+
+    /**
+     * Whether send the result of the command evaluation.
+     */
+    public get sendResult() {
+        return this.data.sendResult ?? false
     }
 
     /**

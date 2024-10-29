@@ -71,6 +71,11 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
     public command: TranspiledCommand<any> | null = null
 
     /**
+     * Variables this runtime has.
+     */
+    public variables = new Map<string, unknown>()
+
+    /**
      * Creates an instance of Runtime.
      */
     public constructor(private data: T, public client: DiscordClient) {}

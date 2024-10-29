@@ -10,12 +10,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _TranspiledCommand_logOptions, _BaseCommandManager_path;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscordCommandManager = exports.BaseCommandManager = exports.LoadCommandType = exports.TranspiledCommand = void 0;
-const ascii_table3_1 = require("ascii-table3");
-const uglify_js_1 = require("uglify-js");
-const cli_color_1 = __importDefault(require("cli-color"));
-const Logger_1 = require("../core/Logger");
 const collectFiles_1 = require("../../utils/functions/collectFiles");
 const createString_1 = __importDefault(require("../../utils/functions/createString"));
+const ascii_table3_1 = require("ascii-table3");
+const Logger_1 = require("../core/Logger");
+const uglify_js_1 = require("uglify-js");
+const cli_color_1 = __importDefault(require("cli-color"));
 /**
  * Represents a transpiled command.
  */
@@ -31,58 +31,56 @@ class TranspiledCommand {
         _TranspiledCommand_logOptions.set(this, {
             pass: true,
             error: undefined,
-            warnings: []
-        }
-        /**
-         * Starts the command instance.
-         */
-        );
+            warnings: [],
+        });
         this.ensureMinification(); // Ensure the minification option.
         this.ensureName(); // Ensure the command name.
-        // Transpiling the native code.
-        let transpiledCode = transpiler.transpile(data.code);
-        // Assign the raw output to its property.
-        data.rawTranspiledCode = transpiledCode;
-        // Checking if it was transpiled.
-        if (typeof transpiledCode === 'string') {
-            // Minify the command
-            if (data.minify) {
-                const minified = (0, uglify_js_1.minify)(transpiledCode);
-                // Assign the error if any.
-                if (minified.error instanceof Error) {
-                    __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").error = minified.error;
-                    __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass = false;
-                }
-                // Assign the warning if any.
-                if (Array.isArray(minified.warnings)) {
-                    __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").warnings = minified.warnings;
-                }
-                // Assign the minified code.
-                transpiledCode = minified.code;
-            }
-            else {
-                const beautified = (0, uglify_js_1.minify)(transpiledCode, {
-                    compress: false,
-                    mangle: false,
-                    output: {
-                        comments: "all",
-                        beautify: true
+        if (typeof data.code === 'string') {
+            // Transpiling the native code.
+            let transpiledCode = transpiler.transpile(data.code);
+            // Assign the raw output to its property.
+            data.rawTranspiledCode = transpiledCode;
+            // Checking if it was transpiled.
+            if (typeof transpiledCode === 'string') {
+                // Minify the command
+                if (data.minify) {
+                    const minified = (0, uglify_js_1.minify)(transpiledCode);
+                    // Assign the error if any.
+                    if (minified.error instanceof Error) {
+                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").error = minified.error;
+                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass = false;
                     }
-                });
-                // Assign the error if any.
-                if (beautified.error instanceof Error) {
-                    __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").error = beautified.error;
-                    __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass = false;
+                    // Assign the warning if any.
+                    if (Array.isArray(minified.warnings)) {
+                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").warnings = minified.warnings;
+                    }
+                    // Assign the minified code.
+                    transpiledCode = minified.code;
                 }
-                // Assign the warning if any.
-                if (Array.isArray(beautified.warnings)) {
-                    __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").warnings = beautified.warnings;
+                else {
+                    const beautified = (0, uglify_js_1.minify)(transpiledCode, {
+                        compress: false,
+                        mangle: false,
+                        output: {
+                            comments: 'all',
+                            beautify: true,
+                        },
+                    });
+                    // Assign the error if any.
+                    if (beautified.error instanceof Error) {
+                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").error = beautified.error;
+                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass = false;
+                    }
+                    // Assign the warning if any.
+                    if (Array.isArray(beautified.warnings)) {
+                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").warnings = beautified.warnings;
+                    }
+                    // Assign the beautified code.
+                    transpiledCode = beautified.code;
                 }
-                // Assign the beautified code.
-                transpiledCode = beautified.code;
+                // Assign the transpiled code to the command.
+                data.transpiled = transpiledCode;
             }
-            // Assign the transpiled code to the command.
-            data.transpiled = transpiledCode;
         }
     }
     /**
@@ -90,30 +88,50 @@ class TranspiledCommand {
      * @returns {void}
      */
     ensureMinification() {
-        this.data.minify = typeof this.data.minify !== 'boolean' ? true : this.data.minify;
+        this.data.minify =
+            typeof this.data.minify !== 'boolean' ? true : this.data.minify;
     }
     /**
      * Ensure the command name.
      * @returns {void}
      */
     ensureName() {
-        this.data.name = this.data.name === undefined ? (0, createString_1.default)() : this.data.name;
+        this.data.name =
+            this.data.name === undefined ? (0, createString_1.default)() : this.data.name;
     }
     /**
      * Returns the load info for the log command table.
      */
     get loadCommandInfo() {
         return [
-            this.data.name instanceof RegExp ? this.data.name.source : this.data.name || 'Unknown',
+            this.data.name instanceof RegExp
+                ? this.data.name.source
+                : this.data.name || 'Unknown',
             this.data.type,
-            __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass ? cli_color_1.default.green('LOADED') : cli_color_1.default.red('NOT LOADED'),
-            this.data.path === null ? 'MAIN FILE' : ascii_table3_1.AsciiTable3.truncateString(this.data.path, 20)
+            __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass
+                ? cli_color_1.default.green('LOADED')
+                : cli_color_1.default.red('NOT LOADED'),
+            this.data.path === null
+                ? 'MAIN FILE'
+                : ascii_table3_1.AsciiTable3.truncateString(this.data.path, 20),
         ];
+    }
+    /**
+     * Returns the command code.
+     */
+    get code() {
+        return this.data.code;
     }
     /**
      * Returns the name of this command.
      */
     get name() {
+        return this.data.name;
+    }
+    /**
+     * Returns the name of this command for the log table.
+     */
+    get logName() {
         return this.data.name instanceof RegExp ? this.data.name.source : this.data.name || 'Unknown';
     }
     /**
@@ -121,6 +139,18 @@ class TranspiledCommand {
      */
     get path() {
         return this.data.path;
+    }
+    /**
+     * Returns the transpiled code.
+     */
+    get transpiledCode() {
+        return this.data.transpiled;
+    }
+    /**
+     * Returns the command type.
+     */
+    get type() {
+        return this.data.type;
     }
 }
 exports.TranspiledCommand = TranspiledCommand;
@@ -142,11 +172,7 @@ class BaseCommandManager {
         /**
          * Saves the command path for later loading.
          */
-        _BaseCommandManager_path.set(this, null
-        /**
-         * Command cache.
-         */
-        );
+        _BaseCommandManager_path.set(this, null);
         /**
          * Command cache.
          */
@@ -159,7 +185,10 @@ class BaseCommandManager {
      */
     addCommand(command, loadType = LoadCommandType.Main) {
         const transpiledCommand = new TranspiledCommand(command, this.transpiler);
-        this.cache.set(transpiledCommand.name, transpiledCommand);
+        this.cache.set(transpiledCommand.logName, transpiledCommand);
+    }
+    getType(type) {
+        return Array.from(this.cache.values()).filter((c) => c.type === type);
     }
     /**
      * Load commands from source.
@@ -188,7 +217,7 @@ class BaseCommandManager {
         for (const command of this.cache.values()) {
             if (command.path === null)
                 continue;
-            this.cache.delete(command.name);
+            this.cache.delete(command.logName);
         }
         return size !== this.cache.size;
     }

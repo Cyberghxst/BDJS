@@ -26,6 +26,7 @@
     "@types/cli-color": "^2.0.6",
     "@types/node": "^22.7.3",
     "@types/uglify-js": "^3.17.5",
+    "dotenv": "^16.4.5",
     "tsc-alias": "^1.8.10",
     "typescript": "^5.6.2"
   },

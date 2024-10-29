@@ -1,44 +1,39 @@
-const { KeyValueNode, LiteralNode } = require('../dist/classes/core/Nodes')
-const { Transpiler, TranspiledCommand } = require('../dist')
-const { Logger } = require('../dist/classes/core/Logger')
+const { DiscordClient } = require('../dist')
+const { config } = require('dotenv')
 
-const transpiler = new Transpiler()
-const command = new TranspiledCommand({
-    name: /uwu/,
+config()
+const client = new DiscordClient({
+    intents: [
+        'Guilds',
+        'GuildMessages',
+        'MessageContent'
+    ],
+    prefixes: {
+        mentionAsPrefix: false,
+        values: [
+            'uwu',
+            'nice',
+            'xd',
+            '$userAvatar[$clientID]'
+        ],
+        advancedOptions: {
+            transpileValues: true,
+            transpileIndexes: [3]
+        }
+    }
+})
+
+client.addCommand({
+    name: 'ping',
     type: 'prefixed',
-    code: `
-        $c[Defining a variable and assigning a value.]
-        $define[avatar]
-        $let[avatar;$userAvatar[$clientID;4096;jpeg;false]]
-        
-        $c[Testing if-else-else statements.]
-        $if[$get[avatar]==;
-            $toString[44ikjnkn444]
-        ]
-        $elseif[$get[avatar]!=;
-            $toString[44ikjnkn444]
-        ]
-        $else[
-            $let[avatar;byee]
-        ]
-            
-        $c[Testing the try-catch statements.]
-        $try[$define[ok]]
-        $catch[$let[uwu;$clientName]]
-        
-        $c[Testing a comment eating functions.]
-        $c[$try[$define[ok]]
-        $catch[$let[uwu;$clientName]]]
-        `,
-    minify: false
-}, transpiler)
+    async code(runtime) {
+        console.log(runtime.user.username)
+        runtime.globals.set('message', 'wazzzzuuuuup')
+    }
+}, {
+    name: 'pong',
+    type: 'prefixed',
+    code: '$log[$getGlobalValue[message]]'
+})
 
-console.log(command['data'].transpiled)
-
-/* const keyvalue = new KeyValueNode([
-    [new LiteralNode('username'), new LiteralNode('"Cyberghxst"')],
-    [new LiteralNode('age'), new LiteralNode('22')],
-    [new LiteralNode('favorite_language'), new LiteralNode('"TypeScript"')]
-])
-
-console.log(keyvalue.serialize()) */
+client.login(process.env.TOKEN)

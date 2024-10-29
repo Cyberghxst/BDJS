@@ -11,6 +11,7 @@ function createRuntime(runtime) {
     return (0, node_vm_1.createContext)({
         runtime,
         require,
-        module
+        module,
+        process
     }, { codeGeneration: { wasm: false } });
 }

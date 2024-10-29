@@ -12,6 +12,19 @@ class Runtime {
     constructor(data, client) {
         this.data = data;
         this.client = client;
+        /**
+         * The current command being executed.
+         */
+        this.command = null;
+    }
+    /**
+     * Set the current command.
+     * @param command - Command to be set.
+     * @returns {Runtime<Sendable, Cached>}
+     */
+    setCommand(command) {
+        this.command = command;
+        return this;
     }
     /**
      * Sends a message to the current context.
@@ -157,5 +170,17 @@ class Runtime {
     get exactIs() {
         return this.data.constructor.name;
     }
+    /**
+     * Global runtime values that
+     * can be retrieved between commands.
+     */
+    get globals() {
+        return Runtime.globalValues;
+    }
 }
 exports.Runtime = Runtime;
+/**
+ * Global runtime values that
+ * can be retrieved between commands.
+ */
+Runtime.globalValues = new Map();

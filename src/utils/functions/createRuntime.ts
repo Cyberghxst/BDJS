@@ -10,6 +10,7 @@ export default function createRuntime(runtime: Runtime) {
     return createContext({
         runtime,
         require,
-        module
+        module,
+        process
     }, { codeGeneration: { wasm: false } })
 }

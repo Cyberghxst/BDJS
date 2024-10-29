@@ -1,4 +1,5 @@
 import { Transpiler } from '../core/Transpiler';
+import { Runtime } from './Runtime';
 /**
  * Command types that Discord contexts provide.
  */
@@ -26,11 +27,11 @@ export interface IRawCommand<Type extends string = string> {
     /**
      * The type of this command.
      */
-    type: string;
+    type: Type;
     /**
      * The native code of this command.
      */
-    code: string;
+    code: string | ((runtime: Runtime) => Promise<any> | any);
     /**
      * The transpiled code of the command.
      */
@@ -81,13 +82,29 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
      */
     get loadCommandInfo(): string[];
     /**
+     * Returns the command code.
+     */
+    get code(): string | ((runtime: Runtime) => Promise<any> | any);
+    /**
      * Returns the name of this command.
      */
-    get name(): string;
+    get name(): string | RegExp;
+    /**
+     * Returns the name of this command for the log table.
+     */
+    get logName(): string;
     /**
      * Returns the command path.
      */
     get path(): string;
+    /**
+     * Returns the transpiled code.
+     */
+    get transpiledCode(): string;
+    /**
+     * Returns the command type.
+     */
+    get type(): string;
 }
 /**
  * Represents the load command source.
@@ -113,6 +130,7 @@ export declare class BaseCommandManager<Types extends string> {
      * @param loadType
      */
     private addCommand;
+    getType(type: Types): TranspiledCommand<Types>[];
     /**
      * Load commands from source.
      * @param path

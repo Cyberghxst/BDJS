@@ -6,5 +6,8 @@ const BaseEventHandler_1 = require("../BaseEventHandler");
  * The default discord event handler.
  */
 class DiscordEventHandler extends BaseEventHandler_1.BaseEventHandler {
+    attach(client) {
+        client.on(this.name, this.call.bind(client));
+    }
 }
 exports.DiscordEventHandler = DiscordEventHandler;

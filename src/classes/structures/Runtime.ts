@@ -1,5 +1,6 @@
 import { AutoModerationActionExecution, BaseChannel, BaseGuildTextChannel, BaseGuildVoiceChannel, BaseInteraction, CacheType, ClientUser, DMChannel, Emoji, Entitlement, Guild, GuildEmoji, GuildMember, Interaction, InteractionDeferReplyOptions, InteractionDeferUpdateOptions, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, InteractionWebhook, Message, MessageCreateOptions, MessagePayload, MessageReaction, NewsChannel, NonThreadGuildBasedChannel, OmitPartialGroupDMChannel, PrivateThreadChannel, PublicThreadChannel, Role, SendableChannels, Shard, StageChannel, Sticker, TextBasedChannel, TextChannel, ThreadChannel, User, VoiceBasedChannel, Webhook, WebhookClient } from 'discord.js'
 import { DiscordClient } from './DiscordClient'
+import { TranspiledCommand } from './Command'
 
 /**
  * Discord.js sendable contexts.
@@ -59,9 +60,30 @@ export type SendablePayload = string
  */
 export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = CacheType> implements RuntimeCache {
     /**
+     * Global runtime values that 
+     * can be retrieved between commands.
+     */
+    static globalValues = new Map<string, any>()
+
+    /**
+     * The current command being executed.
+     */
+    public command: TranspiledCommand<any> | null = null
+
+    /**
      * Creates an instance of Runtime.
      */
     public constructor(private data: T, public client: DiscordClient) {}
+
+    /**
+     * Set the current command.
+     * @param command - Command to be set.
+     * @returns {Runtime<Sendable, Cached>}
+     */
+    public setCommand<Type extends string = string, Command extends TranspiledCommand<Type> = TranspiledCommand<Type>>(command: Command) {
+        this.command = command
+        return this
+    }
 
     /**
      * Sends a message to the current context.
@@ -218,5 +240,13 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      */
     public get exactIs(): string {
         return this.data.constructor.name
+    }
+
+    /**
+     * Global runtime values that 
+     * can be retrieved between commands.
+     */
+    public get globals() {
+        return Runtime.globalValues
     }
 }

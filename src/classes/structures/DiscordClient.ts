@@ -1,7 +1,50 @@
 import { BDJSCommand, DiscordCommandManager, LoadCommandType } from './Command'
+import messageCreate from '../../events/messageCreate'
+import { Client, ClientOptions } from 'discord.js'
 import { Transpiler } from '@core/Transpiler'
-import { Client } from 'discord.js'
 
+/**
+ * Setup options for prefix.
+ */
+interface PrefixSetupOptions<Compile extends boolean = boolean> {
+    /**
+     * The values to take as prefix.
+     */
+    values: string[]
+    /**
+     * Advanced options for prefix values.
+     */
+    advancedOptions?: {
+        /**
+         * Whether transpile prefix values.
+         * @default false
+         */
+        transpileValues?: Compile
+        /**
+         * The indexes that should be transpiled only.
+         */
+        transpileIndexes?: Compile extends true ? number[] : never
+    }
+    /**
+     * Whether take client mention as prefix.
+     * @default false
+     */
+    mentionAsPrefix?: boolean
+}
+
+/**
+ * The setup options of the Discord client.
+ */
+export interface DiscordClientSetupOptions extends ClientOptions {
+    /**
+     * Prefix options for the Discord client.
+     */
+    prefixes: string | string[] | PrefixSetupOptions | null
+}
+
+/**
+ * The class representing a Discord client.
+ */
 export class DiscordClient extends Client {
     /**
      * BDJS code transpiler.
@@ -12,6 +55,11 @@ export class DiscordClient extends Client {
      */
     public readonly commands = new DiscordCommandManager(this.transpiler)
 
+    constructor(public extraOptions: DiscordClientSetupOptions) {
+        super(extraOptions)
+        this.#processPrefixes()
+    }
+
     /**
      * Add commands into the command manager.
      * @param commands - Commands to be cached.
@@ -19,9 +67,46 @@ export class DiscordClient extends Client {
      */
     public addCommand(...commands: BDJSCommand[]) {
         for (const command of commands) {
-            this.commands['addCommand'](command, LoadCommandType.Main)
+            this.commands['addCommand'](command as any, LoadCommandType.Main)
         }
 
         return this
+    }
+
+    /**
+     * Process the prefixes based on the given options.
+     */
+    #processPrefixes() {
+        if (this.extraOptions.prefixes === null) return;
+
+        if (typeof this.extraOptions.prefixes === 'string') {
+            this.extraOptions.prefixes = [this.extraOptions.prefixes]
+        } else if (Array.isArray(this.extraOptions.prefixes)) {
+            this.extraOptions.prefixes = this.extraOptions.prefixes
+        } else {
+            const mentionAsPrefix = this.extraOptions.prefixes.mentionAsPrefix ?? false
+            const transpileValues = this.extraOptions.prefixes.advancedOptions.transpileValues ?? false
+            const transpileIndexes = Array.isArray(this.extraOptions.prefixes.advancedOptions.transpileIndexes) ? this.extraOptions.prefixes.advancedOptions.transpileIndexes : []
+            let values = this.extraOptions.prefixes.values
+
+            if (transpileValues && transpileIndexes.length === 0) {
+                values = values.map((prefix) => this.transpiler.transpile(prefix, false))
+            } else if (transpileValues && transpileIndexes.length > 0) {
+                for (const index of transpileIndexes) {
+                    values[index] = this.transpiler.transpile(values[index], false)
+                }
+            }
+
+            if (mentionAsPrefix) {
+                values.push(`<@${this.user.username}>`, `<@!${this.user.username}>`)
+            }
+
+            this.extraOptions.prefixes = values
+        }
+    }
+
+    override login(token: string) {
+        messageCreate.attach(this)
+        return super.login(token)
     }
 }

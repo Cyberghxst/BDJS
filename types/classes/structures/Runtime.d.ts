@@ -1,5 +1,6 @@
 import { AutoModerationActionExecution, BaseChannel, BaseGuildTextChannel, BaseGuildVoiceChannel, CacheType, ClientUser, DMChannel, Emoji, Entitlement, Guild, GuildEmoji, GuildMember, Interaction, InteractionDeferReplyOptions, InteractionDeferUpdateOptions, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, InteractionWebhook, Message, MessageCreateOptions, MessagePayload, MessageReaction, NewsChannel, NonThreadGuildBasedChannel, OmitPartialGroupDMChannel, PrivateThreadChannel, PublicThreadChannel, Role, SendableChannels, Shard, StageChannel, Sticker, TextBasedChannel, TextChannel, ThreadChannel, User, VoiceBasedChannel, Webhook, WebhookClient } from 'discord.js';
 import { DiscordClient } from './DiscordClient';
+import { TranspiledCommand } from './Command';
 /**
  * Discord.js sendable contexts.
  */
@@ -32,9 +33,24 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
     private data;
     client: DiscordClient;
     /**
+     * Global runtime values that
+     * can be retrieved between commands.
+     */
+    static globalValues: Map<string, any>;
+    /**
+     * The current command being executed.
+     */
+    command: TranspiledCommand<any> | null;
+    /**
      * Creates an instance of Runtime.
      */
     constructor(data: T, client: DiscordClient);
+    /**
+     * Set the current command.
+     * @param command - Command to be set.
+     * @returns {Runtime<Sendable, Cached>}
+     */
+    setCommand<Type extends string = string, Command extends TranspiledCommand<Type> = TranspiledCommand<Type>>(command: Command): this;
     /**
      * Sends a message to the current context.
      * @param message - The message to be sent.
@@ -132,4 +148,9 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
      * Returns the instance name of the current context.
      */
     get exactIs(): string;
+    /**
+     * Global runtime values that
+     * can be retrieved between commands.
+     */
+    get globals(): Map<string, any>;
 }

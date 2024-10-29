@@ -1,72 +1,105 @@
+import { collectFiles } from '@functions/collectFiles'
+import createString from '@functions/createString'
 import { Transpiler } from '@core/Transpiler'
 import { AsciiTable3 } from 'ascii-table3'
+import { Logger } from '@core/Logger'
+import { Runtime } from './Runtime'
 import { minify } from 'uglify-js'
 import color from 'cli-color'
-import { Logger } from '@core/Logger';
-import { collectFiles } from '@functions/collectFiles';
-import createString from '@functions/createString';
 
 /**
  * Command types that Discord contexts provide.
  */
-export type DiscordCommandTypes = 
+export type DiscordCommandTypes =
     // Message-related events
-    'prefixed' | 'unprefixed' | 'alwaysReply' | 'messageDelete' | 'messageUpdate'
+    | 'prefixed'
+    | 'unprefixed'
+    | 'alwaysReply'
+    | 'messageDelete'
+    | 'messageUpdate'
 
     // Miscelaneous events.
-    | 'error' | 'ready'
+    | 'error'
+    | 'ready'
 
     // Interaction-related events.
-    | 'anyInteraction' | 'modalInteraction' | 'buttonInteraction' | 'commandInteraction' | 'selectMenuInteraction' | 'userContextMenuInteraction' | 'messageContextMenuInteraction' | 'autocompleteInteraction'
+    | 'anyInteraction'
+    | 'modalInteraction'
+    | 'buttonInteraction'
+    | 'commandInteraction'
+    | 'selectMenuInteraction'
+    | 'userContextMenuInteraction'
+    | 'messageContextMenuInteraction'
+    | 'autocompleteInteraction'
 
     // Member create/leave events.
-    | 'memberJoin' | 'memberLeave' | 'memberUpdate'
+    | 'memberJoin'
+    | 'memberLeave'
+    | 'memberUpdate'
 
     // Reaction-related events.
-    | 'reactionAdd' | 'reactionRemove'
+    | 'reactionAdd'
+    | 'reactionRemove'
 
     // Sticker-related events.
-    | 'stickerCreate' | 'stickerDelete' | 'stickerUpdate'
+    | 'stickerCreate'
+    | 'stickerDelete'
+    | 'stickerUpdate'
 
     // Role-related events.
-    | 'roleCreate' | 'roleDelete' | 'roleUpdate'
+    | 'roleCreate'
+    | 'roleDelete'
+    | 'roleUpdate'
 
     // Bot guild create/leave events.
-    | 'botJoin' | 'botLeave'
+    | 'botJoin'
+    | 'botLeave'
 
     // Channel-related events
-    | 'channelCreate' | 'channelDelete' | 'channelUpdate'
+    | 'channelCreate'
+    | 'channelDelete'
+    | 'channelUpdate'
 
     // Thread-related events.
-    | 'threadCreate' | 'threadDelete' | 'threadUpdate'
+    | 'threadCreate'
+    | 'threadDelete'
+    | 'threadUpdate'
 
     // Ban-related events.
-    | 'banAdd' | 'banRemove'
+    | 'banAdd'
+    | 'banRemove'
 
     // Emoji-related events.
-    | 'emojiCreate' | 'emojiDelete' | 'emojiUpdate'
+    | 'emojiCreate'
+    | 'emojiDelete'
+    | 'emojiUpdate'
 
     // User-related events.
-    | 'presenceUpdate' | 'userUpdate'
+    | 'presenceUpdate'
+    | 'userUpdate'
 
     // Automod-related events.
-    | 'automodRuleCreate' | 'automodRuleDelete' | 'automodRuleUpdate'
+    | 'automodRuleCreate'
+    | 'automodRuleDelete'
+    | 'automodRuleUpdate'
 
     // Entitlement-related events.
-    | 'entitlementCreate' | 'entitlementUpdate' | 'entitlementDelete'
+    | 'entitlementCreate'
+    | 'entitlementUpdate'
+    | 'entitlementDelete'
 
     // Typing-related events.
-    | 'typingStart';
+    | 'typingStart'
 
 /**
  * Custom command types that BDJS provides.
  */
-export type CustomCommandTypes = 'timeout' | 'interval';
+export type CustomCommandTypes = 'timeout' | 'interval'
 
 /**
  * All command types provided by the library.
  */
-export type CommandTypes = DiscordCommandTypes | CustomCommandTypes;
+export type CommandTypes = DiscordCommandTypes | CustomCommandTypes
 
 /**
  * The base interface of a command.
@@ -83,11 +116,11 @@ export interface IRawCommand<Type extends string = string> {
     /**
      * The type of this command.
      */
-    type: string
+    type: Type
     /**
      * The native code of this command.
      */
-    code: string
+    code: string | ((runtime: Runtime) => Promise<any> | any)
     /**
      * The transpiled code of the command.
      */
@@ -113,6 +146,7 @@ export interface IRawCommand<Type extends string = string> {
  * A BDJS command.
  */
 export interface BDJSCommand extends IRawCommand<CommandTypes> {}
+
 /**
  * A BDJS transpiled command.
  */
@@ -125,71 +159,80 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
     /**
      * Additional information about the command to be logged.
      */
-    #logOptions: { pass: boolean, error: Error | undefined, warnings: string[] } = {
+    #logOptions: {
+        pass: boolean
+        error: Error | undefined
+        warnings: string[]
+    } = {
         pass: true,
         error: undefined,
-        warnings: []
-    }
+        warnings: [],
+    };
 
     /**
      * Starts the command instance.
      */
-    constructor(private data: Types extends string ? IRawCommand<Types> : Types, transpiler: Transpiler) {
-        this.ensureMinification() // Ensure the minification option.
-        this.ensureName() // Ensure the command name.
+    constructor(
+        private data: Types extends string ? IRawCommand<Types> : Types,
+        transpiler: Transpiler
+    ) {
+        this.ensureMinification(); // Ensure the minification option.
+        this.ensureName(); // Ensure the command name.
 
-        // Transpiling the native code.
-        let transpiledCode = transpiler.transpile(data.code)
+        if (typeof data.code === 'string') {
+            // Transpiling the native code.
+            let transpiledCode = transpiler.transpile(data.code);
 
-        // Assign the raw output to its property.
-        data.rawTranspiledCode = transpiledCode;
+            // Assign the raw output to its property.
+            data.rawTranspiledCode = transpiledCode;
 
-        // Checking if it was transpiled.
-        if (typeof transpiledCode === 'string') {
-            // Minify the command
-            if (data.minify) {
-                const minified = minify(transpiledCode)
+            // Checking if it was transpiled.
+            if (typeof transpiledCode === 'string') {
+                // Minify the command
+                if (data.minify) {
+                    const minified = minify(transpiledCode);
 
-                // Assign the error if any.
-                if (minified.error instanceof Error) {
-                    this.#logOptions.error = minified.error
-                    this.#logOptions.pass = false
-                }
-
-                // Assign the warning if any.
-                if (Array.isArray(minified.warnings)) {
-                    this.#logOptions.warnings = minified.warnings
-                }
-
-                // Assign the minified code.
-                transpiledCode = minified.code
-            } else {
-                const beautified = minify(transpiledCode, {
-                    compress: false,
-                    mangle: false,
-                    output: {
-                        comments: "all",
-                        beautify: true
+                    // Assign the error if any.
+                    if (minified.error instanceof Error) {
+                        this.#logOptions.error = minified.error;
+                        this.#logOptions.pass = false;
                     }
-                })
 
-                // Assign the error if any.
-                if (beautified.error instanceof Error) {
-                    this.#logOptions.error = beautified.error
-                    this.#logOptions.pass = false
+                    // Assign the warning if any.
+                    if (Array.isArray(minified.warnings)) {
+                        this.#logOptions.warnings = minified.warnings;
+                    }
+
+                    // Assign the minified code.
+                    transpiledCode = minified.code;
+                } else {
+                    const beautified = minify(transpiledCode, {
+                        compress: false,
+                        mangle: false,
+                        output: {
+                            comments: 'all',
+                            beautify: true,
+                        },
+                    });
+
+                    // Assign the error if any.
+                    if (beautified.error instanceof Error) {
+                        this.#logOptions.error = beautified.error;
+                        this.#logOptions.pass = false;
+                    }
+
+                    // Assign the warning if any.
+                    if (Array.isArray(beautified.warnings)) {
+                        this.#logOptions.warnings = beautified.warnings;
+                    }
+
+                    // Assign the beautified code.
+                    transpiledCode = beautified.code;
                 }
 
-                // Assign the warning if any.
-                if (Array.isArray(beautified.warnings)) {
-                    this.#logOptions.warnings = beautified.warnings
-                }
-
-                // Assign the beautified code.
-                transpiledCode = beautified.code
+                // Assign the transpiled code to the command.
+                data.transpiled = transpiledCode;
             }
-
-            // Assign the transpiled code to the command.
-            data.transpiled = transpiledCode
         }
     }
 
@@ -198,7 +241,8 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
      * @returns {void}
      */
     public ensureMinification() {
-        this.data.minify = typeof this.data.minify !== 'boolean' ? true : this.data.minify
+        this.data.minify =
+            typeof this.data.minify !== 'boolean' ? true : this.data.minify;
     }
 
     /**
@@ -206,7 +250,8 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
      * @returns {void}
      */
     public ensureName() {
-        this.data.name = this.data.name === undefined ? createString() : this.data.name
+        this.data.name =
+            this.data.name === undefined ? createString() : this.data.name;
     }
 
     /**
@@ -214,17 +259,37 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
      */
     public get loadCommandInfo() {
         return [
-            this.data.name instanceof RegExp ? this.data.name.source : this.data.name || 'Unknown',
+            this.data.name instanceof RegExp
+                ? this.data.name.source
+                : this.data.name || 'Unknown',
             this.data.type,
-            this.#logOptions.pass ? color.green('LOADED') : color.red('NOT LOADED'),
-            this.data.path === null ? 'MAIN FILE' : AsciiTable3.truncateString(this.data.path, 20)
-        ]
+            this.#logOptions.pass
+                ? color.green('LOADED')
+                : color.red('NOT LOADED'),
+            this.data.path === null
+                ? 'MAIN FILE'
+                : AsciiTable3.truncateString(this.data.path, 20),
+        ];
+    }
+
+    /**
+     * Returns the command code.
+     */
+    public get code() {
+        return this.data.code
     }
 
     /**
      * Returns the name of this command.
      */
     public get name() {
+        return this.data.name
+    }
+
+    /**
+     * Returns the name of this command for the log table.
+     */
+    public get logName() {
         return this.data.name instanceof RegExp ? this.data.name.source : this.data.name || 'Unknown'
     }
 
@@ -234,6 +299,20 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
     public get path() {
         return this.data.path
     }
+
+    /**
+     * Returns the transpiled code.
+     */
+    public get transpiledCode() {
+        return this.data.transpiled as string
+    }
+
+    /**
+     * Returns the command type.
+     */
+    public get type() {
+        return this.data.type
+    }
 }
 
 /**
@@ -241,7 +320,7 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
  */
 export enum LoadCommandType {
     Loader,
-    Main
+    Main,
 }
 
 /**
@@ -251,39 +330,49 @@ export class BaseCommandManager<Types extends string> {
     /**
      * Saves the command path for later loading.
      */
-    #path: string | null = null
+    #path: string | null = null;
     /**
      * Command cache.
      */
-    public cache: Map<string, TranspiledCommand<Types>> = new Map()
+    public cache: Map<string, TranspiledCommand<Types>> = new Map();
 
     constructor(private transpiler: Transpiler) {}
 
     /**
      * Add a command into the cache.
-     * @param command 
-     * @param loadType 
+     * @param command
+     * @param loadType
      */
-    private addCommand(command: Types extends string ? IRawCommand<Types> : Types, loadType = LoadCommandType.Main) {
-        const transpiledCommand = new TranspiledCommand(command, this.transpiler)
-        this.cache.set(transpiledCommand.name, transpiledCommand)
+    private addCommand(
+        command: Types extends string ? IRawCommand<Types> : Types,
+        loadType = LoadCommandType.Main
+    ) {
+        const transpiledCommand = new TranspiledCommand(
+            command,
+            this.transpiler
+        );
+        this.cache.set(transpiledCommand.logName, transpiledCommand);
+    }
+
+    public getType(type: Types) {
+        return Array.from(this.cache.values()).filter((c) => c.type === type)
     }
 
     /**
      * Load commands from source.
-     * @param path 
+     * @param path
      */
     public load(path: string) {
-        const fileTree = collectFiles(path)
+        const fileTree = collectFiles(path);
 
         for (const file of fileTree) {
-            let data = require(file.dir)
-            
+            let data = require(file.dir);
+
             if (data.default) data = data.default;
-            data = Array.isArray(data) ? data : [data]
+            data = Array.isArray(data) ? data : [data];
 
             for (const command of data) {
-                this.addCommand(command, LoadCommandType.Loader)
+                this.addCommand(command, LoadCommandType.Loader);
             }
         }
     }
@@ -293,16 +382,17 @@ export class BaseCommandManager<Types extends string> {
      * @returns {boolean}
      */
     public reload() {
-        if (!this.#path) return Logger.error('Cannot find a commands directory.')
-        
-        const size = this.cache.size
-        for (const command of this.cache.values()) {
-            if (command.path === null) continue
+        if (!this.#path)
+            return Logger.error('Cannot find a commands directory.');
 
-            this.cache.delete(command.name)
+        const size = this.cache.size;
+        for (const command of this.cache.values()) {
+            if (command.path === null) continue;
+
+            this.cache.delete(command.logName);
         }
 
-        return size !== this.cache.size
+        return size !== this.cache.size;
     }
 }
 

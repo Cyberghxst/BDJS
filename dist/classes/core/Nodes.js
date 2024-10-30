@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProgramNode = exports.KeyValueNode = exports.ControlFlowNode = exports.CallNode = exports.BlockNode = exports.AssignmentNode = exports.VariableDeclarationNode = exports.VariableDeclarationType = exports.OperatorNode = exports.LiteralNode = exports.BaseNode = exports.NodeType = void 0;
+exports.ProgramNode = exports.CallbackNode = exports.KeyValueNode = exports.ControlFlowNode = exports.CallNode = exports.BlockNode = exports.AssignmentNode = exports.VariableDeclarationNode = exports.VariableDeclarationType = exports.OperatorNode = exports.LiteralNode = exports.BaseNode = exports.NodeType = void 0;
 const akore_1 = require("akore");
 /**
  * Represents a node type in the AST.
@@ -17,6 +17,7 @@ var NodeType;
     NodeType["Condition"] = "condition";
     NodeType["KeyValue"] = "key-value";
     NodeType["VariableDeclaration"] = "variable-declaration";
+    NodeType["Callback"] = "callback";
 })(NodeType || (exports.NodeType = NodeType = {}));
 /**
  * Represents a base node in the AST.
@@ -325,6 +326,34 @@ class KeyValueNode extends BaseNode {
     }
 }
 exports.KeyValueNode = KeyValueNode;
+/**
+ * Represents a callback node in the AST.
+ */
+class CallbackNode extends BaseNode {
+    /**
+     * Creates a new instance of the CallbackNode class.
+     * @param value - The values to form this callback.
+     */
+    constructor(value) {
+        super(NodeType.Callback, value, false);
+    }
+    serialize() {
+        return `(${this.parameters.map(node => node.serialize()).join(', ')}) => ${this.consecuent.serialize()}`;
+    }
+    /**
+     * Return the parameters of a callback.
+     */
+    get parameters() {
+        return this.value.parameters;
+    }
+    /**
+     * Returns the consecuent value of the callback.
+     */
+    get consecuent() {
+        return this.value.consecuent;
+    }
+}
+exports.CallbackNode = CallbackNode;
 /**
  * Represents a program node in the AST.
  */

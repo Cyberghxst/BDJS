@@ -12,7 +12,8 @@ export declare enum NodeType {
     Block = "block",
     Condition = "condition",
     KeyValue = "key-value",
-    VariableDeclaration = "variable-declaration"
+    VariableDeclaration = "variable-declaration",
+    Callback = "callback"
 }
 /**
  * Represents a base node in the AST.
@@ -273,6 +274,32 @@ export declare class KeyValueNode extends BaseNode<NodeType.KeyValue, BaseNode[]
      * Returns the children nodes contained in the key-value node.
      */
     get nodes(): BaseNode<NodeType, unknown>[][];
+}
+/**
+ * Represents the value of a callback node.
+ */
+interface CallbackNodeValue {
+    parameters: BaseNode[];
+    consecuent: BaseNode;
+}
+/**
+ * Represents a callback node in the AST.
+ */
+export declare class CallbackNode extends BaseNode<NodeType.Callback, CallbackNodeValue> {
+    /**
+     * Creates a new instance of the CallbackNode class.
+     * @param value - The values to form this callback.
+     */
+    constructor(value: CallbackNodeValue);
+    serialize(): string;
+    /**
+     * Return the parameters of a callback.
+     */
+    get parameters(): BaseNode<NodeType, unknown>[];
+    /**
+     * Returns the consecuent value of the callback.
+     */
+    get consecuent(): BaseNode<NodeType, unknown>;
 }
 /**
  * Represents a program node in the AST.

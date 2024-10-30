@@ -13,7 +13,8 @@ export enum NodeType {
     Block = 'block',
     Condition = 'condition',
     KeyValue = 'key-value',
-    VariableDeclaration = 'variable-declaration'
+    VariableDeclaration = 'variable-declaration',
+    Callback = 'callback'
 }
 
 /**
@@ -391,6 +392,45 @@ export class KeyValueNode extends BaseNode<NodeType.KeyValue, BaseNode[][]> {
      */
     get nodes() {
         return this.value
+    }
+}
+
+/**
+ * Represents the value of a callback node.
+ */
+interface CallbackNodeValue {
+    parameters: BaseNode[],
+    consecuent: BaseNode
+}
+
+/**
+ * Represents a callback node in the AST.
+ */
+export class CallbackNode extends BaseNode<NodeType.Callback, CallbackNodeValue> {
+    /**
+     * Creates a new instance of the CallbackNode class.
+     * @param value - The values to form this callback.
+     */
+    constructor(value: CallbackNodeValue) {
+        super(NodeType.Callback, value, false)
+    }
+
+    serialize(): string {
+        return `(${this.parameters.map(node => node.serialize()).join(', ')}) => ${this.consecuent.serialize()}`
+    }
+
+    /**
+     * Return the parameters of a callback.
+     */
+    get parameters() {
+        return this.value.parameters
+    }
+
+    /**
+     * Returns the consecuent value of the callback.
+     */
+    get consecuent() {
+        return this.value.consecuent
     }
 }
 

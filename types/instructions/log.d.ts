@@ -1,7 +1,7 @@
 import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
 import { CallNode } from '../classes/core/Nodes';
 import { Transpiler } from '../classes/core/Transpiler';
-import { Token } from 'akore';
+import { LexicalFlags, Token } from 'akore';
 /**
  * @name $log
  * @description Logs a message into the console.
@@ -17,6 +17,7 @@ export default class extends BaseInstruction {
         required: boolean;
         spread: boolean;
     }[];
+    flags: LexicalFlags;
     identifier: string;
     returnType: ReturnType;
     version: string;

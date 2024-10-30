@@ -4,7 +4,7 @@ import { TranspiledCommand } from './Command';
 /**
  * Discord.js sendable contexts.
  */
-export type Sendable = BaseGuildTextChannel | BaseGuildVoiceChannel | ClientUser | DMChannel | GuildMember | InteractionWebhook | NewsChannel | PrivateThreadChannel | PublicThreadChannel | Shard | StageChannel | TextChannel | ThreadChannel | User | Webhook | WebhookClient | Interaction | OmitPartialGroupDMChannel<Message<boolean>> | NonThreadGuildBasedChannel;
+export type Sendable = BaseGuildTextChannel | BaseGuildVoiceChannel | ClientUser | DMChannel | GuildMember | InteractionWebhook | NewsChannel | PrivateThreadChannel | PublicThreadChannel | Shard | StageChannel | TextChannel | ThreadChannel | User | Webhook | WebhookClient | Interaction | OmitPartialGroupDMChannel<Message<boolean>> | NonThreadGuildBasedChannel | {};
 /**
  * The cached properties for the runtime context.
  */

@@ -24,6 +24,7 @@ export type Sendable = BaseGuildTextChannel
     | Interaction
     | OmitPartialGroupDMChannel<Message<boolean>>
     | NonThreadGuildBasedChannel
+    | {}
 
 /**
  * The cached properties for the runtime context.

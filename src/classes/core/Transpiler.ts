@@ -65,7 +65,6 @@ export class Transpiler extends BaseTranspiler {
      * @throws Error if some converted node does not match the expected schema.
      */
     bulkNodify(tokens: Token<this>[]) {
-        console.log('BULK_NODIFY_TOKENS', tokens)
         const nodes: BaseNode<NodeType, unknown>[] = []
 
         for (const token of tokens) {
@@ -150,7 +149,7 @@ export class Transpiler extends BaseTranspiler {
             const before = code.slice(0, token.match.index)
             if (before) parts.push(new LiteralNode(isNaN(Number(before)) ? 'NaN' : before));
             parts.push(token.competence.resolve(token) as BaseNode<NodeType, unknown>)
-            if (i === tokens.length) {
+            if (i === tokens.length - 1) {
                 const after = code.slice(token.match.index + token.total.length)
                 if (after) parts.push(new LiteralNode(Number.isNaN(after) ? 'NaN' : after));
             }
@@ -190,17 +189,19 @@ export class Transpiler extends BaseTranspiler {
     resolveString(code: string) {
         const tokens = [...this.lexer.tokenize(code)]
 
-        if (tokens.length === 0) return new LiteralNode(`'${code}'`);
+        if (tokens.length === 0) return new LiteralNode(`"${code}"`);
 
         const parts: BaseNode<NodeType, unknown>[] = []
         for (let i = 0; i < tokens.length; i++) {
             const token = tokens[i]
             const before = code.slice(0, token.match.index)
-            if (before) parts.push(new LiteralNode(`'${before}'`));
+            if (before) parts.push(new LiteralNode(`"${before}"`));
+
             parts.push(token.competence.resolve(token) as BaseNode<NodeType, unknown>)
-            if (i === tokens.length) {
+
+            if (i === tokens.length - 1) {
                 const after = code.slice(token.match.index + token.total.length)
-                if (after) parts.push(new LiteralNode(`'${after}'`));
+                if (after) parts.push(new LiteralNode(`"${after}"`));
             }
         }
 

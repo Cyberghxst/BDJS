@@ -4,7 +4,8 @@ const { config } = require('dotenv')
 config()
 const client = new DiscordClient({
     events: [
-        'messageCreate'
+        'messageCreate',
+        'ready'
     ],
     intents: [
         'Guilds',
@@ -41,8 +42,9 @@ client.addCommand({
         $ban[$guildID;$get[targetId];60000;Porque si]
         $log[Miembro bananeado.]
     `
+},{
+    type: 'ready',
+    code: '$log[$clientName is ready]'
 })
-
-console.log(client.commands['cache'])
 
 client.login(process.env.TOKEN)

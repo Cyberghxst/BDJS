@@ -3,7 +3,7 @@ import { CallNode, LiteralNode, OperatorNode } from '@core/Nodes'
 import makeIdentifier from '@functions/makeIdentifier'
 import makePattern from '@functions/makePattern'
 import { Transpiler } from '@core/Transpiler'
-import { Token } from 'akore'
+import { LexicalFlags, Token } from 'akore'
 
 /**
  * @name $log
@@ -22,28 +22,15 @@ export default class extends BaseInstruction {
             spread: false
         }
     ]
+    flags = LexicalFlags.UNSTOPPABLE
     identifier = makeIdentifier(__filename)
     returnType = ReturnType.String
     version = '2.0.0'
     resolve({ inside = '' }: Token<Transpiler>) {
-        const [...args] = this.splitByDelimiter(inside)
-        const tokens: Token<Transpiler>[] = []
-
-        for (const arg of args) {
-            const [value] = [...this.transpiler.lexer.tokenize(arg)]
-            
-            if (value !== undefined) {
-                tokens.push(value)
-            } else {
-                const [retryValue] = [...this.transpiler.lexer.tokenize(`$toString[${arg}]`)]
-                tokens.push(retryValue)
-            }
-        }
-
         return new CallNode({
             callee: new LiteralNode('console.log'),
             parameters: new OperatorNode({
-                elements: this.transpiler.bulkNodify(tokens),
+                elements: [this.transpiler.resolveString(inside)],
                 operator: ', '
             }),
             zero: false

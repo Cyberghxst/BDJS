@@ -68,6 +68,7 @@ class Transpiler extends akore_1.BaseTranspiler {
      * @throws Error if some converted node does not match the expected schema.
      */
     bulkNodify(tokens) {
+        console.log('BULK_NODIFY_TOKENS', tokens);
         const nodes = [];
         for (const token of tokens) {
             nodes.push(this.nodify(token));

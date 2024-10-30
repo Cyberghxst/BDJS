@@ -64,6 +64,7 @@ export class Transpiler extends BaseTranspiler {
      * @throws Error if some converted node does not match the expected schema.
      */
     bulkNodify(tokens: Token<this>[]) {
+        console.log('BULK_NODIFY_TOKENS', tokens)
         const nodes: BaseNode<NodeType, unknown>[] = []
 
         for (const token of tokens) {

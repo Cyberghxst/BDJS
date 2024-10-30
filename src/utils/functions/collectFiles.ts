@@ -19,7 +19,7 @@ export function collectFiles(dir: string, extension: `.${string}` = '.js') {
 
         if (file.endsWith(extension)) {
             const extension = '.' + file.split('.').pop() as `.${string}`
-            const name = file.replace(extension, '')
+            const name = file.replace(extension, '').split('\\').pop()
             const path = join(dir, file)
 
             collected.push({ name, extension, dir: path })

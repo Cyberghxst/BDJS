@@ -31,7 +31,13 @@ export default class extends BaseInstruction {
 
         for (const arg of args) {
             const [value] = [...this.transpiler.lexer.tokenize(arg)]
-            tokens.push(value)
+            
+            if (value !== undefined) {
+                tokens.push(value)
+            } else {
+                const [retryValue] = [...this.transpiler.lexer.tokenize(`$toString[${arg}]`)]
+                tokens.push(retryValue)
+            }
         }
 
         return new CallNode({

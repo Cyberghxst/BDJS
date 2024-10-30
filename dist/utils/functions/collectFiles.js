@@ -19,7 +19,7 @@ function collectFiles(dir, extension = '.js') {
         }
         if (file.endsWith(extension)) {
             const extension = '.' + file.split('.').pop();
-            const name = file.replace(extension, '');
+            const name = file.replace(extension, '').split('\\').pop();
             const path = (0, path_1.join)(dir, file);
             collected.push({ name, extension, dir: path });
         }

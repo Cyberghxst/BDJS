@@ -7,5 +7,5 @@ exports.default = default_1;
  * @returns {string}
  */
 function default_1(fileName) {
-    return 'bdjs:$' + fileName.split('.')[0];
+    return 'bdjs:$' + fileName.split('.')[0].split('\\').pop();
 }

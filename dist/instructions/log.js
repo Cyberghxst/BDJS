@@ -35,7 +35,13 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
         const tokens = [];
         for (const arg of args) {
             const [value] = [...this.transpiler.lexer.tokenize(arg)];
-            tokens.push(value);
+            if (value !== undefined) {
+                tokens.push(value);
+            }
+            else {
+                const [retryValue] = [...this.transpiler.lexer.tokenize(`$toString[${arg}]`)];
+                tokens.push(retryValue);
+            }
         }
         return new Nodes_1.CallNode({
             callee: new Nodes_1.LiteralNode('console.log'),

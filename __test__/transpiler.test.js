@@ -17,7 +17,7 @@ const client = new DiscordClient({
             'uwu',
             'nice',
             'xd',
-            '$userAvatar[$clientID]',
+            '$clientName',
             '.'
         ],
         advancedOptions: {
@@ -32,5 +32,17 @@ client.addCommand({
     type: 'prefixed',
     code: '$let[mommy;uwu]\n$log[$get[mommy]]'
 })
+
+client.addCommand({
+    name: 'ban',
+    type: 'prefixed',
+    code: `
+        $let[targetId;$clientID]
+        $ban[$guildID;$get[targetId];60000;Porque si]
+        $log[Miembro bananeado.]
+    `
+})
+
+console.log(client.commands['cache'])
 
 client.login(process.env.TOKEN)

@@ -316,7 +316,7 @@ class KeyValueNode extends BaseNode {
      */
     serialize() {
         const all = new BlockNode(this.nodes.map((node) => new LiteralNode(`${node[0].serialize()}: ${node[1].serialize()},`)));
-        return `${all.serialize()}${this.semicolon ? ';' : ''}`;
+        return `${all.serialize()}`;
     }
     /**
      * Returns the children nodes contained in the key-value node.

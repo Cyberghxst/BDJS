@@ -384,7 +384,7 @@ export class KeyValueNode extends BaseNode<NodeType.KeyValue, BaseNode[][]> {
             )
         )
 
-        return `${all.serialize()}${this.semicolon ? ';' : ''}`
+        return `${all.serialize()}`
     }
 
     /**

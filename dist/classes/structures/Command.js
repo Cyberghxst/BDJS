@@ -100,6 +100,14 @@ class TranspiledCommand {
             this.data.name === undefined ? (0, createString_1.default)() : this.data.name;
     }
     /**
+     * Set the command path.
+     * @param path - Path to be set.
+     * @returns {void}
+     */
+    setPath(path) {
+        this.data.path = path;
+    }
+    /**
      * Returns the load info for the log command table.
      */
     get loadCommandInfo() {
@@ -131,7 +139,7 @@ class TranspiledCommand {
     /**
      * Returns the name of this command for the log table.
      */
-    get logName() {
+    get stringifiedName() {
         return this.data.name instanceof RegExp ? this.data.name.source : this.data.name || 'Unknown';
     }
     /**
@@ -173,12 +181,20 @@ var LoadCommandType;
  * Represents a base command manager.
  */
 class BaseCommandManager {
+    /**
+     * Creates an instance of BaseCommandManager class.
+     * @param transpiler - Transpiler instance to use.
+     */
     constructor(transpiler) {
         this.transpiler = transpiler;
         /**
          * Saves the command path for later loading.
          */
-        _BaseCommandManager_path.set(this, null);
+        _BaseCommandManager_path.set(this, null
+        /**
+         * Command cache.
+         */
+        );
         /**
          * Command cache.
          */
@@ -191,8 +207,14 @@ class BaseCommandManager {
      */
     addCommand(command, loadType = LoadCommandType.Main) {
         const transpiledCommand = new TranspiledCommand(command, this.transpiler);
-        this.cache.set(transpiledCommand.logName, transpiledCommand);
+        transpiledCommand.setPath(loadType === LoadCommandType.Main ? null : command.path);
+        this.cache.set(transpiledCommand.stringifiedName, transpiledCommand);
     }
+    /**
+     * Get the cached commands by type.
+     * @param type - The command type.
+     * @returns {TranspiledCommand<Types>[]}
+     */
     getType(type) {
         return Array.from(this.cache.values()).filter((c) => c.type === type);
     }
@@ -208,6 +230,7 @@ class BaseCommandManager {
                 data = data.default;
             data = Array.isArray(data) ? data : [data];
             for (const command of data) {
+                command.path = file.dir;
                 this.addCommand(command, LoadCommandType.Loader);
             }
         }
@@ -223,7 +246,7 @@ class BaseCommandManager {
         for (const command of this.cache.values()) {
             if (command.path === null)
                 continue;
-            this.cache.delete(command.logName);
+            this.cache.delete(command.stringifiedName);
         }
         return size !== this.cache.size;
     }

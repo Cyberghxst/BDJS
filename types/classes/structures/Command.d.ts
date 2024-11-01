@@ -83,6 +83,12 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
      */
     ensureName(): void;
     /**
+     * Set the command path.
+     * @param path - Path to be set.
+     * @returns {void}
+     */
+    setPath(path: string | null): void;
+    /**
      * Returns the load info for the log command table.
      */
     get loadCommandInfo(): string[];
@@ -97,7 +103,7 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
     /**
      * Returns the name of this command for the log table.
      */
-    get logName(): string;
+    get stringifiedName(): string;
     /**
      * Returns the command path.
      */
@@ -132,6 +138,10 @@ export declare class BaseCommandManager<Types extends string> {
      * Command cache.
      */
     cache: Map<string, TranspiledCommand<Types>>;
+    /**
+     * Creates an instance of BaseCommandManager class.
+     * @param transpiler - Transpiler instance to use.
+     */
     constructor(transpiler: Transpiler);
     /**
      * Add a command into the cache.
@@ -139,6 +149,11 @@ export declare class BaseCommandManager<Types extends string> {
      * @param loadType
      */
     private addCommand;
+    /**
+     * Get the cached commands by type.
+     * @param type - The command type.
+     * @returns {TranspiledCommand<Types>[]}
+     */
     getType(type: Types): TranspiledCommand<Types>[];
     /**
      * Load commands from source.

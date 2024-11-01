@@ -155,7 +155,7 @@ export interface BDJSCommand extends IRawCommand<CommandTypes> {}
 /**
  * A BDJS transpiled command.
  */
-type BDJSTranspiledCommand = BDJSCommand & { transpiled: string }
+type BDJSTranspiledCommand = BDJSCommand & { transpiled: string, rawTranspiledCode: string }
 
 /**
  * Represents a transpiled command.
@@ -260,6 +260,15 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
     }
 
     /**
+     * Set the command path.
+     * @param path - Path to be set.
+     * @returns {void}
+     */
+    public setPath(path: string | null) {
+        this.data.path = path
+    }
+
+    /**
      * Returns the load info for the log command table.
      */
     public get loadCommandInfo() {
@@ -274,7 +283,7 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
             this.data.path === null
                 ? 'MAIN FILE'
                 : AsciiTable3.truncateString(this.data.path, 20),
-        ];
+        ]
     }
 
     /**
@@ -294,7 +303,7 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
     /**
      * Returns the name of this command for the log table.
      */
-    public get logName() {
+    public get stringifiedName() {
         return this.data.name instanceof RegExp ? this.data.name.source : this.data.name || 'Unknown'
     }
 
@@ -342,12 +351,17 @@ export class BaseCommandManager<Types extends string> {
     /**
      * Saves the command path for later loading.
      */
-    #path: string | null = null;
+    #path: string | null = null
+
     /**
      * Command cache.
      */
-    public cache: Map<string, TranspiledCommand<Types>> = new Map();
+    public cache: Map<string, TranspiledCommand<Types>> = new Map()
 
+    /**
+     * Creates an instance of BaseCommandManager class.
+     * @param transpiler - Transpiler instance to use.
+     */
     constructor(private transpiler: Transpiler) {}
 
     /**
@@ -362,10 +376,18 @@ export class BaseCommandManager<Types extends string> {
         const transpiledCommand = new TranspiledCommand(
             command,
             this.transpiler
-        );
-        this.cache.set(transpiledCommand.logName, transpiledCommand);
+        )
+
+        transpiledCommand.setPath(loadType === LoadCommandType.Main ? null : command.path)
+
+        this.cache.set(transpiledCommand.stringifiedName, transpiledCommand)
     }
 
+    /**
+     * Get the cached commands by type.
+     * @param type - The command type.
+     * @returns {TranspiledCommand<Types>[]}
+     */
     public getType(type: Types) {
         return Array.from(this.cache.values()).filter((c) => c.type === type)
     }
@@ -375,16 +397,17 @@ export class BaseCommandManager<Types extends string> {
      * @param path
      */
     public load(path: string) {
-        const fileTree = collectFiles(path);
+        const fileTree = collectFiles(path)
 
         for (const file of fileTree) {
-            let data = require(file.dir);
+            let data = require(file.dir)
 
             if (data.default) data = data.default;
-            data = Array.isArray(data) ? data : [data];
+            data = Array.isArray(data) ? data : [data]
 
             for (const command of data) {
-                this.addCommand(command, LoadCommandType.Loader);
+                command.path = file.dir
+                this.addCommand(command, LoadCommandType.Loader)
             }
         }
     }
@@ -394,17 +417,16 @@ export class BaseCommandManager<Types extends string> {
      * @returns {boolean}
      */
     public reload() {
-        if (!this.#path)
-            return Logger.error('Cannot find a commands directory.');
+        if (!this.#path) return Logger.error('Cannot find a commands directory.')
 
-        const size = this.cache.size;
+        const size = this.cache.size
         for (const command of this.cache.values()) {
             if (command.path === null) continue;
 
-            this.cache.delete(command.logName);
+            this.cache.delete(command.stringifiedName)
         }
 
-        return size !== this.cache.size;
+        return size !== this.cache.size
     }
 }
 

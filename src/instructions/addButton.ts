@@ -58,7 +58,7 @@ export default class extends BaseInstruction {
         }
     ]
     identifier = makeIdentifier(__filename)
-    returnType = ReturnType.Boolean
+    returnType = ReturnType.Unknown
     version = '2.0.0'
     resolve({ inside = '' }: Token<Transpiler>) {
         const [customId, style, label, emoji, disabled, index] = this.splitByDelimiter(inside)

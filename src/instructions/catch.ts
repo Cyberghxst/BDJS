@@ -20,6 +20,13 @@ export default class extends BaseInstruction {
             type: ReturnType.Unknown,
             required: true,
             spread: false
+        },
+        {
+            name: 'Variable',
+            description: 'Variable name to load the error to.',
+            type: ReturnType.String,
+            required: false,
+            spread: false
         }
     ]
     identifier = makeIdentifier(__filename)

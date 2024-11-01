@@ -44,6 +44,7 @@ class Transpiler extends akore_1.BaseTranspiler {
                     consequent: [Nodes_1.BaseNode]
                 }),
                 [Nodes_1.NodeType.Block]: new akore_1.Schema(Nodes_1.NodeType.Block, [Nodes_1.BaseNode]),
+                [Nodes_1.NodeType.Array]: new akore_1.Schema(Nodes_1.NodeType.Array, [Nodes_1.BaseNode]),
                 [Nodes_1.NodeType.KeyValue]: new akore_1.Schema(Nodes_1.NodeType.KeyValue, [[Nodes_1.BaseNode], [Nodes_1.BaseNode]]),
                 [Nodes_1.NodeType.VariableDeclaration]: new akore_1.Schema(Nodes_1.NodeType.VariableDeclaration, [Nodes_1.BaseNode]),
                 [Nodes_1.NodeType.Callback]: new akore_1.Schema(Nodes_1.NodeType.Callback, {

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProgramNode = exports.CallbackNode = exports.KeyValueNode = exports.ControlFlowNode = exports.CallNode = exports.BlockNode = exports.AssignmentNode = exports.VariableDeclarationNode = exports.VariableDeclarationType = exports.OperatorNode = exports.LiteralNode = exports.BaseNode = exports.NodeType = void 0;
+exports.ProgramNode = exports.CallbackNode = exports.KeyValueNode = exports.ArrayNode = exports.ControlFlowNode = exports.CallNode = exports.BlockNode = exports.AssignmentNode = exports.VariableDeclarationNode = exports.VariableDeclarationType = exports.OperatorNode = exports.LiteralNode = exports.BaseNode = exports.NodeType = void 0;
 const akore_1 = require("akore");
 /**
  * Represents a node type in the AST.
@@ -18,6 +18,7 @@ var NodeType;
     NodeType["KeyValue"] = "key-value";
     NodeType["VariableDeclaration"] = "variable-declaration";
     NodeType["Callback"] = "callback";
+    NodeType["Array"] = "array";
 })(NodeType || (exports.NodeType = NodeType = {}));
 /**
  * Represents a base node in the AST.
@@ -298,6 +299,47 @@ class ControlFlowNode extends BaseNode {
     }
 }
 exports.ControlFlowNode = ControlFlowNode;
+/**
+ * Represents an array node in the AST.
+ */
+class ArrayNode extends BaseNode {
+    /**
+     * Creates a new instance of the ArrayNode class.
+     * @param nodes The nodes contained in the array.
+     * @param semicolon Indicates whether a semicolon should be added after the array.
+     */
+    constructor(nodes, semicolon) {
+        super(NodeType.Array, nodes, semicolon);
+    }
+    /**
+     * Adds a node to the beginning of the array.
+     * @param node The node to add.
+     */
+    unshift(node) {
+        this.value.unshift(node);
+    }
+    /**
+     * Adds a node to the end of the array.
+     * @param node The node to add.
+     */
+    push(node) {
+        this.value.push(node);
+    }
+    /**
+     * Gets the nodes contained in the array.
+     */
+    get nodes() {
+        return this.value;
+    }
+    /**
+     * Serializes the array node to a string representation.
+     * @returns The serialized string representation of the array node.
+     */
+    serialize() {
+        return `[${this.nodes.map((node) => node.serialize()).join(', ')}]`;
+    }
+}
+exports.ArrayNode = ArrayNode;
 /**
  * Represents a key-value node in the AST.
  */

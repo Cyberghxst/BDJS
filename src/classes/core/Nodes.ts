@@ -14,7 +14,8 @@ export enum NodeType {
     Condition = 'condition',
     KeyValue = 'key-value',
     VariableDeclaration = 'variable-declaration',
-    Callback = 'callback'
+    Callback = 'callback',
+    Array = 'array'
 }
 
 /**
@@ -357,6 +358,51 @@ export class ControlFlowNode extends BaseNode<NodeType.ControlFlow, ControlFlowV
         }
 
         return result
+    }
+}
+
+/**
+ * Represents an array node in the AST.
+ */
+export class ArrayNode extends BaseNode<NodeType.Array, BaseNode[]> {
+    /**
+     * Creates a new instance of the ArrayNode class.
+     * @param nodes The nodes contained in the array.
+     * @param semicolon Indicates whether a semicolon should be added after the array.
+     */
+    constructor(nodes: BaseNode[], semicolon?: boolean) {
+        super(NodeType.Array, nodes, semicolon)
+    }
+
+    /**
+     * Adds a node to the beginning of the array.
+     * @param node The node to add.
+     */
+    unshift(node: BaseNode) {
+        this.value.unshift(node)
+    }
+
+    /**
+     * Adds a node to the end of the array.
+     * @param node The node to add.
+     */
+    push(node: BaseNode) {
+        this.value.push(node)
+    }
+
+    /**
+     * Gets the nodes contained in the array.
+     */
+    get nodes() {
+        return this.value
+    }
+
+    /**
+     * Serializes the array node to a string representation.
+     * @returns The serialized string representation of the array node.
+     */
+    serialize() {
+        return `[${this.nodes.map((node) => node.serialize()).join(', ')}]`
     }
 }
 

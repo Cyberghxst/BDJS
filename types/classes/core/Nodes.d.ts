@@ -13,7 +13,8 @@ export declare enum NodeType {
     Condition = "condition",
     KeyValue = "key-value",
     VariableDeclaration = "variable-declaration",
-    Callback = "callback"
+    Callback = "callback",
+    Array = "array"
 }
 /**
  * Represents a base node in the AST.
@@ -252,6 +253,36 @@ export declare class ControlFlowNode extends BaseNode<NodeType.ControlFlow, Cont
     /**
      * Serializes the control flow node to a string representation.
      * @returns The serialized string representation of the control flow node.
+     */
+    serialize(): string;
+}
+/**
+ * Represents an array node in the AST.
+ */
+export declare class ArrayNode extends BaseNode<NodeType.Array, BaseNode[]> {
+    /**
+     * Creates a new instance of the ArrayNode class.
+     * @param nodes The nodes contained in the array.
+     * @param semicolon Indicates whether a semicolon should be added after the array.
+     */
+    constructor(nodes: BaseNode[], semicolon?: boolean);
+    /**
+     * Adds a node to the beginning of the array.
+     * @param node The node to add.
+     */
+    unshift(node: BaseNode): void;
+    /**
+     * Adds a node to the end of the array.
+     * @param node The node to add.
+     */
+    push(node: BaseNode): void;
+    /**
+     * Gets the nodes contained in the array.
+     */
+    get nodes(): BaseNode<NodeType, unknown>[];
+    /**
+     * Serializes the array node to a string representation.
+     * @returns The serialized string representation of the array node.
      */
     serialize(): string;
 }

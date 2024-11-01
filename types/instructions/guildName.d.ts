@@ -3,8 +3,8 @@ import { LiteralNode, OperatorNode } from '../classes/core/Nodes';
 import { type Transpiler } from '../classes/core/Transpiler';
 import { type Token } from 'akore';
 /**
- * @name $guildID
- * @description Returns the ID of the current guild.
+ * @name $guildName
+ * @description Returns the name of the current or given guild.
  * @returns {string}
  */
 export default class extends BaseInstruction {

@@ -8,19 +8,19 @@ const Nodes_1 = require("../classes/core/Nodes");
 const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 /**
- * @name $guildID
- * @description Returns the ID of the current guild.
+ * @name $guildName
+ * @description Returns the name of the current or given guild.
  * @returns {string}
  */
 class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
-        this.patterns = (0, makePattern_1.default)('$guildID', true);
-        this.description = 'Returns the ID of the current guild.';
+        this.patterns = (0, makePattern_1.default)('$guildName', true);
+        this.description = 'Returns the name of the current or given guild.';
         this.params = [
             {
-                name: 'Name',
-                description: 'The name of the channel to get the ID from.',
+                name: 'Guild ID',
+                description: 'The ID of the guild to get the name from.',
                 type: BaseInstruction_1.ReturnType.String,
                 required: false,
                 spread: false
@@ -32,20 +32,19 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     }
     resolve({ inside }) {
         if (!inside)
-            return new Nodes_1.LiteralNode('runtime.guild.id');
+            return new Nodes_1.LiteralNode('runtime.guild?.name');
         const [rawGuildName] = this.splitByDelimiter(inside);
-        const guildName = this.transpiler.resolveString(rawGuildName);
         return new Nodes_1.OperatorNode({
             elements: [
                 new Nodes_1.CallNode({
                     callee: new Nodes_1.LiteralNode('runtime.client.guilds.cache.get'),
                     parameters: new Nodes_1.OperatorNode({
-                        elements: [new Nodes_1.LiteralNode(`g => g.name === ${guildName.serialize()}`)],
+                        elements: [this.transpiler.resolveString(rawGuildName)],
                         operator: ', '
                     }),
                     zero: false
                 }),
-                new Nodes_1.LiteralNode('id')
+                new Nodes_1.LiteralNode('name')
             ],
             operator: '.'
         });

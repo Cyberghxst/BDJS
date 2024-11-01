@@ -34,13 +34,19 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
         if (!inside)
             return new Nodes_1.LiteralNode('runtime.channel?.name');
         const [id] = this.splitByDelimiter(inside);
-        return new Nodes_1.CallNode({
-            callee: new Nodes_1.LiteralNode('runtime.client.channels.cache.get'),
-            parameters: new Nodes_1.OperatorNode({
-                elements: [this.transpiler.resolveString(id)],
-                operator: ', '
-            }),
-            zero: false
+        return new Nodes_1.OperatorNode({
+            elements: [
+                new Nodes_1.CallNode({
+                    callee: new Nodes_1.LiteralNode('runtime.client.channels.cache.get'),
+                    parameters: new Nodes_1.OperatorNode({
+                        elements: [this.transpiler.resolveString(id)],
+                        operator: ', '
+                    }),
+                    zero: false
+                }),
+                new Nodes_1.LiteralNode('name')
+            ],
+            operator: '.'
         });
     }
 }

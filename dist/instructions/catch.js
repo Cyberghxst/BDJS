@@ -24,6 +24,13 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
                 type: BaseInstruction_1.ReturnType.Unknown,
                 required: true,
                 spread: false
+            },
+            {
+                name: 'Variable',
+                description: 'Variable name to load the error to.',
+                type: BaseInstruction_1.ReturnType.String,
+                required: false,
+                spread: false
             }
         ];
         this.identifier = (0, makeIdentifier_1.default)(__filename);

@@ -33,15 +33,21 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     resolve({ inside }) {
         if (!inside)
             return new Nodes_1.LiteralNode('runtime.channel?.id');
-        const [id] = this.splitByDelimiter(inside);
-        const serializedId = this.transpiler.resolveString(id).serialize();
-        return new Nodes_1.CallNode({
-            callee: new Nodes_1.LiteralNode('runtime.client.channels.cache.get'),
-            parameters: new Nodes_1.OperatorNode({
-                elements: [new Nodes_1.LiteralNode(`channel => channel.name === ${serializedId}`)],
-                operator: ', '
-            }),
-            zero: false
+        const [rawName] = this.splitByDelimiter(inside);
+        const channelName = this.transpiler.resolveString(rawName);
+        return new Nodes_1.OperatorNode({
+            elements: [
+                new Nodes_1.CallNode({
+                    callee: new Nodes_1.LiteralNode('runtime.client.channels.cache.get'),
+                    parameters: new Nodes_1.OperatorNode({
+                        elements: [new Nodes_1.LiteralNode(`channel => channel.name === ${channelName.serialize()}`)],
+                        operator: ', '
+                    }),
+                    zero: false
+                }),
+                new Nodes_1.LiteralNode('id')
+            ],
+            operator: '.'
         });
     }
 }

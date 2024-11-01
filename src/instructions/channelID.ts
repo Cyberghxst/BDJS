@@ -28,16 +28,22 @@ export default class extends BaseInstruction {
     resolve({ inside }: Token<Transpiler>) {
         if (!inside) return new LiteralNode('runtime.channel?.id');
         
-        const [id] = this.splitByDelimiter(inside)
-        const serializedId = this.transpiler.resolveString(id).serialize()
+        const [rawName] = this.splitByDelimiter(inside)
+        const channelName = this.transpiler.resolveString(rawName)
         
-        return new CallNode({
-            callee: new LiteralNode('runtime.client.channels.cache.get'),
-            parameters: new OperatorNode({
-                elements: [new LiteralNode(`channel => channel.name === ${serializedId}`)],
-                operator: ', '
-            }),
-            zero: false
+        return new OperatorNode({
+            elements: [
+                new CallNode({
+                    callee: new LiteralNode('runtime.client.channels.cache.get'),
+                    parameters: new OperatorNode({
+                        elements: [new LiteralNode(`channel => channel.name === ${channelName.serialize()}`)],
+                        operator: ', '
+                    }),
+                    zero: false
+                }),
+                new LiteralNode('id')
+            ],
+            operator: '.'
         })
     }
 }

@@ -11,7 +11,7 @@ import { type Token } from 'akore'
  * @returns {string}
  */
 export default class extends BaseInstruction {
-    patterns = makePattern('$guildID')
+    patterns = makePattern('$guildID', true)
     description = 'Returns the ID of the current guild.'
     params = [
         {
@@ -26,18 +26,24 @@ export default class extends BaseInstruction {
     returnType = ReturnType.String
     version = '2.0.0'
     resolve({ inside }: Token<Transpiler>) {
-        if (!inside) return new LiteralNode('runtime.guild.id');
+        if (!inside) return new LiteralNode('runtime.guild?.id');
 
-        const [guildId] = this.splitByDelimiter(inside)
-        const serializedId = this.transpiler.resolveString(guildId).serialize()
+        const [rawGuildName] = this.splitByDelimiter(inside)
+        const guildName = this.transpiler.resolveString(rawGuildName)
         
-        return new CallNode({
-            callee: new LiteralNode('runtime.client.guilds.cache.get'),
-            parameters: new OperatorNode({
-                elements: [new LiteralNode(`g => g.name === ${serializedId}`)],
-                operator: ', '
-            }),
-            zero: false
+        return new OperatorNode({
+            elements: [
+                new CallNode({
+                    callee: new LiteralNode('runtime.client.guilds.cache.get'),
+                    parameters: new OperatorNode({
+                        elements: [new LiteralNode(`g => g.name === ${guildName.serialize()}`)],
+                        operator: ', '
+                    }),
+                    zero: false
+                }),
+                new LiteralNode('id')
+            ],
+            operator: '.'
         })
     }
 }

@@ -6,17 +6,17 @@ import makePattern from '@functions/makePattern'
 import { type Token } from 'akore'
 
 /**
- * @name $channelName
- * @description Returns the name of the current channel.
+ * @name $guildName
+ * @description Returns the name of the current or given guild.
  * @returns {string}
  */
 export default class extends BaseInstruction {
-    patterns = makePattern('$channelName', true)
-    description = 'Returns the name of the current channel.'
+    patterns = makePattern('$guildName', true)
+    description = 'Returns the name of the current or given guild.'
     params = [
         {
-            name: 'Channel ID',
-            description: 'The ID of the channel to get the name from.',
+            name: 'Guild ID',
+            description: 'The ID of the guild to get the name from.',
             type: ReturnType.String,
             required: false,
             spread: false
@@ -26,15 +26,16 @@ export default class extends BaseInstruction {
     returnType = ReturnType.String
     version = '2.0.0'
     resolve({ inside }: Token<Transpiler>) {
-        if (!inside) return new LiteralNode('runtime.channel?.name');
+        if (!inside) return new LiteralNode('runtime.guild?.name');
         
-        const [id] = this.splitByDelimiter(inside)
+        const [rawGuildName] = this.splitByDelimiter(inside)
+
         return new OperatorNode({
             elements: [
                 new CallNode({
-                    callee: new LiteralNode('runtime.client.channels.cache.get'),
+                    callee: new LiteralNode('runtime.client.guilds.cache.get'),
                     parameters: new OperatorNode({
-                        elements: [this.transpiler.resolveString(id)],
+                        elements: [this.transpiler.resolveString(rawGuildName)],
                         operator: ', '
                     }),
                     zero: false

@@ -151,7 +151,7 @@ class Runtime {
      * @returns {Message<boolean> | null}
      */
     get message() {
-        return this.data instanceof discord_js_1.Message ? this.data : "message" in this.data ? this.data.message : null;
+        return this.data instanceof discord_js_1.Message ? this.data : "message" in this.data ? this.data.message : this.data instanceof discord_js_1.MessageContextMenuCommandInteraction ? this.data.options.getMessage('message', false) : null;
     }
     /**
      * Points to the current message reaction context.

@@ -33,16 +33,13 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     resolve({ inside = '' }) {
         const [code, variable] = this.splitByDelimiter(inside);
         const codeTokens = [...this.transpiler.lexer.tokenize(code)];
-        return new Nodes_1.OperatorNode({
-            elements: [
-                new Nodes_1.CallNode({
-                    callee: new Nodes_1.LiteralNode('catch'),
-                    parameters: new Nodes_1.OperatorNode({ elements: [new Nodes_1.LiteralNode(variable || 'e')], operator: '' }),
-                    zero: false
-                }),
-                new Nodes_1.BlockNode(this.transpiler.bulkNodify(codeTokens))
-            ],
-            operator: ' '
+        return new Nodes_1.ControlFlowNode({
+            indicator: new Nodes_1.CallNode({
+                callee: new Nodes_1.LiteralNode('catch'),
+                parameters: new Nodes_1.OperatorNode({ elements: [new Nodes_1.LiteralNode(variable || 'e')], operator: '' }),
+                zero: false
+            }),
+            consequent: [new Nodes_1.BlockNode(this.transpiler.bulkNodify(codeTokens))]
         });
     }
 }

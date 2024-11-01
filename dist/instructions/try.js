@@ -3,8 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const BaseInstruction_1 = require("../classes/core/BaseInstruction");
 const Nodes_1 = require("../classes/core/Nodes");
+const BaseInstruction_1 = require("../classes/core/BaseInstruction");
 const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 /**
@@ -33,12 +33,9 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     resolve({ inside = '' }) {
         const [code] = this.splitByDelimiter(inside);
         const codeTokens = [...this.transpiler.lexer.tokenize(code)];
-        return new Nodes_1.OperatorNode({
-            elements: [
-                new Nodes_1.LiteralNode('try'),
-                new Nodes_1.BlockNode(this.transpiler.bulkNodify(codeTokens))
-            ],
-            operator: ' '
+        return new Nodes_1.ControlFlowNode({
+            indicator: new Nodes_1.LiteralNode('try'),
+            consequent: [new Nodes_1.BlockNode(this.transpiler.bulkNodify(codeTokens))]
         });
     }
 }

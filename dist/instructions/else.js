@@ -33,12 +33,9 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     resolve({ inside = '' }) {
         const [code] = this.splitByDelimiter(inside);
         const codeTokens = [...this.transpiler.lexer.tokenize(code)];
-        return new Nodes_1.OperatorNode({
-            elements: [
-                new Nodes_1.LiteralNode('else'),
-                new Nodes_1.BlockNode(this.transpiler.bulkNodify(codeTokens))
-            ],
-            operator: ' '
+        return new Nodes_1.ControlFlowNode({
+            indicator: new Nodes_1.LiteralNode('else'),
+            consequent: [new Nodes_1.BlockNode(this.transpiler.bulkNodify(codeTokens))]
         });
     }
 }

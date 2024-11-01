@@ -1,5 +1,5 @@
 import { BaseInstruction, ReturnType } from '@core/BaseInstruction'
-import { BlockNode, CallNode, LiteralNode, OperatorNode } from '@core/Nodes'
+import { BlockNode, CallNode, ControlFlowNode, LiteralNode, OperatorNode } from '@core/Nodes'
 import makeIdentifier from '@functions/makeIdentifier'
 import makePattern from '@functions/makePattern'
 import { Transpiler } from '@core/Transpiler'
@@ -29,16 +29,13 @@ export default class extends BaseInstruction {
         const [code, variable] = this.splitByDelimiter(inside)
         const codeTokens = [...this.transpiler.lexer.tokenize(code)]
 
-        return new OperatorNode({
-            elements: [
-                new CallNode({
-                    callee: new LiteralNode('catch'),
-                    parameters: new OperatorNode({ elements: [new LiteralNode(variable || 'e')], operator: '' }),
-                    zero: false
-                }),
-                new BlockNode(this.transpiler.bulkNodify(codeTokens))
-            ],
-            operator: ' '
+        return new ControlFlowNode({
+            indicator: new CallNode({
+                callee: new LiteralNode('catch'),
+                parameters: new OperatorNode({ elements: [new LiteralNode(variable || 'e')], operator: '' }),
+                zero: false
+            }),
+            consequent: [new BlockNode(this.transpiler.bulkNodify(codeTokens))]
         })
     }
 }

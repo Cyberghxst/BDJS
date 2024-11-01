@@ -302,6 +302,12 @@ export declare class KeyValueNode extends BaseNode<NodeType.KeyValue, BaseNode[]
      */
     serialize(): string;
     /**
+     * Push a key-value pair node interface.
+     * @param node - The node to push to the structure.
+     * @returns {void}
+     */
+    push(node: BaseNode[]): void;
+    /**
      * Returns the children nodes contained in the key-value node.
      */
     get nodes(): BaseNode<NodeType, unknown>[][];

@@ -52,22 +52,8 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
         this.version = '2.0.0';
     }
     resolve({ inside }) {
-        if (!inside) {
-            return new Nodes_1.CallNode({
-                callee: new Nodes_1.LiteralNode('runtime.user.displayAvatarURL'),
-                parameters: new Nodes_1.OperatorNode({
-                    elements: [
-                        new Nodes_1.KeyValueNode([
-                            [new Nodes_1.LiteralNode('forceStatic'), new Nodes_1.LiteralNode('true')],
-                            [new Nodes_1.LiteralNode('size'), new Nodes_1.LiteralNode('1024')],
-                            [new Nodes_1.LiteralNode('format'), this.transpiler.resolveString('png')]
-                        ])
-                    ],
-                    operator: ''
-                }),
-                zero: false
-            });
-        }
+        if (!inside)
+            return new Nodes_1.LiteralNode('runtime.user.displayAvatarURL()');
         const [userId, size, extension, forceStatic] = this.splitByDelimiter(inside);
         return new Nodes_1.OperatorNode({
             elements: [

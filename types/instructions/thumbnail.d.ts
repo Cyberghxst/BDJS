@@ -1,11 +1,11 @@
-import { LiteralNode, OperatorNode } from '../classes/core/Nodes';
 import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { type Transpiler } from '../classes/core/Transpiler';
-import { type Token } from 'akore';
+import { OperatorNode } from '../classes/core/Nodes';
+import { Transpiler } from '../classes/core/Transpiler';
+import { Token } from 'akore';
 /**
- * @name $userBanner
- * @description Returns the banner URL of an user.
- * @returns {string}
+ * @name $thumbnail
+ * @description Set the embed thumbnail.
+ * @returns {unknown}
  */
 export default class extends BaseInstruction {
     patterns: import("akore").Patterns;
@@ -20,5 +20,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve({ inside }: Token<Transpiler>): LiteralNode | OperatorNode;
+    resolve({ inside }: Token<Transpiler>): OperatorNode;
 }

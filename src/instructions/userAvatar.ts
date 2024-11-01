@@ -47,22 +47,7 @@ export default class extends BaseInstruction {
     returnType = ReturnType.String
     version = '2.0.0'
     resolve({ inside }: Token<Transpiler>) {
-        if (!inside) {
-            return new CallNode({
-                callee: new LiteralNode('runtime.user.displayAvatarURL'),
-                parameters: new OperatorNode({
-                    elements: [
-                        new KeyValueNode([
-                            [new LiteralNode('forceStatic'), new LiteralNode('true')],
-                            [new LiteralNode('size'), new LiteralNode('1024')],
-                            [new LiteralNode('format'), this.transpiler.resolveString('png')]
-                        ])
-                    ],
-                    operator: ''
-                }),
-                zero: false
-            })
-        }
+        if (!inside) return new LiteralNode('runtime.user.displayAvatarURL()')
 
         const [userId, size, extension, forceStatic] = this.splitByDelimiter(inside)
 

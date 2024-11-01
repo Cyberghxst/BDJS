@@ -1,6 +1,7 @@
 import { AutoModerationActionExecution, BaseChannel, BaseGuildTextChannel, BaseGuildVoiceChannel, BaseInteraction, CacheType, ClientUser, DMChannel, Emoji, Entitlement, Guild, GuildEmoji, GuildMember, Interaction, InteractionDeferReplyOptions, InteractionDeferUpdateOptions, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, InteractionWebhook, Message, MessageContextMenuCommandInteraction, MessageCreateOptions, MessagePayload, MessageReaction, NewsChannel, NonThreadGuildBasedChannel, OmitPartialGroupDMChannel, PrivateThreadChannel, PublicThreadChannel, Role, SendableChannels, Shard, StageChannel, Sticker, TextBasedChannel, TextChannel, ThreadChannel, User, VoiceBasedChannel, Webhook, WebhookClient } from 'discord.js'
 import { DiscordClient } from './DiscordClient'
 import { TranspiledCommand } from './Command'
+import { Container } from './Container'
 
 /**
  * Discord.js sendable contexts.
@@ -75,6 +76,11 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      * The current command being executed.
      */
     public command: TranspiledCommand<any> | null = null
+
+    /**
+     * The message container.
+     */
+    public container = new Container()
 
     /**
      * Variables this runtime has.

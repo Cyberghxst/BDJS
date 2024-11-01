@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Runtime = void 0;
 const discord_js_1 = require("discord.js");
+const Container_1 = require("./Container");
 /**
  * This class stores the current context of discord.js
  */
@@ -20,6 +21,10 @@ class Runtime {
          * The current command being executed.
          */
         this.command = null;
+        /**
+         * The message container.
+         */
+        this.container = new Container_1.Container();
         /**
          * Variables this runtime has.
          */

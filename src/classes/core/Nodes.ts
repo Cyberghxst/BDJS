@@ -434,6 +434,15 @@ export class KeyValueNode extends BaseNode<NodeType.KeyValue, BaseNode[][]> {
     }
 
     /**
+     * Push a key-value pair node interface.
+     * @param node - The node to push to the structure.
+     * @returns {void}
+     */
+    push(node: BaseNode[]) {
+        this.nodes.push(node)
+    }
+
+    /**
      * Returns the children nodes contained in the key-value node.
      */
     get nodes() {

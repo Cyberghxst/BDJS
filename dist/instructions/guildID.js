@@ -32,7 +32,7 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     }
     resolve({ inside }) {
         if (!inside)
-            return new Nodes_1.LiteralNode('runtime.guild.id');
+            return new Nodes_1.LiteralNode('runtime.guild?.id');
         const [rawGuildName] = this.splitByDelimiter(inside);
         const guildName = this.transpiler.resolveString(rawGuildName);
         return new Nodes_1.OperatorNode({

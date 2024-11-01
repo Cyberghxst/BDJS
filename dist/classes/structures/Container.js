@@ -73,6 +73,11 @@ class Container {
      * @returns {EmbedBuilder}
      */
     getEmbed(i = 0) {
+        if (!this.embeds.at(i)) {
+            while (!this.embeds.at(i)) {
+                this.addEmbed();
+            }
+        }
         return this.embeds.at(i);
     }
     /**

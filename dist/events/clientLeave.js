@@ -13,7 +13,7 @@ exports.default = new DiscordEventHandler_1.DiscordEventHandler({
     description: 'Fired when the client leave a guild.',
     async call(guild) {
         const runtime = new Runtime_1.Runtime(guild, this);
-        const commands = this.commands.getType('botLeave');
+        const commands = this.commands.getType('clientLeave');
         if (commands.length === 0)
             return;
         for (const command of commands) {

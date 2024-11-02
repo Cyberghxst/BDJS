@@ -10,7 +10,7 @@ export default new DiscordEventHandler({
     description: 'Fired when the client joins a guild.',
     async call(guild) {
         const runtime = new Runtime(guild, this)
-        const commands = this.commands.getType('botJoin')
+        const commands = this.commands.getType('clientJoin')
         if (commands.length === 0) return;
 
         for (const command of commands) {

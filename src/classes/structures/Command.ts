@@ -54,8 +54,8 @@ export type DiscordCommandTypes =
     | 'roleUpdate'
 
     // Bot guild create/leave events.
-    | 'botJoin'
-    | 'botLeave'
+    | 'clientJoin'
+    | 'clientLeave'
 
     // Channel-related events
     | 'channelCreate'

@@ -26,6 +26,10 @@ class Runtime {
          */
         this.container = new Container_1.Container();
         /**
+         * Runtime states.
+         */
+        this.states = {};
+        /**
          * Variables this runtime has.
          */
         this.variables = new Map();
@@ -74,6 +78,14 @@ class Runtime {
         }
         else
             return null;
+    }
+    /**
+     * Set the runtime states.
+     * @param states - The states to be set.
+     * @returns {void}
+     */
+    setState(states) {
+        this.states = states;
     }
     /**
      * Check whether current runtime has guild support.
@@ -157,6 +169,13 @@ class Runtime {
      */
     get message() {
         return this.data instanceof discord_js_1.Message ? this.data : "message" in this.data ? this.data.message : this.data instanceof discord_js_1.MessageContextMenuCommandInteraction ? this.data.options.getMessage('message', false) : null;
+    }
+    /**
+     * Points to the current user presence context.
+     * @returns {Presence | null}
+     */
+    get presence() {
+        return this.data instanceof discord_js_1.Presence ? this.data : this.data instanceof discord_js_1.GuildMember ? this.data.presence : null;
     }
     /**
      * Points to the current message reaction context.

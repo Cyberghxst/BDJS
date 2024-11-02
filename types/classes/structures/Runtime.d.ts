@@ -1,4 +1,4 @@
-import { AutoModerationActionExecution, BaseChannel, BaseGuildTextChannel, BaseGuildVoiceChannel, CacheType, ClientUser, DMChannel, Emoji, Entitlement, Guild, GuildEmoji, GuildMember, Interaction, InteractionDeferReplyOptions, InteractionDeferUpdateOptions, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, InteractionWebhook, Message, MessageCreateOptions, MessagePayload, MessageReaction, NewsChannel, NonThreadGuildBasedChannel, OmitPartialGroupDMChannel, PrivateThreadChannel, PublicThreadChannel, Role, SendableChannels, Shard, StageChannel, Sticker, TextBasedChannel, TextChannel, ThreadChannel, User, VoiceBasedChannel, Webhook, WebhookClient } from 'discord.js';
+import { AutoModerationActionExecution, AutoModerationRule, BaseChannel, BaseGuildTextChannel, BaseGuildVoiceChannel, CacheType, ClientUser, DMChannel, Emoji, Entitlement, Guild, GuildEmoji, GuildMember, Interaction, InteractionDeferReplyOptions, InteractionDeferUpdateOptions, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, InteractionWebhook, Message, MessageCreateOptions, MessagePayload, MessageReaction, NewsChannel, NonThreadGuildBasedChannel, OmitPartialGroupDMChannel, PartialGuildMember, PartialMessage, PartialUser, Presence, PrivateThreadChannel, PublicThreadChannel, Role, SendableChannels, Shard, StageChannel, Sticker, TextBasedChannel, TextChannel, ThreadChannel, User, VoiceBasedChannel, Webhook, WebhookClient } from 'discord.js';
 import { DiscordClient } from './DiscordClient';
 import { TranspiledCommand } from './Command';
 import { Container } from './Container';
@@ -10,19 +10,29 @@ export type Sendable = BaseGuildTextChannel | BaseGuildVoiceChannel | ClientUser
  * The cached properties for the runtime context.
  */
 export interface RuntimeCache {
-    automod: AutoModerationActionExecution | null;
+    automod: AutoModerationActionExecution | AutoModerationRule | null;
     channel: BaseChannel | null;
     emoji: GuildEmoji | Emoji | null;
     entitlement: Entitlement | null;
     guild: Guild | null;
     interaction: Interaction | null;
-    member: GuildMember | null;
-    message: Message | null;
+    member: GuildMember | PartialGuildMember | null;
+    message: Message | PartialMessage | null;
+    presence: Presence | null;
     reaction: MessageReaction | null;
     role: Role | null;
     sticker: Sticker | null;
-    user: User | null;
+    user: User | PartialUser | null;
 }
+/**
+ * Event states in the runtime.
+ */
+export type RuntimeStates = {
+    [K in keyof RuntimeCache]?: {
+        old?: RuntimeCache[K];
+        new?: RuntimeCache[K];
+    };
+};
 /**
  * All sendable payload types.
  */
@@ -51,6 +61,10 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
      */
     container: Container;
     /**
+     * Runtime states.
+     */
+    states: RuntimeStates;
+    /**
      * Variables this runtime has.
      */
     variables: Map<string, unknown>;
@@ -76,6 +90,12 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
      * @returns {Promise<Shard | Message<boolean> | import('discord.js').APIMessage | null>}
      */
     send<T extends SendablePayload>(message: T): Promise<Message<true> | Message<false>>;
+    /**
+     * Set the runtime states.
+     * @param states - The states to be set.
+     * @returns {void}
+     */
+    setState(states: RuntimeStates): void;
     /**
      * Check whether current runtime has guild support.
      * @returns {this is this & { guild: Guild }}
@@ -143,6 +163,11 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
      * @returns {Message<boolean> | null}
      */
     get message(): Message<boolean> | null;
+    /**
+     * Points to the current user presence context.
+     * @returns {Presence | null}
+     */
+    get presence(): Presence | null;
     /**
      * Points to the current message reaction context.
      * @returns {MessageReaction | null}

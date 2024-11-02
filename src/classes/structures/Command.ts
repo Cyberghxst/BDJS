@@ -40,6 +40,8 @@ export type DiscordCommandTypes =
     // Reaction-related events.
     | 'reactionAdd'
     | 'reactionRemove'
+    | 'reactionRemoveAll'
+    | 'reactionRemoveEmoji'
 
     // Sticker-related events.
     | 'stickerCreate'
@@ -74,6 +76,9 @@ export type DiscordCommandTypes =
     | 'emojiDelete'
     | 'emojiUpdate'
 
+    // AuditLog-related events.
+    | 'auditLogEntryCreate'
+
     // User-related events.
     | 'presenceUpdate'
     | 'userUpdate'
@@ -82,6 +87,7 @@ export type DiscordCommandTypes =
     | 'automodRuleCreate'
     | 'automodRuleDelete'
     | 'automodRuleUpdate'
+    | 'automodActionExecution'
 
     // Entitlement-related events.
     | 'entitlementCreate'

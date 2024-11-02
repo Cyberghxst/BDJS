@@ -1,4 +1,4 @@
-import { AutoModerationActionExecution, BaseChannel, BaseGuildTextChannel, BaseGuildVoiceChannel, BaseInteraction, CacheType, ClientUser, DMChannel, Emoji, Entitlement, Guild, GuildEmoji, GuildMember, Interaction, InteractionDeferReplyOptions, InteractionDeferUpdateOptions, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, InteractionWebhook, Message, MessageContextMenuCommandInteraction, MessageCreateOptions, MessagePayload, MessageReaction, NewsChannel, NonThreadGuildBasedChannel, OmitPartialGroupDMChannel, PrivateThreadChannel, PublicThreadChannel, Role, SendableChannels, Shard, StageChannel, Sticker, TextBasedChannel, TextChannel, ThreadChannel, User, VoiceBasedChannel, Webhook, WebhookClient } from 'discord.js'
+import { AutoModerationActionExecution, AutoModerationRule, BaseChannel, BaseGuildTextChannel, BaseGuildVoiceChannel, BaseInteraction, CacheType, ClientUser, DMChannel, Emoji, Entitlement, Guild, GuildEmoji, GuildMember, Interaction, InteractionDeferReplyOptions, InteractionDeferUpdateOptions, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, InteractionWebhook, Message, MessageContextMenuCommandInteraction, MessageCreateOptions, MessagePayload, MessageReaction, NewsChannel, NonThreadGuildBasedChannel, OmitPartialGroupDMChannel, PartialGuildMember, PartialMessage, PartialUser, Presence, PrivateThreadChannel, PublicThreadChannel, Role, SendableChannels, Shard, StageChannel, Sticker, TextBasedChannel, TextChannel, ThreadChannel, User, VoiceBasedChannel, Webhook, WebhookClient } from 'discord.js'
 import { DiscordClient } from './DiscordClient'
 import { TranspiledCommand } from './Command'
 import { Container } from './Container'
@@ -31,18 +31,29 @@ export type Sendable = BaseGuildTextChannel
  * The cached properties for the runtime context.
  */
 export interface RuntimeCache {
-    automod: AutoModerationActionExecution | null
+    automod: AutoModerationActionExecution | AutoModerationRule | null
     channel: BaseChannel | null
     emoji: GuildEmoji | Emoji | null
     entitlement: Entitlement | null
     guild: Guild | null
     interaction: Interaction | null
-    member: GuildMember | null
-    message: Message | null
+    member: GuildMember | PartialGuildMember | null
+    message: Message | PartialMessage | null
+    presence: Presence | null
     reaction: MessageReaction | null
     role: Role | null
     sticker: Sticker | null
-    user: User | null
+    user: User | PartialUser | null
+}
+
+/**
+ * Event states in the runtime.
+ */
+export type RuntimeStates = {
+    [K in keyof RuntimeCache]?: {
+        old?: RuntimeCache[K],
+        new?: RuntimeCache[K]
+    }
 }
 
 /**
@@ -81,6 +92,11 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      * The message container.
      */
     public container = new Container()
+
+    /**
+     * Runtime states.
+     */
+    public states: RuntimeStates = {}
 
     /**
      * Variables this runtime has.
@@ -133,6 +149,15 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
 
             return await dm.send(<MessageCreateOptions>message)
         } else return null
+    }
+
+    /**
+     * Set the runtime states.
+     * @param states - The states to be set.
+     * @returns {void}
+     */
+    public setState(states: RuntimeStates) {
+        this.states = states
     }
 
     /**
@@ -228,6 +253,14 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      */
     public get message(): Message<boolean> | null {
         return this.data instanceof Message ? this.data : "message" in this.data ? this.data.message : this.data instanceof MessageContextMenuCommandInteraction ? this.data.options.getMessage('message', false) : null
+    }
+
+    /**
+     * Points to the current user presence context.
+     * @returns {Presence | null}
+     */
+    public get presence(): Presence | null {
+        return this.data instanceof Presence ? this.data : this.data instanceof GuildMember ? this.data.presence : null
     }
 
     /**

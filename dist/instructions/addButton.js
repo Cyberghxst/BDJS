@@ -68,8 +68,8 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     resolve({ inside = '' }) {
         const [customId, style, label, emoji, disabled, index] = this.splitByDelimiter(inside);
         const args = [
+            this.transpiler.resolveString(style),
             this.transpiler.resolveString(customId),
-            this.transpiler.resolveString(style)
         ];
         if (label)
             args.push(this.transpiler.resolveString(label));

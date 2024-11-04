@@ -18,6 +18,10 @@ export class EventManager {
      */
     static attach(client: DiscordClient, name: string, events: string[]) {
         for (const [key, value] of Object.entries(this.cache[name])) {
+            // Skipping the ready event.
+            if (name === 'built-ins' && key === 'ready') continue;
+
+            // Attaching the event.
             if (events.includes(key)) {
                 value.attach(client)
             }

@@ -9,6 +9,14 @@ export default new DiscordEventHandler({
     name: Events.ClientReady,
     description: 'Fired when client is ready.',
     async call() {
+        // Process the prefixes.
+        this['processPrefixes']()
+
+        // Prevent the execution of commands if the
+        // name isn't included in the events array.
+        if (!this.extraOptions.events.includes('ready')) return;
+
+        // Executing the commands.
         const runtime = new Runtime({}, this)
         const commands = this.commands.getType('ready')
         if (commands.length === 0) return;

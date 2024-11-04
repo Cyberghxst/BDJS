@@ -83,6 +83,7 @@ export class Container {
         if (typeof disabled === 'boolean') button.setDisabled(disabled);
         if (typeof emoji === 'string') button.setEmoji(emoji);
 
+        if (!this.components[actionRow]) this.persistentAddActionRow(actionRow);
         this.components[actionRow].addComponents(button)
     }
 
@@ -139,6 +140,7 @@ export class Container {
         if (minValues) selectMenu.setMinValues(minValues);
         if (maxValues) selectMenu.setMaxValues(maxValues);
         
+        if (!this.components[actionRow]) this.persistentAddActionRow(actionRow);
         this.components[actionRow].addComponents(selectMenu)
     }
 
@@ -155,6 +157,17 @@ export class Container {
         }
 
         return this.embeds.at(i)
+    }
+
+    /**
+     * Full with action row components till the provided index.
+     * @param i - Index to fullfill to.
+     * @returns {void}
+     */
+    public persistentAddActionRow(i = 0) {
+        while (!this.components[i]) {
+            this.addActionRow()
+        }
     }
 
     /**

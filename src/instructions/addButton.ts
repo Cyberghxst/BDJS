@@ -62,9 +62,10 @@ export default class extends BaseInstruction {
     version = '2.0.0'
     resolve({ inside = '' }: Token<Transpiler>) {
         const [customId, style, label, emoji, disabled, index] = this.splitByDelimiter(inside)
+
         const args: BaseNode[] = [
+            this.transpiler.resolveString(style),
             this.transpiler.resolveString(customId),
-            this.transpiler.resolveString(style)
         ]
 
         if (label) args.push(this.transpiler.resolveString(label));

@@ -1,7 +1,8 @@
 import { BDJSCommand, DiscordCommandManager, LoadCommandType } from './Command'
 import { Client, ClientEvents, ClientOptions } from 'discord.js'
-import { Transpiler } from '@core/Transpiler'
 import { EventManager } from '@core/EventManager'
+import { Transpiler } from '@core/Transpiler'
+import ready from '../../events/ready'
 
 /**
  * Setup options for prefix.
@@ -61,7 +62,6 @@ export class DiscordClient extends Client {
 
     constructor(public extraOptions: DiscordClientSetupOptions) {
         super(extraOptions)
-        this.#processPrefixes()
         EventManager.loadBuiltIns()
     }
 
@@ -81,7 +81,7 @@ export class DiscordClient extends Client {
     /**
      * Process the prefixes based on the given options.
      */
-    #processPrefixes() {
+    private processPrefixes() {
         if (this.extraOptions.prefixes === null) return;
 
         if (typeof this.extraOptions.prefixes === 'string') {
@@ -90,8 +90,8 @@ export class DiscordClient extends Client {
             this.extraOptions.prefixes = this.extraOptions.prefixes
         } else {
             const mentionAsPrefix = this.extraOptions.prefixes.mentionAsPrefix ?? false
-            const transpileValues = this.extraOptions.prefixes.advancedOptions.transpileValues ?? false
-            const transpileIndexes = Array.isArray(this.extraOptions.prefixes.advancedOptions.transpileIndexes) ? this.extraOptions.prefixes.advancedOptions.transpileIndexes : []
+            const transpileValues = this.extraOptions.prefixes.advancedOptions?.transpileValues ?? false
+            const transpileIndexes = Array.isArray(this.extraOptions.prefixes.advancedOptions?.transpileIndexes) ? this.extraOptions.prefixes.advancedOptions.transpileIndexes : []
             let values = this.extraOptions.prefixes.values
 
             if (transpileValues && transpileIndexes.length === 0) {
@@ -120,6 +120,9 @@ export class DiscordClient extends Client {
         if (this.extraOptions.events.length) {
             EventManager.attach(this, 'built-ins', this.extraOptions.events)
         }
+
+        // Attaching the ready event.
+        ready.attach(this)
 
         return super.login(token)
     }

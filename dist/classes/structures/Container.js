@@ -58,6 +58,8 @@ class Container {
             button.setDisabled(disabled);
         if (typeof emoji === 'string')
             button.setEmoji(emoji);
+        if (!this.components[actionRow])
+            this.persistentAddActionRow(actionRow);
         this.components[actionRow].addComponents(button);
     }
     /**
@@ -94,6 +96,8 @@ class Container {
             selectMenu.setMinValues(minValues);
         if (maxValues)
             selectMenu.setMaxValues(maxValues);
+        if (!this.components[actionRow])
+            this.persistentAddActionRow(actionRow);
         this.components[actionRow].addComponents(selectMenu);
     }
     /**
@@ -108,6 +112,16 @@ class Container {
             }
         }
         return this.embeds.at(i);
+    }
+    /**
+     * Full with action row components till the provided index.
+     * @param i - Index to fullfill to.
+     * @returns {void}
+     */
+    persistentAddActionRow(i = 0) {
+        while (!this.components[i]) {
+            this.addActionRow();
+        }
     }
     /**
      * Reset the container.

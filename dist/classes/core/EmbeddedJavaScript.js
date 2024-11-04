@@ -15,7 +15,6 @@ class EmbeddedJavaScript extends akore_1.BaseCompetence {
         };
     }
     resolve(token) {
-        console.log(token);
         return new Nodes_1.LiteralNode(token.inside);
     }
 }

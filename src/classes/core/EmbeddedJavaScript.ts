@@ -11,7 +11,6 @@ export class EmbeddedJavaScript extends BaseCompetence<Transpiler> {
         inside: /(.*?)/
     }
     resolve(token: Token<Transpiler>) {
-        console.log(token)
         return new LiteralNode(token.inside)
     }
 }

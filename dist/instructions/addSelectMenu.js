@@ -9,7 +9,7 @@ const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentif
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 const ensureFields_1 = __importDefault(require("../utils/functions/ensureFields"));
 /**
- * @name $addButton
+ * @name $addSelectMenu
  * @description Adds a select menu to the container.
  * @returns {unknown}
  */

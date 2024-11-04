@@ -46,7 +46,6 @@ export interface DiscordClientSetupOptions extends ClientOptions {
  * The class representing a Discord client.
  */
 export declare class DiscordClient extends Client {
-    #private;
     extraOptions: DiscordClientSetupOptions;
     /**
      * BDJS code transpiler.
@@ -63,6 +62,10 @@ export declare class DiscordClient extends Client {
      * @returns {DiscordClient}
      */
     addCommand(...commands: BDJSCommand[]): this;
+    /**
+     * Process the prefixes based on the given options.
+     */
+    private processPrefixes;
     /**
      * Login the client to Discord.
      * @param token - The token to be used.

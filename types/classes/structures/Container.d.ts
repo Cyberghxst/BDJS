@@ -68,6 +68,12 @@ export declare class Container {
      */
     getEmbed(i?: number): EmbedBuilder;
     /**
+     * Full with action row components till the provided index.
+     * @param i - Index to fullfill to.
+     * @returns {void}
+     */
+    persistentAddActionRow(i?: number): void;
+    /**
      * Reset the container.
      * @returns {void}
      */

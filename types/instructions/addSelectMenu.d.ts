@@ -3,7 +3,7 @@ import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
 import { type Transpiler } from '../classes/core/Transpiler';
 import { type Token } from 'akore';
 /**
- * @name $addButton
+ * @name $addSelectMenu
  * @description Adds a select menu to the container.
  * @returns {unknown}
  */

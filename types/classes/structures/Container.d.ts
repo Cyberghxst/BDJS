@@ -1,5 +1,9 @@
 import { ActionRowBuilder, AttachmentBuilder, ButtonStyle, EmbedBuilder, MessageMentionOptions } from 'discord.js';
 /**
+ * The available select menu types.
+ */
+type SelectMenuTypes = 'string' | 'user' | 'mentionable' | 'channel' | 'role';
+/**
  * Message payload container.
  */
 export declare class Container {
@@ -49,6 +53,14 @@ export declare class Container {
      * @returns {void}
      */
     addEmbed(): void;
+    addSelectMenu([type, customId, placeholder, disabled, minValues, maxValues]: [
+        SelectMenuTypes,
+        string,
+        string?,
+        boolean?,
+        number?,
+        number?
+    ], actionRow?: number): void;
     /**
      * Gets an embed from the cache.
      * @param i - Embed index to get.
@@ -66,3 +78,4 @@ export declare class Container {
      */
     buttonStyles(): Record<keyof typeof ButtonStyle, number>;
 }
+export {};

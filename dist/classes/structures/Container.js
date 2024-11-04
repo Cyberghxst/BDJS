@@ -67,6 +67,35 @@ class Container {
     addEmbed() {
         this.embeds.push(new discord_js_1.EmbedBuilder());
     }
+    addSelectMenu([type, customId, placeholder, disabled, minValues, maxValues], actionRow = 0) {
+        let selectMenu;
+        switch (type) {
+            case 'string':
+                selectMenu = new discord_js_1.StringSelectMenuBuilder();
+                break;
+            case 'channel':
+                selectMenu = new discord_js_1.ChannelSelectMenuBuilder();
+                break;
+            case 'mentionable':
+                selectMenu = new discord_js_1.MentionableSelectMenuBuilder();
+                break;
+            case 'role':
+                selectMenu = new discord_js_1.RoleSelectMenuBuilder();
+                break;
+            case 'user':
+                selectMenu = new discord_js_1.UserSelectMenuBuilder();
+                break;
+        }
+        selectMenu.setCustomId(customId)
+            .setDisabled(disabled);
+        if (placeholder)
+            selectMenu.setPlaceholder(placeholder);
+        if (minValues)
+            selectMenu.setMinValues(minValues);
+        if (maxValues)
+            selectMenu.setMaxValues(maxValues);
+        this.components[actionRow].addComponents(selectMenu);
+    }
     /**
      * Gets an embed from the cache.
      * @param i - Embed index to get.

@@ -1,4 +1,14 @@
-import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageMentionOptions } from 'discord.js'
+import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, ChannelSelectMenuBuilder, EmbedBuilder, MentionableSelectMenuBuilder, MessageMentionOptions, RoleSelectMenuBuilder, StringSelectMenuBuilder, UserSelectMenuBuilder } from 'discord.js'
+
+/**
+ * The available select menu types.
+ */
+type SelectMenuTypes = 'string' | 'user' | 'mentionable' | 'channel' | 'role'
+
+/**
+ * Targets to any select menu builder.
+ */
+type AnySelectMenuBuilder = StringSelectMenuBuilder | UserSelectMenuBuilder | ChannelSelectMenuBuilder | MentionableSelectMenuBuilder | RoleSelectMenuBuilder
 
 /**
  * Message payload container.
@@ -82,6 +92,54 @@ export class Container {
      */
     public addEmbed() {
         this.embeds.push(new EmbedBuilder())
+    }
+
+    public addSelectMenu(
+        [
+            type,
+            customId,
+            placeholder,
+            disabled,
+            minValues,
+            maxValues
+        ]: [
+            SelectMenuTypes,
+            string,
+            string?,
+            boolean?,
+            number?,
+            number?
+        ],
+        actionRow = 0
+    ) {
+        let selectMenu: AnySelectMenuBuilder
+
+        switch (type) {
+            case 'string':
+                selectMenu = new StringSelectMenuBuilder()
+                break
+            case 'channel':
+                selectMenu = new ChannelSelectMenuBuilder()
+                break
+            case 'mentionable':
+                selectMenu = new MentionableSelectMenuBuilder()
+                break
+            case 'role':
+                selectMenu = new RoleSelectMenuBuilder()
+                break
+            case 'user':
+                selectMenu = new UserSelectMenuBuilder()
+                break
+        }
+
+        selectMenu.setCustomId(customId)
+        .setDisabled(disabled)
+
+        if (placeholder) selectMenu.setPlaceholder(placeholder);
+        if (minValues) selectMenu.setMinValues(minValues);
+        if (maxValues) selectMenu.setMaxValues(maxValues);
+        
+        this.components[actionRow].addComponents(selectMenu)
     }
 
     /**

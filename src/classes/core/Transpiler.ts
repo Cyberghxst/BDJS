@@ -1,9 +1,9 @@
 import { BaseNode, CallNode, LiteralNode, NodeType, OperatorNode, ProgramNode } from './Nodes'
+import { BaseCompetence, BaseTranspiler, Logger, Registry, Schema, Token } from 'akore'
 import isMathConditionOperator from '@functions/isMathConditionOperator'
-import { BaseTranspiler, Logger, Registry, Schema, Token } from 'akore'
 import getConditionOperators from '@functions/getConditionOperators'
 import { loadInstructions } from '@functions/loadInstructions'
-import getVersion from '@functions/getVersion'
+import { EmbeddedJavaScript } from './EmbeddedJavaScript'
 import { join } from 'path'
 
 /**
@@ -51,6 +51,9 @@ export class Transpiler extends BaseTranspiler {
 
         // Loading each instruction.
         this.#loadFunctions()
+
+        // Add the EmbeddedJavaScript class.
+        this.declare(new EmbeddedJavaScript(this) as unknown as BaseCompetence<this>)
     }
 
     /**

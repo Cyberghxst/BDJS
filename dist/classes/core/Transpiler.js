@@ -11,10 +11,11 @@ var _Transpiler_instances, _Transpiler_loadFunctions;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Transpiler = void 0;
 const Nodes_1 = require("./Nodes");
-const isMathConditionOperator_1 = __importDefault(require("../../utils/functions/isMathConditionOperator"));
 const akore_1 = require("akore");
+const isMathConditionOperator_1 = __importDefault(require("../../utils/functions/isMathConditionOperator"));
 const getConditionOperators_1 = __importDefault(require("../../utils/functions/getConditionOperators"));
 const loadInstructions_1 = require("../../utils/functions/loadInstructions");
+const EmbeddedJavaScript_1 = require("./EmbeddedJavaScript");
 const path_1 = require("path");
 /**
  * The main transpiler class.
@@ -56,6 +57,8 @@ class Transpiler extends akore_1.BaseTranspiler {
         _Transpiler_instances.add(this);
         // Loading each instruction.
         __classPrivateFieldGet(this, _Transpiler_instances, "m", _Transpiler_loadFunctions).call(this);
+        // Add the EmbeddedJavaScript class.
+        this.declare(new EmbeddedJavaScript_1.EmbeddedJavaScript(this));
     }
     /**
      * Converts a token into a node.

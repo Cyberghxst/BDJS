@@ -31,6 +31,14 @@ client.addCommand({
         $c[Saving the user name.]
         $let[username;@{runtime.user.username}]
 
+        $c[Saving the amount of channels.]
+        $let[channelCount;$allChannelsCount]
+
+        $c[Show the client as typing.]
+        $if[$channelType[$channelID]==0;
+            $sendTyping[$channelID]
+        ]
+
         $c[Attaching a select menu.]
         $addSelectMenu[role;roles_menu;Please select a role!;false;1;1]
 
@@ -41,10 +49,14 @@ client.addCommand({
         $addButton[bdjs_button4;Success;PASS;;true;1]
 
         $c[Sending the message using embedded JS.]
-        @{runtime.send({
-            content: runtime.variables.get('username'),
-            components: runtime.container.components
-        })}
+        @{
+            runtime.send({
+                content: \`I'm in \${$allChannelsCount[0]} channels!\`,
+                components: runtime.container.components
+            });
+        
+            runtime.container.reset();
+        }
     `
 })
 

@@ -175,7 +175,7 @@ class Runtime {
      * @returns {Presence | null}
      */
     get presence() {
-        return this.data instanceof discord_js_1.Presence ? this.data : this.data instanceof discord_js_1.GuildMember ? this.data.presence : null;
+        return this.data instanceof discord_js_1.Presence ? this.data : this.member !== null ? this.member.presence : null;
     }
     /**
      * Points to the current message reaction context.

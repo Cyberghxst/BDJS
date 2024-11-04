@@ -260,7 +260,7 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      * @returns {Presence | null}
      */
     public get presence(): Presence | null {
-        return this.data instanceof Presence ? this.data : this.data instanceof GuildMember ? this.data.presence : null
+        return this.data instanceof Presence ? this.data : this.member !== null ? this.member.presence : null
     }
 
     /**

@@ -32,12 +32,12 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
     }
     resolve({ inside }) {
         if (!inside)
-            return new Nodes_1.LiteralNode('runtime.isSendable() && runtime.channel.sendTyping()');
+            return new Nodes_1.LiteralNode('runtime.isSendable() && await runtime.channel.sendTyping()');
         const [rawChannelId] = this.splitByDelimiter(inside);
         return new Nodes_1.OperatorNode({
             elements: [
                 new Nodes_1.CallNode({
-                    callee: new Nodes_1.LiteralNode('runtime.client.channels.cache.get'),
+                    callee: new Nodes_1.LiteralNode('await runtime.client.channels.cache.get'),
                     parameters: new Nodes_1.OperatorNode({
                         elements: [this.transpiler.resolveString(rawChannelId)],
                         operator: ', '

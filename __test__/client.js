@@ -50,7 +50,7 @@ client.addCommand({
 
         $c[Sending the message using embedded JS.]
         @{
-            runtime.send({
+            await runtime.send({
                 content: \`I'm in \${$allChannelsCount[0]} channels!\`,
                 components: runtime.container.components
             });

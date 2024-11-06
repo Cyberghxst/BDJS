@@ -26,13 +26,13 @@ export default class extends BaseInstruction {
     returnType = ReturnType.Unknown
     version = '2.0.0'
     resolve({ inside }: Token<Transpiler>) {
-        if (!inside) return new LiteralNode('runtime.isSendable() && runtime.channel.sendTyping()');
+        if (!inside) return new LiteralNode('runtime.isSendable() && await runtime.channel.sendTyping()');
 
         const [rawChannelId] = this.splitByDelimiter(inside)
         return new OperatorNode({
             elements: [
                 new CallNode({
-                    callee: new LiteralNode('runtime.client.channels.cache.get'),
+                    callee: new LiteralNode('await runtime.client.channels.cache.get'),
                     parameters: new OperatorNode({
                         elements: [this.transpiler.resolveString(rawChannelId)],
                         operator: ', '

@@ -6,6 +6,8 @@ import { Logger } from '@core/Logger'
 import { Runtime } from './Runtime'
 import { minify } from 'uglify-js'
 import color from 'cli-color'
+import { isAsyncFunction } from 'node:util/types'
+import runCode from '@functions/runCode'
 
 /**
  * Command types that Discord contexts provide.
@@ -108,6 +110,11 @@ export type CustomCommandTypes = 'timeout' | 'interval'
 export type CommandTypes = DiscordCommandTypes | CustomCommandTypes
 
 /**
+ * A command executor.
+ */
+export type CommandExecutor = (runtime: Runtime) => Promise<any> | any
+
+/**
  * The base interface of a command.
  */
 export interface IRawCommand<Type extends string = string> {
@@ -126,7 +133,7 @@ export interface IRawCommand<Type extends string = string> {
     /**
      * The native code of this command.
      */
-    code: string | ((runtime: Runtime) => Promise<any> | any)
+    code: string | CommandExecutor
     /**
      * The transpiled code of the command.
      */
@@ -190,6 +197,8 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
         this.ensureMinification(); // Ensure the minification option.
         this.ensureName(); // Ensure the command name.
 
+        let executor: CommandExecutor // Creating the executor.
+
         if (typeof data.code === 'string') {
             // Transpiling the native code.
             let transpiledCode = transpiler.transpile(data.code);
@@ -243,7 +252,28 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
 
                 // Assign the transpiled code to the command.
                 data.transpiled = transpiledCode;
+                executor = eval(`const __command_executor__ = async (runtime) => { ${transpiledCode} }; __command_executor__`) as CommandExecutor
             }
+        } else {
+            executor = data.code
+        }
+
+        data.code = executor
+    }
+
+    /**
+     * Call this command.
+     * @param runtime - Runtime context to be used.
+     */
+    public async call(runtime: Runtime) {
+        runtime.setCommand<CommandTypes>(this as TranspiledCommand<any>)
+
+        if (typeof this.code === 'function' && isAsyncFunction(this.code)) {
+            await this.code(runtime);
+        } else if (typeof this.code === 'function' && !isAsyncFunction(this.code)) {
+            this.code(runtime);
+        } else {
+            runCode(this.transpiledCode, runtime)
         }
     }
 
@@ -296,7 +326,7 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
      * Returns the command code.
      */
     public get code() {
-        return this.data.code
+        return this.data.code as CommandExecutor
     }
 
     /**

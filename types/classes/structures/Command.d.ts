@@ -13,6 +13,10 @@ export type CustomCommandTypes = 'timeout' | 'interval';
  */
 export type CommandTypes = DiscordCommandTypes | CustomCommandTypes;
 /**
+ * A command executor.
+ */
+export type CommandExecutor = (runtime: Runtime) => Promise<any> | any;
+/**
  * The base interface of a command.
  */
 export interface IRawCommand<Type extends string = string> {
@@ -31,7 +35,7 @@ export interface IRawCommand<Type extends string = string> {
     /**
      * The native code of this command.
      */
-    code: string | ((runtime: Runtime) => Promise<any> | any);
+    code: string | CommandExecutor;
     /**
      * The transpiled code of the command.
      */
@@ -73,6 +77,11 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
      */
     constructor(data: Types extends string ? IRawCommand<Types> : Types, transpiler: Transpiler);
     /**
+     * Call this command.
+     * @param runtime - Runtime context to be used.
+     */
+    call(runtime: Runtime): Promise<void>;
+    /**
      * Ensure the minification option in the command.
      * @returns {void}
      */
@@ -95,7 +104,7 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
     /**
      * Returns the command code.
      */
-    get code(): string | ((runtime: Runtime) => Promise<any> | any);
+    get code(): CommandExecutor;
     /**
      * Returns the name of this command.
      */

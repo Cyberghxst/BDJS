@@ -16,6 +16,8 @@ const ascii_table3_1 = require("ascii-table3");
 const Logger_1 = require("../core/Logger");
 const uglify_js_1 = require("uglify-js");
 const cli_color_1 = __importDefault(require("cli-color"));
+const types_1 = require("node:util/types");
+const runCode_1 = __importDefault(require("../../utils/functions/runCode"));
 /**
  * Represents a transpiled command.
  */
@@ -35,6 +37,7 @@ class TranspiledCommand {
         });
         this.ensureMinification(); // Ensure the minification option.
         this.ensureName(); // Ensure the command name.
+        let executor; // Creating the executor.
         if (typeof data.code === 'string') {
             // Transpiling the native code.
             let transpiledCode = transpiler.transpile(data.code);
@@ -80,7 +83,28 @@ class TranspiledCommand {
                 }
                 // Assign the transpiled code to the command.
                 data.transpiled = transpiledCode;
+                executor = eval(`const __command_executor__ = async (runtime) => { ${transpiledCode} }; __command_executor__`);
             }
+        }
+        else {
+            executor = data.code;
+        }
+        data.code = executor;
+    }
+    /**
+     * Call this command.
+     * @param runtime - Runtime context to be used.
+     */
+    async call(runtime) {
+        runtime.setCommand(this);
+        if (typeof this.code === 'function' && (0, types_1.isAsyncFunction)(this.code)) {
+            await this.code(runtime);
+        }
+        else if (typeof this.code === 'function' && !(0, types_1.isAsyncFunction)(this.code)) {
+            this.code(runtime);
+        }
+        else {
+            (0, runCode_1.default)(this.transpiledCode, runtime);
         }
     }
     /**

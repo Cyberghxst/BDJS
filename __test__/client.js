@@ -23,7 +23,7 @@ const client = new DiscordClient({
 
 client.addCommand({
     type: 'ready',
-    code: '@{console.log(runtime.client.commands.cache.get("test"))}'
+    code: '@{console.log("hola bb")}'
 },{
     name: 'test',
     type: 'prefixed',

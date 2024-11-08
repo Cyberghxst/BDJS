@@ -296,6 +296,14 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
     }
 
     /**
+     * Retrieves the name of the current command.
+     * @returns {string}
+     */
+    public get commandName(): string {
+        return this.interaction !== null && this.interaction.isCommand() ? this.interaction.commandName : this.command.stringifiedName
+    }
+
+    /**
      * Returns the instance name of the current context.
      */
     public get exactIs(): string {

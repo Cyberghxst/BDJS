@@ -15,6 +15,6 @@ export default class extends BaseInstruction {
     returnType = ReturnType.String
     version = '2.0.0'
     resolve() {
-        return new LiteralNode('runtime.command.stringifiedName')
+        return new LiteralNode('runtime.commandName')
     }
 }

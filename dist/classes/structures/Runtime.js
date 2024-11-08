@@ -206,6 +206,13 @@ class Runtime {
         return this.data instanceof discord_js_1.User ? this.data : this.data instanceof discord_js_1.Message ? this.data.author : "user" in this.data ? this.data.user : null;
     }
     /**
+     * Retrieves the name of the current command.
+     * @returns {string}
+     */
+    get commandName() {
+        return this.interaction !== null && this.interaction.isCommand() ? this.interaction.commandName : this.command.stringifiedName;
+    }
+    /**
      * Returns the instance name of the current context.
      */
     get exactIs() {

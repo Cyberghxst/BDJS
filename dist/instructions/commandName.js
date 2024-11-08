@@ -22,7 +22,7 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
         this.version = '2.0.0';
     }
     resolve() {
-        return new Nodes_1.LiteralNode('runtime.command.stringifiedName');
+        return new Nodes_1.LiteralNode('runtime.commandName');
     }
 }
 exports.default = default_1;

@@ -189,6 +189,11 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
      */
     get user(): User | null;
     /**
+     * Retrieves the name of the current command.
+     * @returns {string}
+     */
+    get commandName(): string;
+    /**
      * Returns the instance name of the current context.
      */
     get exactIs(): string;

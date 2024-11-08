@@ -41,7 +41,7 @@ class TranspiledCommand {
         let executor; // Creating the executor.
         if (typeof data.code === 'string') {
             // Transpiling the native code.
-            let transpiledCode = transpiler.transpile(data.code);
+            let transpiledCode = `async function __command_executor__(runtime) {\n${transpiler.transpile(data.code)}\n}`;
             // Assign the raw output to its property.
             data.rawTranspiledCode = transpiledCode;
             // Checking if it was transpiled.
@@ -84,7 +84,7 @@ class TranspiledCommand {
                 }
                 // Assign the transpiled code to the command.
                 data.transpiled = transpiledCode;
-                executor = eval(`const __command_executor__ = async (runtime) => { ${transpiledCode} }; __command_executor__`);
+                executor = eval(`${transpiledCode}\n__command_executor__`);
             }
         }
         else {

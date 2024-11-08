@@ -202,7 +202,7 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
 
         if (typeof data.code === 'string') {
             // Transpiling the native code.
-            let transpiledCode = transpiler.transpile(data.code);
+            let transpiledCode = `async function __command_executor__(runtime) {\n${transpiler.transpile(data.code)}\n}`;
 
             // Assign the raw output to its property.
             data.rawTranspiledCode = transpiledCode;
@@ -253,7 +253,8 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
 
                 // Assign the transpiled code to the command.
                 data.transpiled = transpiledCode;
-                executor = eval(`const __command_executor__ = async (runtime) => { ${transpiledCode} }; __command_executor__`) as CommandExecutor
+                executor = eval(`${transpiledCode}\n__command_executor__`) as CommandExecutor
+                
             }
         } else {
             executor = data.code

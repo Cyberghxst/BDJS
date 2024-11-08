@@ -8,15 +8,15 @@ const Nodes_1 = require("../classes/core/Nodes");
 const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 /**
- * @name $contains
- * @description Check if a text contains a value.
- * @returns {boolean}
+ * @name $charCount
+ * @description Returns the character count of a string.
+ * @returns {number}
  */
 class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
-        this.patterns = (0, makePattern_1.default)('$contains', true);
-        this.description = 'Check if a text contains a value.';
+        this.patterns = (0, makePattern_1.default)('$charCount', true);
+        this.description = 'Returns the character count of a string.';
         this.params = [
             {
                 name: 'Text',
@@ -24,32 +24,17 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
                 type: BaseInstruction_1.ReturnType.String,
                 required: true,
                 spread: false
-            },
-            {
-                name: 'Value',
-                description: 'The value to look for in the base text.',
-                type: BaseInstruction_1.ReturnType.String,
-                required: true,
-                spread: false
             }
         ];
         this.identifier = (0, makeIdentifier_1.default)(__filename);
-        this.returnType = BaseInstruction_1.ReturnType.Boolean;
+        this.returnType = BaseInstruction_1.ReturnType.Number;
         this.version = '2.0.0';
     }
     resolve({ inside = '' }) {
-        const [text, value] = this.splitByDelimiter(inside);
         return new Nodes_1.OperatorNode({
             elements: [
-                this.transpiler.resolveString(text),
-                new Nodes_1.CallNode({
-                    callee: new Nodes_1.LiteralNode('includes'),
-                    parameters: new Nodes_1.OperatorNode({
-                        elements: [this.transpiler.resolveString(value)],
-                        operator: ', '
-                    }),
-                    zero: false
-                })
+                this.transpiler.resolveString(inside),
+                new Nodes_1.LiteralNode('length')
             ],
             operator: '.'
         });

@@ -3,9 +3,9 @@ import { OperatorNode } from '../classes/core/Nodes';
 import { type Transpiler } from '../classes/core/Transpiler';
 import { type Token } from 'akore';
 /**
- * @name $contains
- * @description Check if a text contains a value.
- * @returns {boolean}
+ * @name $slice
+ * @description Slices a text from x to y.
+ * @returns {string}
  */
 export default class extends BaseInstruction {
     patterns: import("akore").Patterns;

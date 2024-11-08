@@ -8,15 +8,15 @@ const Nodes_1 = require("../classes/core/Nodes");
 const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 /**
- * @name $contains
- * @description Check if a text contains a value.
+ * @name $endsWith
+ * @description Check if a text ends with a value.
  * @returns {boolean}
  */
 class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
-        this.patterns = (0, makePattern_1.default)('$contains', true);
-        this.description = 'Check if a text contains a value.';
+        this.patterns = (0, makePattern_1.default)('$endsWith', true);
+        this.description = 'Check if a text ends with a value.';
         this.params = [
             {
                 name: 'Text',
@@ -43,7 +43,7 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
             elements: [
                 this.transpiler.resolveString(text),
                 new Nodes_1.CallNode({
-                    callee: new Nodes_1.LiteralNode('includes'),
+                    callee: new Nodes_1.LiteralNode('endsWith'),
                     parameters: new Nodes_1.OperatorNode({
                         elements: [this.transpiler.resolveString(value)],
                         operator: ', '

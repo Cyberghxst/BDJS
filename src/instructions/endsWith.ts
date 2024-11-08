@@ -6,13 +6,13 @@ import makePattern from '@functions/makePattern'
 import { type Token } from 'akore'
 
 /**
- * @name $contains
- * @description Check if a text contains a value.
+ * @name $endsWith
+ * @description Check if a text ends with a value.
  * @returns {boolean}
  */
 export default class extends BaseInstruction {
-    patterns = makePattern('$contains', true)
-    description = 'Check if a text contains a value.'
+    patterns = makePattern('$endsWith', true)
+    description = 'Check if a text ends with a value.'
     params = [
         {
             name: 'Text',
@@ -39,7 +39,7 @@ export default class extends BaseInstruction {
             elements: [
                 this.transpiler.resolveString(text),
                 new CallNode({
-                    callee: new LiteralNode('includes'),
+                    callee: new LiteralNode('endsWith'),
                     parameters: new OperatorNode({
                         elements: [this.transpiler.resolveString(value)],
                         operator: ', '

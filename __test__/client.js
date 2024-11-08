@@ -23,7 +23,7 @@ const client = new DiscordClient({
 
 client.addCommand({
     type: 'ready',
-    code: `@{console.log($getInstruction[addButton;description])}`
+    code: `@{console.log(runtime.client.commands.cache.get("hola").code.toString())}`
 },{
     name: 'test',
     type: 'prefixed',
@@ -55,6 +55,22 @@ client.addCommand({
         ;mibombo]
         $log[$get[mibombo]]
     `
+},{
+    name: 'hola',
+    type: 'prefixed',
+    code: `
+        $onlyIf[$args[0]==hola;
+            $sendMessage[$channelID;Debes saludar.]
+        ]
+
+        $sendMessage[$channelID;hallo! c:]
+    `
+},{
+    name: 'adios',
+    type: 'prefixed',
+    async code(runtime) {
+        await runtime.send('adiós.')
+    }
 })
 
 client.login(process.env.TOKEN)

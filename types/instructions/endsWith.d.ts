@@ -3,8 +3,8 @@ import { OperatorNode } from '../classes/core/Nodes';
 import { type Transpiler } from '../classes/core/Transpiler';
 import { type Token } from 'akore';
 /**
- * @name $contains
- * @description Check if a text contains a value.
+ * @name $endsWith
+ * @description Check if a text ends with a value.
  * @returns {boolean}
  */
 export default class extends BaseInstruction {

@@ -8,6 +8,7 @@ const Nodes_1 = require("../classes/core/Nodes");
 const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 const createString_1 = __importDefault(require("../utils/functions/createString"));
+const resolveContent_1 = __importDefault(require("../utils/functions/resolveContent"));
 /**
  * @name $sendMessage
  * @description Sends a message to the given channel.
@@ -53,13 +54,7 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
         const contentTokens = this.transpiler.tokenize(rawContent);
         if (contentTokens.length > 0) {
             program.push(...this.transpiler.bulkNodify(contentTokens));
-            for (const matchedToken of contentTokens) {
-                let gotValue = matchedToken.match[0];
-                if (matchedToken.inside) {
-                    gotValue += `[${matchedToken.inside}]`;
-                }
-                rawContent = rawContent.replace(gotValue, '');
-            }
+            rawContent = resolveContent_1.default.call(this.transpiler, rawContent, contentTokens);
         }
         rawContent = rawContent.trim(); // Trim the content.
         if (rawContent !== '') {

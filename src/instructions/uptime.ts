@@ -4,17 +4,17 @@ import makePattern from '@functions/makePattern'
 import { LiteralNode } from '@core/Nodes'
 
 /**
- * @name $authorID
- * @description Returns the message author ID.
- * @returns {string}
+ * @name $uptime
+ * @description Returns the client uptime.
+ * @returns {number}
  */
 export default class extends BaseInstruction {
-    patterns = makePattern('$authorID')
-    description = 'Returns the message author ID.'
+    patterns = makePattern('$uptime')
+    description = 'Returns the client uptime.'
     identifier = makeIdentifier(__filename)
-    returnType = ReturnType.String
+    returnType = ReturnType.Number
     version = '2.0.0'
     resolve() {
-        return new LiteralNode('runtime.user.id')
+        return new LiteralNode('runtime.client.uptime')
     }
 }

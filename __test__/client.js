@@ -63,7 +63,7 @@ client.addCommand({
             $sendMessage[$channelID;Debes saludar.]
         ]
 
-        $sendMessage[$channelID;hallo! c:]
+        $sendMessage[$channelID;hallo $mentioned[0]! c:]
     `
 },{
     name: 'adios',

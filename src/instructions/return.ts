@@ -18,14 +18,14 @@ export default class extends BaseInstruction {
             name: 'Value',
             description: 'The value to return.',
             type: ReturnType.String,
-            required: true,
-            spread: true
+            required: false,
+            spread: false
         }
     ]
     identifier = makeIdentifier(__filename)
     returnType = ReturnType.String
     version = '2.0.0'
-    resolve({ inside = '' }: Token<Transpiler>) {
+    resolve({ inside }: Token<Transpiler>) {
         const nodes: BaseNode[] = [new LiteralNode('return')]
 
         if (inside) {

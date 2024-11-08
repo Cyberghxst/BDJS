@@ -8,21 +8,21 @@ const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentif
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 const Nodes_1 = require("../classes/core/Nodes");
 /**
- * @name $authorID
- * @description Returns the message author ID.
+ * @name $messageID
+ * @description Returns the message ID.
  * @returns {string}
  */
 class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
-        this.patterns = (0, makePattern_1.default)('$authorID');
-        this.description = 'Returns the message author ID.';
+        this.patterns = (0, makePattern_1.default)('$messageID');
+        this.description = 'Returns the message ID.';
         this.identifier = (0, makeIdentifier_1.default)(__filename);
         this.returnType = BaseInstruction_1.ReturnType.String;
         this.version = '2.0.0';
     }
     resolve() {
-        return new Nodes_1.LiteralNode('runtime.user.id');
+        return new Nodes_1.LiteralNode('runtime.message?.id');
     }
 }
 exports.default = default_1;

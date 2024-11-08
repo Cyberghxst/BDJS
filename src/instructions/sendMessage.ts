@@ -5,6 +5,7 @@ import makePattern from '@functions/makePattern'
 import { Transpiler } from '@core/Transpiler'
 import { Token } from 'akore'
 import createString from '@functions/createString'
+import resolveContent from '@functions/resolveContent'
 
 /**
  * @name $sendMessage
@@ -51,15 +52,7 @@ export default class extends BaseInstruction {
         if (contentTokens.length > 0) {
             program.push(...this.transpiler.bulkNodify(contentTokens))
 
-            for (const matchedToken of contentTokens) {
-                let gotValue = matchedToken.match[0]
-
-                if (matchedToken.inside) {
-                    gotValue += `[${matchedToken.inside}]`
-                }
-
-                rawContent = rawContent.replace(gotValue, '')
-            }
+            rawContent = resolveContent.call(this.transpiler, rawContent, contentTokens)
         }
 
         rawContent = rawContent.trim() // Trim the content.

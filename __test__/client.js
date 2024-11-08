@@ -23,7 +23,7 @@ const client = new DiscordClient({
 
 client.addCommand({
     type: 'ready',
-    code: '@{console.log("hola bb")}'
+    code: `@{console.log(runtime.client.commands.cache.get("test"))}`
 },{
     name: 'test',
     type: 'prefixed',
@@ -48,15 +48,12 @@ client.addCommand({
         $addButton[bdjs_button3;Danger;DO NOT PRESS;;true;1]
         $addButton[bdjs_button4;Success;PASS;;true;1]
 
-        $c[Sending the message using embedded JS.]
-        @{
-            await runtime.send({
-                content: \`I'm in \${$allChannelsCount[0]} channels!\`,
-                components: runtime.container.components
-            });
-        
-            runtime.container.reset();
-        }
+        $c[Sending a message using the instruction.]
+        $sendMessage[$channelID;
+            $title[Mibombo]
+            okkkkkkk
+        ;mibombo]
+        $log[$get[mibombo]]
     `
 })
 

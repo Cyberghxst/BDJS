@@ -97,6 +97,18 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
      */
     setState(states: RuntimeStates): void;
     /**
+     * Return the normalized cached instructions.
+     */
+    normalizedInstructions(): {
+        name: string;
+        description: string;
+        returnType: import("../core/BaseInstruction").ReturnType;
+        params: import("../core/BaseInstruction").IParamDef[];
+        version: string;
+        brackets: boolean;
+        usage: string;
+    }[];
+    /**
      * Check whether current runtime has guild support.
      * @returns {this is this & { guild: Guild }}
      */

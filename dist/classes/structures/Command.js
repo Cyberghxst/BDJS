@@ -18,6 +18,7 @@ const uglify_js_1 = require("uglify-js");
 const cli_color_1 = __importDefault(require("cli-color"));
 const types_1 = require("node:util/types");
 const runCode_1 = __importDefault(require("../../utils/functions/runCode"));
+const logCommands_1 = __importDefault(require("../../utils/functions/logCommands"));
 /**
  * Represents a transpiled command.
  */
@@ -272,6 +273,8 @@ class BaseCommandManager {
                 continue;
             this.cache.delete(command.stringifiedName);
         }
+        this.load(__classPrivateFieldGet(this, _BaseCommandManager_path, "f"));
+        (0, logCommands_1.default)(this);
         return size !== this.cache.size;
     }
 }

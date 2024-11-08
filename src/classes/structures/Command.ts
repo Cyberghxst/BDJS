@@ -8,6 +8,7 @@ import { minify } from 'uglify-js'
 import color from 'cli-color'
 import { isAsyncFunction } from 'node:util/types'
 import runCode from '@functions/runCode'
+import logCommands from '@functions/logCommands'
 
 /**
  * Command types that Discord contexts provide.
@@ -462,6 +463,9 @@ export class BaseCommandManager<Types extends string> {
             this.cache.delete(command.stringifiedName)
         }
 
+        this.load(this.#path)
+        logCommands(this)
+        
         return size !== this.cache.size
     }
 }

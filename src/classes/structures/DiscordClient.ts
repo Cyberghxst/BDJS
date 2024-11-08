@@ -3,6 +3,7 @@ import { Client, ClientEvents, ClientOptions } from 'discord.js'
 import { EventManager } from '@core/EventManager'
 import { Transpiler } from '@core/Transpiler'
 import ready from '../../events/ready'
+import logCommands from '@functions/logCommands'
 
 /**
  * Setup options for prefix.
@@ -123,6 +124,9 @@ export class DiscordClient extends Client {
 
         // Attaching the ready event.
         ready.attach(this)
+
+        // Log the cached commands.
+        logCommands(this.commands)
 
         return super.login(token)
     }

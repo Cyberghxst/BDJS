@@ -9,6 +9,7 @@ const discord_js_1 = require("discord.js");
 const EventManager_1 = require("../core/EventManager");
 const Transpiler_1 = require("../core/Transpiler");
 const ready_1 = __importDefault(require("../../events/ready"));
+const logCommands_1 = __importDefault(require("../../utils/functions/logCommands"));
 /**
  * The class representing a Discord client.
  */
@@ -80,6 +81,8 @@ class DiscordClient extends discord_js_1.Client {
         }
         // Attaching the ready event.
         ready_1.default.attach(this);
+        // Log the cached commands.
+        (0, logCommands_1.default)(this.commands);
         return super.login(token);
     }
 }

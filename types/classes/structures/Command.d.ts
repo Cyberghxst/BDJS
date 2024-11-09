@@ -1,4 +1,4 @@
-import { Transpiler } from '@core/Transpiler';
+import { Transpiler } from '../core/Transpiler';
 import { Runtime } from './Runtime';
 /**
  * Command types that Discord contexts provide.

@@ -1,6 +1,6 @@
-import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
-import { LiteralNode, OperatorNode } from '@core/Nodes';
-import { type Transpiler } from '@core/Transpiler';
+import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
+import { LiteralNode, OperatorNode } from '../classes/core/Nodes';
+import { type Transpiler } from '../classes/core/Transpiler';
 import { type Token } from 'akore';
 /**
  * @name $guildAvailable
@@ -20,5 +20,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve({ inside }: Token<Transpiler>): OperatorNode | LiteralNode;
+    resolve({ inside }: Token<Transpiler>): LiteralNode | OperatorNode;
 }

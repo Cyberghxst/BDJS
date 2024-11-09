@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadInstructions = void 0;
+exports.loadInstructions = loadInstructions;
 const collectFiles_1 = require("./collectFiles");
 /**
  * Load instructions from the desired directory.
@@ -15,4 +15,3 @@ function loadInstructions(dir, callback) {
     }
     callback(loaded);
 }
-exports.loadInstructions = loadInstructions;

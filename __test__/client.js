@@ -3,8 +3,7 @@ const { DiscordClient } = require('../dist')
 require('dotenv').config()
 const client = new DiscordClient({
     events: [
-        'messageCreate',
-        'ready'
+        'messageCreate'
     ],
     intents: [
         'Guilds',
@@ -23,13 +22,13 @@ const client = new DiscordClient({
 
 client.addCommand({
     type: 'ready',
-    code: `@{console.log(runtime.client.commands.cache.get("hola").code.toString())}`
+    code: `$log[Client is ready]`
 },{
     name: 'test',
     type: 'prefixed',
     code: `
         $c[Saving the user name.]
-        $let[username;@{runtime.user.username}]
+        $let[username;$username]
 
         $c[Saving the amount of channels.]
         $let[channelCount;$allChannelsCount]
@@ -53,6 +52,7 @@ client.addCommand({
             $title[Mibombo]
             okkkkkkk
         ;mibombo]
+
         $log[$get[mibombo]]
     `
 },{

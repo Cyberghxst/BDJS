@@ -1,4 +1,4 @@
-import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
+import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
 /**
  * @name $packageVersion
  * @description Returns the current version of BDJS.
@@ -10,5 +10,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve(): import("@core/Nodes").LiteralNode | import("@core/Nodes").CallNode;
+    resolve(): import("..").LiteralNode | import("..").CallNode;
 }

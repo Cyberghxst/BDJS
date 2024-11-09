@@ -1,5 +1,4 @@
-/// <reference types="node" />
-import { Runtime } from '@structures/Runtime';
+import { Runtime } from '../../classes/structures/Runtime';
 /**
  * Creates a runtime context to be evaled safely.
  * @param runtime - Runtime data.

@@ -1,6 +1,6 @@
-import { ControlFlowNode } from '@core/Nodes';
-import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
-import { Transpiler } from '@core/Transpiler';
+import { ControlFlowNode } from '../classes/core/Nodes';
+import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
+import { Transpiler } from '../classes/core/Transpiler';
 import { Token } from 'akore';
 /**
  * @name $onlyIf

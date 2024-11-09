@@ -1,6 +1,6 @@
-import { CallNode } from '@core/Nodes';
-import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
-import { type Transpiler } from '@core/Transpiler';
+import { CallNode } from '../classes/core/Nodes';
+import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
+import { type Transpiler } from '../classes/core/Transpiler';
 import { type Token } from 'akore';
 /**
  * @name $addSelectMenu

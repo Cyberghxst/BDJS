@@ -12,9 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Transpiler = void 0;
 const Nodes_1 = require("./Nodes");
 const akore_1 = require("akore");
-const isMathConditionOperator_1 = __importDefault(require("@functions/isMathConditionOperator"));
-const getConditionOperators_1 = __importDefault(require("@functions/getConditionOperators"));
-const loadInstructions_1 = require("@functions/loadInstructions");
+const isMathConditionOperator_1 = __importDefault(require("../../utils/functions/isMathConditionOperator"));
+const getConditionOperators_1 = __importDefault(require("../../utils/functions/getConditionOperators"));
+const loadInstructions_1 = require("../../utils/functions/loadInstructions");
 // import { EmbeddedJavaScript } from './EmbeddedJavaScript'
 const path_1 = require("path");
 /**

@@ -1,4 +1,4 @@
-import { DiscordClient } from '@structures/DiscordClient';
+import { DiscordClient } from '../structures/DiscordClient';
 /**
  * Assert the parameters of T.
  */
@@ -43,5 +43,5 @@ export declare class BaseEventHandler<Events extends Record<string, any> = Recor
     /**
      * Returns the executor of the event.
      */
-    get call(): (this: DiscordClient, ...args: AssertParameters<Events[Names]>) => any;
+    get call(): (this: DiscordClient, ...args: AssertParameters<Events[Names]>) => Promise<any> | any;
 }

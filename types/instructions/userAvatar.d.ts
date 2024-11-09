@@ -1,6 +1,6 @@
-import { LiteralNode, OperatorNode } from '@core/Nodes';
-import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
-import { type Transpiler } from '@core/Transpiler';
+import { LiteralNode, OperatorNode } from '../classes/core/Nodes';
+import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
+import { type Transpiler } from '../classes/core/Transpiler';
 import { type Token } from 'akore';
 /**
  * @name $userAvatar
@@ -20,5 +20,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve({ inside }: Token<Transpiler>): OperatorNode | LiteralNode;
+    resolve({ inside }: Token<Transpiler>): LiteralNode | OperatorNode;
 }

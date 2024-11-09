@@ -1,5 +1,5 @@
-import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
-import { LiteralNode } from '@core/Nodes';
+import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
+import { LiteralNode } from '../classes/core/Nodes';
 /**
  * @name $clearContainer
  * @description Forces the container to be cleared.

@@ -1,5 +1,5 @@
-import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
-import { OperatorNode } from '@core/Nodes';
+import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
+import { OperatorNode } from '../classes/core/Nodes';
 /**
  * @name $oldAutomodRule
  * @description Retrieves an old automod rule data.

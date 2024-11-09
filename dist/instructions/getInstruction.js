@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const BaseInstruction_1 = require("@core/BaseInstruction");
-const Nodes_1 = require("@core/Nodes");
-const makeIdentifier_1 = __importDefault(require("@functions/makeIdentifier"));
-const makePattern_1 = __importDefault(require("@functions/makePattern"));
+const BaseInstruction_1 = require("../classes/core/BaseInstruction");
+const Nodes_1 = require("../classes/core/Nodes");
+const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
+const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 /**
  * @name $getInstruction
  * @description Gets information about an instruction.

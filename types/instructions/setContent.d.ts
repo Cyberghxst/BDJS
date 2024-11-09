@@ -1,11 +1,11 @@
 import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { OperatorNode } from '../classes/core/Nodes';
-import { type Transpiler } from '../classes/core/Transpiler';
-import { type Token } from 'akore';
+import { AssignmentNode, LiteralNode } from '../classes/core/Nodes';
+import { Transpiler } from '../classes/core/Transpiler';
+import { Token } from 'akore';
 /**
- * @name $contains
- * @description Check if a text contains a value.
- * @returns {boolean}
+ * @name $setContent
+ * @description Set the content of the container.
+ * @returns {unknown}
  */
 export default class extends BaseInstruction {
     patterns: import("akore").Patterns;
@@ -20,5 +20,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve({ inside }: Token<Transpiler>): OperatorNode;
+    resolve({ inside }: Token<Transpiler>): AssignmentNode<LiteralNode, LiteralNode | import("../classes/core/Nodes").CallNode>;
 }

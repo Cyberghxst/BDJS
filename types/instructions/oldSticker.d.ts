@@ -1,5 +1,5 @@
-import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
-import { OperatorNode } from '@core/Nodes';
+import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
+import { OperatorNode } from '../classes/core/Nodes';
 /**
  * @name $oldSticker
  * @description Retrieves an old sticker data.

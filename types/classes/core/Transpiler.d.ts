@@ -39,7 +39,7 @@ export declare class Transpiler extends BaseTranspiler {
      * @param [infer=true] - Automatically transpile condition left and righthands based on the condition operator.
      * @returns A ConditionNode representing the transpiled condition.
      */
-    resolveCondition(code: string, infer?: boolean): OperatorNode | LiteralNode;
+    resolveCondition(code: string, infer?: boolean): LiteralNode | OperatorNode;
     /**
      * Transpiles a code into a Number.
      * @param code - The input code to transpile.

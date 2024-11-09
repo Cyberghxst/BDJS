@@ -10,15 +10,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _TranspiledCommand_logOptions, _BaseCommandManager_path;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscordCommandManager = exports.BaseCommandManager = exports.LoadCommandType = exports.TranspiledCommand = void 0;
-const collectFiles_1 = require("@functions/collectFiles");
-const createString_1 = __importDefault(require("@functions/createString"));
+const collectFiles_1 = require("../../utils/functions/collectFiles");
+const createString_1 = __importDefault(require("../../utils/functions/createString"));
 const ascii_table3_1 = require("ascii-table3");
-const Logger_1 = require("@core/Logger");
+const Logger_1 = require("../core/Logger");
 const uglify_js_1 = require("uglify-js");
 const cli_color_1 = __importDefault(require("cli-color"));
 const types_1 = require("node:util/types");
-const runCode_1 = __importDefault(require("@functions/runCode"));
-const logCommands_1 = __importDefault(require("@functions/logCommands"));
+const runCode_1 = __importDefault(require("../../utils/functions/runCode"));
+const logCommands_1 = __importDefault(require("../../utils/functions/logCommands"));
 /**
  * Represents a transpiled command.
  */

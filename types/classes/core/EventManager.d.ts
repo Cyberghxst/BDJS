@@ -1,4 +1,4 @@
-import { DiscordClient } from '@structures/DiscordClient';
+import { DiscordClient } from '../structures/DiscordClient';
 import { type BaseEventHandler } from './BaseEventHandler';
 /**
  * The global event manager.

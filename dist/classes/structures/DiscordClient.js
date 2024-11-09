@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscordClient = void 0;
 const Command_1 = require("./Command");
 const discord_js_1 = require("discord.js");
-const EventManager_1 = require("@core/EventManager");
-const Transpiler_1 = require("@core/Transpiler");
+const EventManager_1 = require("../core/EventManager");
+const Transpiler_1 = require("../core/Transpiler");
 const ready_1 = __importDefault(require("../../events/ready"));
-const logCommands_1 = __importDefault(require("@functions/logCommands"));
+const logCommands_1 = __importDefault(require("../../utils/functions/logCommands"));
 /**
  * The class representing a Discord client.
  */

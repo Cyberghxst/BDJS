@@ -8,22 +8,22 @@ const Nodes_1 = require("../classes/core/Nodes");
 const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
 const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
 /**
- * @name $newEntitlement
- * @description Retrieves a new entitlement data.
- * @returns {string}
+ * @name $setContent
+ * @description Set the content of the container.
+ * @returns {unknown}
  */
 class default_1 extends BaseInstruction_1.BaseInstruction {
     constructor() {
         super(...arguments);
-        this.patterns = (0, makePattern_1.default)('$newEntitlement', true);
-        this.description = 'Retrieves a new entitlement data.';
+        this.patterns = (0, makePattern_1.default)('$setContent', true);
+        this.description = 'Set the content of the container.';
         this.params = [
             {
-                name: 'Property',
-                description: 'Property to be accesed.',
+                name: 'Text',
+                description: 'The text to set.',
                 type: BaseInstruction_1.ReturnType.String,
                 required: true,
-                spread: true
+                spread: false
             }
         ];
         this.identifier = (0, makeIdentifier_1.default)(__filename);
@@ -31,14 +31,7 @@ class default_1 extends BaseInstruction_1.BaseInstruction {
         this.version = '2.0.0';
     }
     resolve({ inside = '' }) {
-        const [...properties] = this.splitByDelimiter(inside);
-        return new Nodes_1.OperatorNode({
-            elements: [
-                new Nodes_1.LiteralNode('runtime.states.entitlement.new'),
-                ...properties.map((value) => new Nodes_1.LiteralNode(value))
-            ],
-            operator: '.'
-        });
+        return new Nodes_1.AssignmentNode(new Nodes_1.LiteralNode('runtime.container.content'), this.transpiler.resolveString(inside));
     }
 }
 exports.default = default_1;

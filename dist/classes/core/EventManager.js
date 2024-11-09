@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventManager = void 0;
-const collectFiles_1 = require("../../utils/functions/collectFiles");
+const collectFiles_1 = require("@functions/collectFiles");
 /**
  * The global event manager.
  */

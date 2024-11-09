@@ -1,2 +1,2 @@
-import { IParamDef } from "../../classes/core/BaseInstruction";
+import { IParamDef } from "@core/BaseInstruction";
 export default function (args: IParamDef[], compiledArgs: string[], identifier: string): void;

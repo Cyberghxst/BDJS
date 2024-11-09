@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = default_1;
 const ascii_table3_1 = require("ascii-table3");
 /**
  * Log all commands cached in a command manager.
@@ -19,3 +18,4 @@ function default_1(manager) {
     table.addRowMatrix(rows);
     console.log(table.toString());
 }
+exports.default = default_1;

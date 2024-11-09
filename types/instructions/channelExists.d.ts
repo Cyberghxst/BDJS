@@ -1,6 +1,6 @@
-import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { OperatorNode } from '../classes/core/Nodes';
-import { type Transpiler } from '../classes/core/Transpiler';
+import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
+import { OperatorNode } from '@core/Nodes';
+import { type Transpiler } from '@core/Transpiler';
 import { type Token } from 'akore';
 /**
  * @name $channelExists

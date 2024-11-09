@@ -1,4 +1,4 @@
-import { BaseInstruction } from '../../classes/core/BaseInstruction';
+import { BaseInstruction } from '@core/BaseInstruction';
 /**
  * Load instructions from the desired directory.
  * @param dir - Directory to load the instructions from.

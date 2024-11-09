@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Nodes_1 = require("../classes/core/Nodes");
-const BaseInstruction_1 = require("../classes/core/BaseInstruction");
-const makeIdentifier_1 = __importDefault(require("../utils/functions/makeIdentifier"));
-const makePattern_1 = __importDefault(require("../utils/functions/makePattern"));
-const ensureFields_1 = __importDefault(require("../utils/functions/ensureFields"));
+const Nodes_1 = require("@core/Nodes");
+const BaseInstruction_1 = require("@core/BaseInstruction");
+const makeIdentifier_1 = __importDefault(require("@functions/makeIdentifier"));
+const makePattern_1 = __importDefault(require("@functions/makePattern"));
+const ensureFields_1 = __importDefault(require("@functions/ensureFields"));
 /**
  * @name $addSelectMenu
  * @description Adds a select menu to the container.

@@ -3,7 +3,7 @@ import { BaseCompetence, BaseTranspiler, Logger, Registry, Schema, Token } from 
 import isMathConditionOperator from '@functions/isMathConditionOperator'
 import getConditionOperators from '@functions/getConditionOperators'
 import { loadInstructions } from '@functions/loadInstructions'
-import { EmbeddedJavaScript } from './EmbeddedJavaScript'
+// import { EmbeddedJavaScript } from './EmbeddedJavaScript'
 import { join } from 'path'
 
 /**
@@ -53,7 +53,7 @@ export class Transpiler extends BaseTranspiler {
         this.#loadFunctions()
 
         // Add the EmbeddedJavaScript class.
-        this.declare(new EmbeddedJavaScript(this) as unknown as BaseCompetence<this>)
+        // this.declare(new EmbeddedJavaScript(this) as unknown as BaseCompetence<this>)
     }
 
     /**

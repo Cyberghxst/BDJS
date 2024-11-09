@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const DiscordEventHandler_1 = require("../classes/core/extended/DiscordEventHandler");
-const Runtime_1 = require("../classes/structures/Runtime");
+const DiscordEventHandler_1 = require("@core/extended/DiscordEventHandler");
+const Runtime_1 = require("@structures/Runtime");
 const discord_js_1 = require("discord.js");
 async function runInteractionType(commandType, runtime) {
     const commands = this.commands.getType(commandType);

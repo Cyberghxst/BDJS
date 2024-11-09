@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = default_1;
-const Logger_1 = require("../../classes/core/Logger");
+const Logger_1 = require("@core/Logger");
 function default_1(args, compiledArgs, identifier) {
     let i = 0;
     for (const arg of args) {
@@ -11,3 +10,4 @@ function default_1(args, compiledArgs, identifier) {
         i++;
     }
 }
+exports.default = default_1;

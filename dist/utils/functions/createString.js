@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = default_1;
 const crypto_1 = require("crypto");
 /**
  * Generates a random string.
@@ -14,3 +13,4 @@ function default_1(length = 15) {
     }
     return cache.slice(0, length);
 }
+exports.default = default_1;

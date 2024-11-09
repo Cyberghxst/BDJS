@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = createRuntime;
 const node_vm_1 = require("node:vm");
 /**
  * Creates a runtime context to be evaled safely.
@@ -16,3 +15,4 @@ function createRuntime(runtime) {
         console
     }, { codeGeneration: { wasm: false } });
 }
+exports.default = createRuntime;

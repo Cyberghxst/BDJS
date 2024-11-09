@@ -1,6 +1,6 @@
-import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { Transpiler } from '../classes/core/Transpiler';
-import { OperatorNode } from '../classes/core/Nodes';
+import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
+import { Transpiler } from '@core/Transpiler';
+import { OperatorNode } from '@core/Nodes';
 import { Token } from 'akore';
 /**
  * @name $and

@@ -1,5 +1,5 @@
-import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { OperatorNode } from '../classes/core/Nodes';
+import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
+import { OperatorNode } from '@core/Nodes';
 /**
  * @name $oldRole
  * @description Retrieves an old role data.

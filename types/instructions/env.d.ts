@@ -1,7 +1,7 @@
-import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { Transpiler } from '../classes/core/Transpiler';
+import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
+import { Transpiler } from '@core/Transpiler';
 import { Token } from 'akore';
-import { OperatorNode } from '../classes/core/Nodes';
+import { OperatorNode } from '@core/Nodes';
 /**
  * @name $env
  * @description Returns an environment value.

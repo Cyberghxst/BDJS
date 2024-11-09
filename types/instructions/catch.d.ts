@@ -1,6 +1,6 @@
-import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { ControlFlowNode } from '../classes/core/Nodes';
-import { Transpiler } from '../classes/core/Transpiler';
+import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
+import { ControlFlowNode } from '@core/Nodes';
+import { Transpiler } from '@core/Transpiler';
 import { Token } from 'akore';
 /**
  * @name $catch

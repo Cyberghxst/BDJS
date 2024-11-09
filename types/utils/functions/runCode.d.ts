@@ -1,4 +1,4 @@
-import { Runtime } from '../../classes/structures/Runtime';
+import { Runtime } from '@structures/Runtime';
 /**
  * Runs BDJS code into a safe sandbox.
  * @param code - Code to be executed.

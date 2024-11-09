@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = default_1;
 /**
  * Makes a foremost pattern for a BDJS instruction.
  * @param pattern - Pattern to be created.
@@ -18,3 +17,4 @@ function default_1(pattern, brackets = false) {
         closer: brackets ? /\]/ : undefined,
     };
 }
+exports.default = default_1;

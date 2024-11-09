@@ -1,5 +1,5 @@
-import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { Transpiler } from '../classes/core/Transpiler';
+import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
+import { Transpiler } from '@core/Transpiler';
 import { Token } from 'akore';
 /**
  * @name $toString
@@ -19,5 +19,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve({ inside }: Token<Transpiler>): import("..").LiteralNode | import("..").CallNode;
+    resolve({ inside }: Token<Transpiler>): import("@core/Nodes").LiteralNode | import("@core/Nodes").CallNode;
 }

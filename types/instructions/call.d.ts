@@ -1,6 +1,6 @@
-import { CallNode } from '../classes/core/Nodes';
-import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { Transpiler } from '../classes/core/Transpiler';
+import { CallNode } from '@core/Nodes';
+import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
+import { Transpiler } from '@core/Transpiler';
 import { Token } from 'akore';
 /**
  * @name $call

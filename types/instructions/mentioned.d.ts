@@ -1,7 +1,7 @@
-import { BaseInstruction, ReturnType } from '../classes/core/BaseInstruction';
-import { LiteralNode, OperatorNode } from '../classes/core/Nodes';
+import { BaseInstruction, ReturnType } from '@core/BaseInstruction';
+import { LiteralNode, OperatorNode } from '@core/Nodes';
 import { Token } from 'akore';
-import { Transpiler } from '../classes/core/Transpiler';
+import { Transpiler } from '@core/Transpiler';
 /**
  * @name $mentioned
  * @description Returns the ID of the mentioned user.
@@ -20,5 +20,5 @@ export default class extends BaseInstruction {
     identifier: string;
     returnType: ReturnType;
     version: string;
-    resolve({ inside }: Token<Transpiler>): LiteralNode | OperatorNode;
+    resolve({ inside }: Token<Transpiler>): OperatorNode | LiteralNode;
 }

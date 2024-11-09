@@ -102,8 +102,8 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
     normalizedInstructions(): {
         name: string;
         description: string;
-        returnType: import("../core/BaseInstruction").ReturnType;
-        params: import("../core/BaseInstruction").IParamDef[];
+        returnType: import("@core/BaseInstruction").ReturnType;
+        params: import("@core/BaseInstruction").IParamDef[];
         version: string;
         brackets: boolean;
         usage: string;

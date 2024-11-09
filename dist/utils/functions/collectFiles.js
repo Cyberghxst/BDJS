@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.collectFiles = collectFiles;
+exports.collectFiles = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 /**
@@ -26,3 +26,4 @@ function collectFiles(dir, extension = '.js') {
     }
     return collected;
 }
+exports.collectFiles = collectFiles;

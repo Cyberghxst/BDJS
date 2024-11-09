@@ -1,4 +1,4 @@
-import { BaseCommandManager } from "../../classes/structures/Command";
+import { BaseCommandManager } from "@structures/Command";
 /**
  * Log all commands cached in a command manager.
  * @param manager - The command manager to retrieve the cached commands from.

@@ -1,6 +1,6 @@
 import { BDJSCommand, DiscordCommandManager } from './Command';
 import { Client, ClientEvents, ClientOptions } from 'discord.js';
-import { Transpiler } from '../core/Transpiler';
+import { Transpiler } from '@core/Transpiler';
 /**
  * Setup options for prefix.
  */

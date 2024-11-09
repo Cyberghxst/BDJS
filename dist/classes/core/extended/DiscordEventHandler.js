@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscordEventHandler = void 0;
-const BaseEventHandler_1 = require("../BaseEventHandler");
+const BaseEventHandler_1 = require("@core/BaseEventHandler");
 /**
  * The default discord event handler.
  */

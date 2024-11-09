@@ -1,5 +1,5 @@
-import { BaseEventHandler } from '../BaseEventHandler';
-import { DiscordClient } from '../../structures/DiscordClient';
+import { BaseEventHandler } from '@core/BaseEventHandler';
+import { DiscordClient } from '@structures/DiscordClient';
 import { ClientEvents } from 'discord.js';
 /**
  * The default discord event handler.

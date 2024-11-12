@@ -210,7 +210,7 @@ class Runtime {
      * @returns {string}
      */
     get commandName() {
-        return this.interaction !== null && this.interaction.isCommand() ? this.interaction.commandName : this.command.stringifiedName;
+        return this.interaction !== null && this.interaction.isCommand() ? this.interaction.commandName : this.command?.stringifiedName ?? '';
     }
     /**
      * Returns the instance name of the current context.

@@ -14,6 +14,7 @@ var _Lexer_instances, _a, _Lexer_code, _Lexer_count, _Lexer_path, _Lexer_positio
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Lexer = exports.mainInstruction = exports.InstructionToken = void 0;
 const InstructionManager_1 = require("../managers/InstructionManager");
+const Instruction_1 = require("../structures/Instruction");
 /**
  * Represents an instruction in the AST.
  */
@@ -84,6 +85,13 @@ class InstructionToken {
         this.data = null;
         this.bounds = bounds ?? [];
         this.lines = lines ?? [];
+    }
+    /**
+     * Check whether this token has instruction metadata pulled.
+     * @returns {this is this & { data: Instruction }}
+     */
+    hasData() {
+        return this.data !== null && this.data instanceof Instruction_1.Instruction;
     }
     /**
      * Check whether this instruction is fieldless.

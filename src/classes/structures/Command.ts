@@ -292,7 +292,7 @@ export class FormedCommand<Types extends string | IRawCommand> {
     /**
      * Returns the transpiled code.
      */
-    public get transpiledCode() {
+    public get compiled() {
         return this.data.compiled as InstructionToken[]
     }
 

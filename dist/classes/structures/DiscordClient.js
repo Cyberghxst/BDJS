@@ -8,6 +8,7 @@ const Command_1 = require("./Command");
 const discord_js_1 = require("discord.js");
 const EventManager_1 = require("../managers/EventManager");
 const logCommands_1 = __importDefault(require("../../utils/functions/logCommands"));
+const ready_1 = __importDefault(require("../../events/ready"));
 /**
  * The class representing a Discord client.
  */
@@ -64,7 +65,7 @@ class DiscordClient extends discord_js_1.Client {
             EventManager_1.EventManager.attach(this, 'built-ins', this.extraOptions.events);
         }
         // Attaching the ready event.
-        // ready.attach(this)
+        ready_1.default.attach(this);
         // Log the cached commands.
         (0, logCommands_1.default)(this.commands);
         return super.login(token);

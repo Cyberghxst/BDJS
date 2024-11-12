@@ -102,6 +102,13 @@ export declare class InstructionToken implements IBaseToken {
      */
     constructor(bounds?: [number, number], lines?: number[]);
     /**
+     * Check whether this token has instruction metadata pulled.
+     * @returns {this is this & { data: Instruction }}
+     */
+    hasData(): this is this & {
+        data: Instruction;
+    };
+    /**
      * Check whether this instruction is fieldless.
      * @returns {this is this & { inside: null, fields: null }}
      */

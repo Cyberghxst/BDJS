@@ -55,7 +55,7 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
     /**
      * The current command being executed.
      */
-    command: any | null;
+    command: FormedCommand<any> | null;
     /**
      * The message container.
      */

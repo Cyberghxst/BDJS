@@ -124,7 +124,7 @@ class FormedCommand {
     /**
      * Returns the transpiled code.
      */
-    get transpiledCode() {
+    get compiled() {
         return this.data.compiled;
     }
     /**

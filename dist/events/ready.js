@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const DiscordEventHandler_1 = require("../classes/core/extended/DiscordEventHandler");
+const DiscordEventHandler_1 = require("../classes/managers/extended/DiscordEventHandler");
 const Runtime_1 = require("../classes/structures/Runtime");
 const discord_js_1 = require("discord.js");
 exports.default = new DiscordEventHandler_1.DiscordEventHandler({
@@ -11,7 +11,7 @@ exports.default = new DiscordEventHandler_1.DiscordEventHandler({
         this['processPrefixes']();
         // Prevent the execution of commands if the
         // name isn't included in the events array.
-        if (!this.extraOptions.events.includes('ready'))
+        if (!this.extraOptions.events?.includes('ready'))
             return;
         // Executing the commands.
         const runtime = new Runtime_1.Runtime({}, this);

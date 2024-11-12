@@ -1,6 +1,6 @@
 import { InstructionThisArg as ThisArg } from '@core/ThisArg'
 import { isAsyncFunction } from 'util/types'
-import type { Nullable } from '../typings'
+import type { Nullable } from '../../typings'
 import type { Runtime } from './Runtime'
 import { Return } from '@core/Return'
 
@@ -157,5 +157,13 @@ export class Instruction<T extends [...ArgData[]] = ArgData[], Brackets extends 
      */
     public get name() {
         return this.data.name
+    }
+
+    /**
+     * Returns the instruction executor.
+     * @returns {InstructionExecutor<Brackets, T>}
+     */
+    public get run() {
+        return this.data.run
     }
 }

@@ -2,7 +2,7 @@ import { BDJSCommand, DiscordCommandManager, LoadCommandType } from './Command'
 import { Client, ClientEvents, ClientOptions } from 'discord.js'
 import { EventManager } from '@managers/EventManager'
 import logCommands from '@functions/logCommands'
-// import ready from '../../events/ready'
+import ready from '../../events/ready'
 
 /**
  * Setup options for prefix.
@@ -94,7 +94,7 @@ export class DiscordClient extends Client {
         }
 
         // Attaching the ready event.
-        // ready.attach(this)
+        ready.attach(this)
 
         // Log the cached commands.
         logCommands(this.commands)

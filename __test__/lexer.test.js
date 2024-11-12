@@ -1,8 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Lexer_1 = require("../classes/core/Lexer");
-const fs_1 = require("fs");
-const lexer = new Lexer_1.Lexer(`
+const { Lexer } = require('../dist/classes/core/Lexer')
+const assert = require('node:assert/strict')
+const test = require('node:test')
+
+const sampleCode = `
 $if[$playerStatus==idle]
 $description[Procurando...]
 $color[Orange]
@@ -16,13 +16,15 @@ $playTrack[$message;spotify]
 $if[$hasPlayer==false]
 $joinVC
 $endif
+`;
 
+const sampleCode2 = `
 $setChannelVar[requester;$authorID]
 $onlyIf[$voiceID!=;{newEmbed:{description:Você precisa conectar em uma call pra ouvir música.}{color:Orange}}]
 $onlyIf[$message!=;{newEmbed:{description: Você está usando da forma errada! Use: \`B.play [nome da música]\`}{color:Orange}}]
 $globalCooldown[2s;{newEmbed:{description:Espere %time% para usar o comando novamente}{color:Orange}}]
 
-$title[1;:1000174283:❯ Informações do usuário]
+$title[1;:1000174283:> Informações do usuário]
 $description[1;
 > :1000174281: **Usuário**: \`$username[$get[a]]\` (\`$get[a]\`)
 > :1000174281: **Criação da conta**: <t:$truncate[$divide[$creationDate[$get[a];ms];1000]]:R>
@@ -50,6 +52,33 @@ $description[2;
 $footer[Requisitado por $username;$authorAvatar]
 $addTimestamp
 $let[a;$findUser[$message;true]]
-`);
-const ast = lexer.toAST();
-(0, fs_1.writeFileSync)('./src/__test__/ast.output.json', JSON.stringify(ast, null, 4), 'utf-8');
+`;
+
+test.describe('should create a new instance of Lexer', () => {
+    const lexer = new Lexer(sampleCode)
+    assert.equal(lexer instanceof Lexer, true)
+})
+
+test.describe('should create an AST', () => {
+    const lexer = new Lexer(sampleCode)
+
+    const ast = lexer.toAST()
+
+    assert.ok(ast)
+})
+
+test.describe('should have 1 main function', () => {
+    const lexer = new Lexer(sampleCode)
+
+    const ast = lexer.toAST()
+
+    assert.equal(ast.length, 1)
+})
+
+test.describe('main function should have 13 children', () => {
+    const lexer = new Lexer(sampleCode)
+
+    const ast = lexer.toAST()
+
+    assert.equal(ast[0].children.length, 13)
+})

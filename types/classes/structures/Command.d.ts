@@ -120,7 +120,7 @@ export declare class FormedCommand<Types extends string | IRawCommand> {
     /**
      * Returns the transpiled code.
      */
-    get transpiledCode(): InstructionToken[];
+    get compiled(): InstructionToken[];
     /**
      * Returns the command type.
      */

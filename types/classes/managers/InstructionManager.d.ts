@@ -6,7 +6,7 @@ export declare class InstructionManager {
     /**
      * The instruction registry.
      */
-    static cache: Map<string, Instruction>;
+    static cache: Map<string, Instruction<import("../structures/Instruction").ArgData<import("../structures/Instruction").DataType, import("../structures/Instruction").FieldLevel, boolean, unknown>[], boolean, boolean>>;
     /**
      * Pulls an instruction by name.
      * @param name - The name of the instruction.
@@ -23,5 +23,5 @@ export declare class InstructionManager {
      * Returns the cached instruction as array.
      * @returns {Instruction[]}
      */
-    static toArray(): Instruction[];
+    static toArray(): Instruction<import("../structures/Instruction").ArgData<import("../structures/Instruction").DataType, import("../structures/Instruction").FieldLevel, boolean, unknown>[], boolean, boolean>[];
 }

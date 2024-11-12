@@ -87,7 +87,7 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
     /**
      * The current command being executed.
      */
-    public command: any | null = null
+    public command: FormedCommand<any> | null = null
 
     /**
      * The message container.
@@ -301,7 +301,7 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      * @returns {string}
      */
     public get commandName(): string {
-        return this.interaction !== null && this.interaction.isCommand() ? this.interaction.commandName : this.command.stringifiedName
+        return this.interaction !== null && this.interaction.isCommand() ? this.interaction.commandName : this.command?.stringifiedName ?? ''
     }
 
     /**

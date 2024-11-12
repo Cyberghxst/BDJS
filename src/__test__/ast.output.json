@@ -1,0 +1,2621 @@
+[
+    {
+        "name": "BDJSEXECUTEDATA",
+        "prefix": "$",
+        "inside": "\n$if[$playerStatus==idle]\n$description[Procurando...]\n$color[Orange]\n$else\n$if[$playerStatus==playing]\n$description[Sua música foi adicionada na fila.]\n$color[Orange]\n$endif\n$endif\n$playTrack[$message;spotify]\n$if[$hasPlayer==false]\n$joinVC\n$endif\n\n$setChannelVar[requester;$authorID]\n$onlyIf[$voiceID!=;{newEmbed:{description:Você precisa conectar em uma call pra ouvir música.}{color:Orange}}]\n$onlyIf[$message!=;{newEmbed:{description: Você está usando da forma errada! Use: `B.play [nome da música]`}{color:Orange}}]\n$globalCooldown[2s;{newEmbed:{description:Espere %time% para usar o comando novamente}{color:Orange}}]\n\n$title[1;:1000174283:❯ Informações do usuário]\n$description[1;\n> :1000174281: **Usuário**: `$username[$get[a]]` (`$get[a]`)\n> :1000174281: **Criação da conta**: <t:$truncate[$divide[$creationDate[$get[a];ms];1000]]:R>\n\n$if[$memberExists[$get[a]]==true]\n> :1000174281: **Data de entrada no servidor**: <t:$truncate[$divide[$memberJoinDate[$get[a];$guildID;ms];1000]]:R>\n> :1000174281: **Booster?**: $replaceText[$replaceText[$isBoosting[$get[a];$guildID];true;Sim;1];false;Não;1]\n$endif\n\n> :1000174281: **Tipo de conta?**: $replaceText[$replaceText[$isBot[$get[a]];true;Bot;1];false;Humano;1]]\n$author[1;@$username;$authorAvatar]\n\n$if[$memberExists[$get[a]]==true]\n$color[$getRoleColor[$userHighestRole[$get[a];$guildID]]]\n$else\n$color[4b0082]\n$endif\n\n$title[2; Informações extras]\n$description[2;\n> :1000174281: **Status**: $replaceText[$replaceText[$replaceText[$replaceText[$userStatus[$get[a]];online;:1000174286:;1];invisible;:1000174287:;1];dnd;⛔;1];idle;🌙;1]\n> :1000174281: **Maior cargo**: $userHighestRole[$get[a];$guildID;mention]\n> :1000174281: **Avatar Costumizado?**: $replaceText[$replaceText[$checkCondition[$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]];true;Sim, esse usuário usa um avatar padrão;1];false;Não, esse usuário possui um avatar customizado;1]]\n\n$footer[Requisitado por $username;$authorAvatar]\n$addTimestamp\n$let[a;$findUser[$message;true]]\n",
+        "fields": [
+            {
+                "value": "\n$if[$playerStatus==idle]\n$description[Procurando...]\n$color[Orange]\n$else\n$if[$playerStatus==playing]\n$description[Sua música foi adicionada na fila.]\n$color[Orange]\n$endif\n$endif\n$playTrack[$message;spotify]\n$if[$hasPlayer==false]\n$joinVC\n$endif\n\n$setChannelVar[requester;$authorID]\n$onlyIf[$voiceID!=;{newEmbed:{description:Você precisa conectar em uma call pra ouvir música.}{color:Orange}}]\n$onlyIf[$message!=;{newEmbed:{description: Você está usando da forma errada! Use: `B.play [nome da música]`}{color:Orange}}]\n$globalCooldown[2s;{newEmbed:{description:Espere %time% para usar o comando novamente}{color:Orange}}]\n\n$title[1;:1000174283:❯ Informações do usuário]\n$description[1;\n> :1000174281: **Usuário**: `$username[$get[a]]` (`$get[a]`)\n> :1000174281: **Criação da conta**: <t:$truncate[$divide[$creationDate[$get[a];ms];1000]]:R>\n\n$if[$memberExists[$get[a]]==true]\n> :1000174281: **Data de entrada no servidor**: <t:$truncate[$divide[$memberJoinDate[$get[a];$guildID;ms];1000]]:R>\n> :1000174281: **Booster?**: $replaceText[$replaceText[$isBoosting[$get[a];$guildID];true;Sim;1];false;Não;1]\n$endif\n\n> :1000174281: **Tipo de conta?**: $replaceText[$replaceText[$isBot[$get[a]];true;Bot;1];false;Humano;1]]\n$author[1;@$username;$authorAvatar]\n\n$if[$memberExists[$get[a]]==true]\n$color[$getRoleColor[$userHighestRole[$get[a];$guildID]]]\n$else\n$color[4b0082]\n$endif\n\n$title[2; Informações extras]\n$description[2;\n> :1000174281: **Status**: $replaceText[$replaceText[$replaceText[$replaceText[$userStatus[$get[a]];online;:1000174286:;1];invisible;:1000174287:;1];dnd;⛔;1];idle;🌙;1]\n> :1000174281: **Maior cargo**: $userHighestRole[$get[a];$guildID;mention]\n> :1000174281: **Avatar Costumizado?**: $replaceText[$replaceText[$checkCondition[$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]];true;Sim, esse usuário usa um avatar padrão;1];false;Não, esse usuário possui um avatar customizado;1]]\n\n$footer[Requisitado por $username;$authorAvatar]\n$addTimestamp\n$let[a;$findUser[$message;true]]\n"
+            }
+        ],
+        "supressed": false,
+        "closed": true,
+        "id": "#INSTRUCTION_0#",
+        "path": [],
+        "parent": null,
+        "children": [
+            {
+                "name": "if",
+                "prefix": "$",
+                "inside": "$playerStatus==idle",
+                "fields": [
+                    {
+                        "value": "$playerStatus==idle"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_1057326505#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "playerStatus",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_3721006935#",
+                        "path": [
+                            "$if"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 0,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            13
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1,
+                    24
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "description",
+                "prefix": "$",
+                "inside": "Procurando...",
+                "fields": [
+                    {
+                        "value": "Procurando..."
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_80107367#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    26,
+                    52
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "color",
+                "prefix": "$",
+                "inside": "Orange",
+                "fields": [
+                    {
+                        "value": "Orange"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_1053852399#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    54,
+                    67
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "else",
+                "prefix": "$",
+                "inside": null,
+                "fields": null,
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_2545889483#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    69,
+                    74
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "if",
+                "prefix": "$",
+                "inside": "$playerStatus==playing",
+                "fields": [
+                    {
+                        "value": "$playerStatus==playing"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_1691909217#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "playerStatus",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_1525764444#",
+                        "path": [
+                            "$if"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 0,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            13
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    75,
+                    101
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "description",
+                "prefix": "$",
+                "inside": "Sua música foi adicionada na fila.",
+                "fields": [
+                    {
+                        "value": "Sua música foi adicionada na fila."
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_362895037#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    103,
+                    150
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "color",
+                "prefix": "$",
+                "inside": "Orange",
+                "fields": [
+                    {
+                        "value": "Orange"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_3109950412#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    152,
+                    165
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "endif",
+                "prefix": "$",
+                "inside": null,
+                "fields": null,
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_8934961321#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    167,
+                    173
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "endif",
+                "prefix": "$",
+                "inside": null,
+                "fields": null,
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_5072792896#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    174,
+                    180
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "playTrack",
+                "prefix": "$",
+                "inside": "$message;spotify",
+                "fields": [
+                    {
+                        "value": "$message"
+                    },
+                    {
+                        "value": "spotify"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_8301271573#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "message",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_8864954356#",
+                        "path": [
+                            "$playTrack"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 0,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            8
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    181,
+                    208
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "if",
+                "prefix": "$",
+                "inside": "$hasPlayer==false",
+                "fields": [
+                    {
+                        "value": "$hasPlayer==false"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_4752712782#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "hasPlayer",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_1014594064#",
+                        "path": [
+                            "$if"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 0,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            10
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    210,
+                    231
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "joinVC",
+                "prefix": "$",
+                "inside": null,
+                "fields": null,
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_6551627336#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    233,
+                    240
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "endif",
+                "prefix": "$",
+                "inside": null,
+                "fields": null,
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_1491892512#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    241,
+                    247
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "setChannelVar",
+                "prefix": "$",
+                "inside": "requester;$authorID",
+                "fields": [
+                    {
+                        "value": "requester"
+                    },
+                    {
+                        "value": "$authorID"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_9410037203#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "authorID",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_4656387664#",
+                        "path": [
+                            "$setChannelVar"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            9
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    249,
+                    283
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "onlyIf",
+                "prefix": "$",
+                "inside": "$voiceID!=;{newEmbed:{description:Você precisa conectar em uma call pra ouvir música.}{color:Orange}}",
+                "fields": [
+                    {
+                        "value": "$voiceID!="
+                    },
+                    {
+                        "value": "{newEmbed:{description:Você precisa conectar em uma call pra ouvir música.}{color:Orange}}"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_2403342728#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "voiceID",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_16799446568#",
+                        "path": [
+                            "$onlyIf"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 0,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            8
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    285,
+                    394
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "onlyIf",
+                "prefix": "$",
+                "inside": "$message!=;{newEmbed:{description: Você está usando da forma errada! Use: `B.play [nome da música]`}{color:Orange}}",
+                "fields": [
+                    {
+                        "value": "$message!="
+                    },
+                    {
+                        "value": "{newEmbed:{description: Você está usando da forma errada! Use: `B.play [nome da música]`}{color:Orange}}"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_7188804136#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "message",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_8117809263#",
+                        "path": [
+                            "$onlyIf"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 0,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            8
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    396,
+                    519
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "globalCooldown",
+                "prefix": "$",
+                "inside": "2s;{newEmbed:{description:Espere %time% para usar o comando novamente}{color:Orange}}",
+                "fields": [
+                    {
+                        "value": "2s"
+                    },
+                    {
+                        "value": "{newEmbed:{description:Espere %time% para usar o comando novamente}{color:Orange}}"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_6568031124#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    521,
+                    622
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "title",
+                "prefix": "$",
+                "inside": "1;:1000174283:❯ Informações do usuário",
+                "fields": [
+                    {
+                        "value": "1"
+                    },
+                    {
+                        "value": ":1000174283:❯ Informações do usuário"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_12717051675#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    625,
+                    670
+                ],
+                "lines": [
+                    1
+                ]
+            },
+            {
+                "name": "description",
+                "prefix": "$",
+                "inside": "1;\n> :1000174281: **Usuário**: `$username[$get[a]]` (`$get[a]`)\n> :1000174281: **Criação da conta**: <t:$truncate[$divide[$creationDate[$get[a];ms];1000]]:R>\n\n$if[$memberExists[$get[a]]==true]\n> :1000174281: **Data de entrada no servidor**: <t:$truncate[$divide[$memberJoinDate[$get[a];$guildID;ms];1000]]:R>\n> :1000174281: **Booster?**: $replaceText[$replaceText[$isBoosting[$get[a];$guildID];true;Sim;1];false;Não;1]\n$endif\n\n> :1000174281: **Tipo de conta?**: $replaceText[$replaceText[$isBot[$get[a]];true;Bot;1];false;Humano;1]",
+                "fields": [
+                    {
+                        "value": "1"
+                    },
+                    {
+                        "value": "\n> :1000174281: **Usuário**: `$username[$get[a]]` (`$get[a]`)\n> :1000174281: **Criação da conta**: <t:$truncate[$divide[$creationDate[$get[a];ms];1000]]:R>\n\n$if[$memberExists[$get[a]]==true]\n> :1000174281: **Data de entrada no servidor**: <t:$truncate[$divide[$memberJoinDate[$get[a];$guildID;ms];1000]]:R>\n> :1000174281: **Booster?**: $replaceText[$replaceText[$isBoosting[$get[a];$guildID];true;Sim;1];false;Não;1]\n$endif\n\n> :1000174281: **Tipo de conta?**: $replaceText[$replaceText[$isBot[$get[a]];true;Bot;1];false;Humano;1]"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_241234201#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "username",
+                        "prefix": "$",
+                        "inside": "$get[a]",
+                        "fields": [
+                            {
+                                "value": "$get[a]"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_13920456256#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "get",
+                                "prefix": "$",
+                                "inside": "a",
+                                "fields": [
+                                    {
+                                        "value": "a"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_17497075335#",
+                                "path": [
+                                    "$username"
+                                ],
+                                "parent": null,
+                                "children": [],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    6
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            30,
+                            47
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "get",
+                        "prefix": "$",
+                        "inside": "a",
+                        "fields": [
+                            {
+                                "value": "a"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_3858201197#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            52,
+                            58
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "truncate",
+                        "prefix": "$",
+                        "inside": "$divide[$creationDate[$get[a];ms];1000]",
+                        "fields": [
+                            {
+                                "value": "$divide[$creationDate[$get[a];ms];1000]"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_11684394611#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "divide",
+                                "prefix": "$",
+                                "inside": "$creationDate[$get[a];ms];1000",
+                                "fields": [
+                                    {
+                                        "value": "$creationDate[$get[a];ms]"
+                                    },
+                                    {
+                                        "value": "1000"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_8479489380#",
+                                "path": [
+                                    "$truncate"
+                                ],
+                                "parent": null,
+                                "children": [
+                                    {
+                                        "name": "creationDate",
+                                        "prefix": "$",
+                                        "inside": "$get[a];ms",
+                                        "fields": [
+                                            {
+                                                "value": "$get[a]"
+                                            },
+                                            {
+                                                "value": "ms"
+                                            }
+                                        ],
+                                        "supressed": false,
+                                        "closed": true,
+                                        "id": "#INSTRUCTION_6512322207#",
+                                        "path": [
+                                            "$divide"
+                                        ],
+                                        "parent": null,
+                                        "children": [
+                                            {
+                                                "name": "get",
+                                                "prefix": "$",
+                                                "inside": "a",
+                                                "fields": [
+                                                    {
+                                                        "value": "a"
+                                                    }
+                                                ],
+                                                "supressed": false,
+                                                "closed": true,
+                                                "id": "#INSTRUCTION_2232862056#",
+                                                "path": [
+                                                    "$creationDate"
+                                                ],
+                                                "parent": null,
+                                                "children": [],
+                                                "from": 0,
+                                                "data": null,
+                                                "bounds": [
+                                                    0,
+                                                    6
+                                                ],
+                                                "lines": [
+                                                    1
+                                                ]
+                                            }
+                                        ],
+                                        "from": 0,
+                                        "data": null,
+                                        "bounds": [
+                                            0,
+                                            24
+                                        ],
+                                        "lines": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    38
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            102,
+                            151
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "if",
+                        "prefix": "$",
+                        "inside": "$memberExists[$get[a]]==true",
+                        "fields": [
+                            {
+                                "value": "$memberExists[$get[a]]==true"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_2905858180#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "memberExists",
+                                "prefix": "$",
+                                "inside": "$get[a]",
+                                "fields": [
+                                    {
+                                        "value": "$get[a]"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_23075775285#",
+                                "path": [
+                                    "$if"
+                                ],
+                                "parent": null,
+                                "children": [
+                                    {
+                                        "name": "get",
+                                        "prefix": "$",
+                                        "inside": "a",
+                                        "fields": [
+                                            {
+                                                "value": "a"
+                                            }
+                                        ],
+                                        "supressed": false,
+                                        "closed": true,
+                                        "id": "#INSTRUCTION_18217135740#",
+                                        "path": [
+                                            "$memberExists"
+                                        ],
+                                        "parent": null,
+                                        "children": [],
+                                        "from": 0,
+                                        "data": null,
+                                        "bounds": [
+                                            0,
+                                            6
+                                        ],
+                                        "lines": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    21
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            157,
+                            189
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "truncate",
+                        "prefix": "$",
+                        "inside": "$divide[$memberJoinDate[$get[a];$guildID;ms];1000]",
+                        "fields": [
+                            {
+                                "value": "$divide[$memberJoinDate[$get[a];$guildID;ms];1000]"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_3039112154#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "divide",
+                                "prefix": "$",
+                                "inside": "$memberJoinDate[$get[a];$guildID;ms];1000",
+                                "fields": [
+                                    {
+                                        "value": "$memberJoinDate[$get[a];$guildID;ms]"
+                                    },
+                                    {
+                                        "value": "1000"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_3580571317#",
+                                "path": [
+                                    "$truncate"
+                                ],
+                                "parent": null,
+                                "children": [
+                                    {
+                                        "name": "memberJoinDate",
+                                        "prefix": "$",
+                                        "inside": "$get[a];$guildID;ms",
+                                        "fields": [
+                                            {
+                                                "value": "$get[a]"
+                                            },
+                                            {
+                                                "value": "$guildID"
+                                            },
+                                            {
+                                                "value": "ms"
+                                            }
+                                        ],
+                                        "supressed": false,
+                                        "closed": true,
+                                        "id": "#INSTRUCTION_23096337187#",
+                                        "path": [
+                                            "$divide"
+                                        ],
+                                        "parent": null,
+                                        "children": [
+                                            {
+                                                "name": "get",
+                                                "prefix": "$",
+                                                "inside": "a",
+                                                "fields": [
+                                                    {
+                                                        "value": "a"
+                                                    }
+                                                ],
+                                                "supressed": false,
+                                                "closed": true,
+                                                "id": "#INSTRUCTION_30293968527#",
+                                                "path": [
+                                                    "$memberJoinDate"
+                                                ],
+                                                "parent": null,
+                                                "children": [],
+                                                "from": 0,
+                                                "data": null,
+                                                "bounds": [
+                                                    0,
+                                                    6
+                                                ],
+                                                "lines": [
+                                                    1
+                                                ]
+                                            },
+                                            {
+                                                "name": "guildID",
+                                                "prefix": "$",
+                                                "inside": null,
+                                                "fields": null,
+                                                "supressed": false,
+                                                "closed": true,
+                                                "id": "#INSTRUCTION_6022823437#",
+                                                "path": [
+                                                    "$memberJoinDate"
+                                                ],
+                                                "parent": null,
+                                                "children": [],
+                                                "from": 1,
+                                                "data": null,
+                                                "bounds": [
+                                                    0,
+                                                    8
+                                                ],
+                                                "lines": [
+                                                    1
+                                                ]
+                                            }
+                                        ],
+                                        "from": 0,
+                                        "data": null,
+                                        "bounds": [
+                                            0,
+                                            35
+                                        ],
+                                        "lines": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    49
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            242,
+                            302
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "replaceText",
+                        "prefix": "$",
+                        "inside": "$replaceText[$isBoosting[$get[a];$guildID];true;Sim;1];false;Não;1",
+                        "fields": [
+                            {
+                                "value": "$replaceText[$isBoosting[$get[a];$guildID];true;Sim;1]"
+                            },
+                            {
+                                "value": "false"
+                            },
+                            {
+                                "value": "Não"
+                            },
+                            {
+                                "value": "1"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_10583444170#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "replaceText",
+                                "prefix": "$",
+                                "inside": "$isBoosting[$get[a];$guildID];true;Sim;1",
+                                "fields": [
+                                    {
+                                        "value": "$isBoosting[$get[a];$guildID]"
+                                    },
+                                    {
+                                        "value": "true"
+                                    },
+                                    {
+                                        "value": "Sim"
+                                    },
+                                    {
+                                        "value": "1"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_23212300907#",
+                                "path": [
+                                    "$replaceText"
+                                ],
+                                "parent": null,
+                                "children": [
+                                    {
+                                        "name": "isBoosting",
+                                        "prefix": "$",
+                                        "inside": "$get[a];$guildID",
+                                        "fields": [
+                                            {
+                                                "value": "$get[a]"
+                                            },
+                                            {
+                                                "value": "$guildID"
+                                            }
+                                        ],
+                                        "supressed": false,
+                                        "closed": true,
+                                        "id": "#INSTRUCTION_30862244511#",
+                                        "path": [
+                                            "$replaceText"
+                                        ],
+                                        "parent": null,
+                                        "children": [
+                                            {
+                                                "name": "get",
+                                                "prefix": "$",
+                                                "inside": "a",
+                                                "fields": [
+                                                    {
+                                                        "value": "a"
+                                                    }
+                                                ],
+                                                "supressed": false,
+                                                "closed": true,
+                                                "id": "#INSTRUCTION_16405064207#",
+                                                "path": [
+                                                    "$isBoosting"
+                                                ],
+                                                "parent": null,
+                                                "children": [],
+                                                "from": 0,
+                                                "data": null,
+                                                "bounds": [
+                                                    0,
+                                                    6
+                                                ],
+                                                "lines": [
+                                                    1
+                                                ]
+                                            },
+                                            {
+                                                "name": "guildID",
+                                                "prefix": "$",
+                                                "inside": null,
+                                                "fields": null,
+                                                "supressed": false,
+                                                "closed": true,
+                                                "id": "#INSTRUCTION_2688335683#",
+                                                "path": [
+                                                    "$isBoosting"
+                                                ],
+                                                "parent": null,
+                                                "children": [],
+                                                "from": 1,
+                                                "data": null,
+                                                "bounds": [
+                                                    0,
+                                                    8
+                                                ],
+                                                "lines": [
+                                                    1
+                                                ]
+                                            }
+                                        ],
+                                        "from": 0,
+                                        "data": null,
+                                        "bounds": [
+                                            0,
+                                            28
+                                        ],
+                                        "lines": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    53
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            336,
+                            415
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "endif",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_10655634535#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            417,
+                            423
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "replaceText",
+                        "prefix": "$",
+                        "inside": "$replaceText[$isBot[$get[a]];true;Bot;1];false;Humano;1",
+                        "fields": [
+                            {
+                                "value": "$replaceText[$isBot[$get[a]];true;Bot;1]"
+                            },
+                            {
+                                "value": "false"
+                            },
+                            {
+                                "value": "Humano"
+                            },
+                            {
+                                "value": "1"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_20820797664#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "replaceText",
+                                "prefix": "$",
+                                "inside": "$isBot[$get[a]];true;Bot;1",
+                                "fields": [
+                                    {
+                                        "value": "$isBot[$get[a]]"
+                                    },
+                                    {
+                                        "value": "true"
+                                    },
+                                    {
+                                        "value": "Bot"
+                                    },
+                                    {
+                                        "value": "1"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_5763268605#",
+                                "path": [
+                                    "$replaceText"
+                                ],
+                                "parent": null,
+                                "children": [
+                                    {
+                                        "name": "isBot",
+                                        "prefix": "$",
+                                        "inside": "$get[a]",
+                                        "fields": [
+                                            {
+                                                "value": "$get[a]"
+                                            }
+                                        ],
+                                        "supressed": false,
+                                        "closed": true,
+                                        "id": "#INSTRUCTION_22130227507#",
+                                        "path": [
+                                            "$replaceText"
+                                        ],
+                                        "parent": null,
+                                        "children": [
+                                            {
+                                                "name": "get",
+                                                "prefix": "$",
+                                                "inside": "a",
+                                                "fields": [
+                                                    {
+                                                        "value": "a"
+                                                    }
+                                                ],
+                                                "supressed": false,
+                                                "closed": true,
+                                                "id": "#INSTRUCTION_5020160901#",
+                                                "path": [
+                                                    "$isBot"
+                                                ],
+                                                "parent": null,
+                                                "children": [],
+                                                "from": 0,
+                                                "data": null,
+                                                "bounds": [
+                                                    0,
+                                                    6
+                                                ],
+                                                "lines": [
+                                                    1
+                                                ]
+                                            }
+                                        ],
+                                        "from": 0,
+                                        "data": null,
+                                        "bounds": [
+                                            0,
+                                            14
+                                        ],
+                                        "lines": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    39
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            460,
+                            528
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    672,
+                    1216
+                ],
+                "lines": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10
+                ]
+            },
+            {
+                "name": "author",
+                "prefix": "$",
+                "inside": "1;@$username;$authorAvatar",
+                "fields": [
+                    {
+                        "value": "1"
+                    },
+                    {
+                        "value": "@$username"
+                    },
+                    {
+                        "value": "$authorAvatar"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_11403157382#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "username",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_14668763523#",
+                        "path": [
+                            "$author"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            1,
+                            10
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "authorAvatar",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_16950335054#",
+                        "path": [
+                            "$author"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 2,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            13
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1218,
+                    1252
+                ],
+                "lines": [
+                    10
+                ]
+            },
+            {
+                "name": "if",
+                "prefix": "$",
+                "inside": "$memberExists[$get[a]]==true",
+                "fields": [
+                    {
+                        "value": "$memberExists[$get[a]]==true"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_11413059143#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "memberExists",
+                        "prefix": "$",
+                        "inside": "$get[a]",
+                        "fields": [
+                            {
+                                "value": "$get[a]"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_15976368613#",
+                        "path": [
+                            "$if"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "get",
+                                "prefix": "$",
+                                "inside": "a",
+                                "fields": [
+                                    {
+                                        "value": "a"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_14431646371#",
+                                "path": [
+                                    "$memberExists"
+                                ],
+                                "parent": null,
+                                "children": [],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    6
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 0,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            21
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1255,
+                    1287
+                ],
+                "lines": [
+                    10
+                ]
+            },
+            {
+                "name": "color",
+                "prefix": "$",
+                "inside": "$getRoleColor[$userHighestRole[$get[a];$guildID]]",
+                "fields": [
+                    {
+                        "value": "$getRoleColor[$userHighestRole[$get[a];$guildID]]"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_11081339771#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "getRoleColor",
+                        "prefix": "$",
+                        "inside": "$userHighestRole[$get[a];$guildID]",
+                        "fields": [
+                            {
+                                "value": "$userHighestRole[$get[a];$guildID]"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_19616738660#",
+                        "path": [
+                            "$color"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "userHighestRole",
+                                "prefix": "$",
+                                "inside": "$get[a];$guildID",
+                                "fields": [
+                                    {
+                                        "value": "$get[a]"
+                                    },
+                                    {
+                                        "value": "$guildID"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_24953570107#",
+                                "path": [
+                                    "$getRoleColor"
+                                ],
+                                "parent": null,
+                                "children": [
+                                    {
+                                        "name": "get",
+                                        "prefix": "$",
+                                        "inside": "a",
+                                        "fields": [
+                                            {
+                                                "value": "a"
+                                            }
+                                        ],
+                                        "supressed": false,
+                                        "closed": true,
+                                        "id": "#INSTRUCTION_23748856622#",
+                                        "path": [
+                                            "$userHighestRole"
+                                        ],
+                                        "parent": null,
+                                        "children": [],
+                                        "from": 0,
+                                        "data": null,
+                                        "bounds": [
+                                            0,
+                                            6
+                                        ],
+                                        "lines": [
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "name": "guildID",
+                                        "prefix": "$",
+                                        "inside": null,
+                                        "fields": null,
+                                        "supressed": false,
+                                        "closed": true,
+                                        "id": "#INSTRUCTION_8980451451#",
+                                        "path": [
+                                            "$userHighestRole"
+                                        ],
+                                        "parent": null,
+                                        "children": [],
+                                        "from": 1,
+                                        "data": null,
+                                        "bounds": [
+                                            0,
+                                            8
+                                        ],
+                                        "lines": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    33
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 0,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            48
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1289,
+                    1345
+                ],
+                "lines": [
+                    10
+                ]
+            },
+            {
+                "name": "else",
+                "prefix": "$",
+                "inside": null,
+                "fields": null,
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_7798993495#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1347,
+                    1352
+                ],
+                "lines": [
+                    10
+                ]
+            },
+            {
+                "name": "color",
+                "prefix": "$",
+                "inside": "4b0082",
+                "fields": [
+                    {
+                        "value": "4b0082"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_24831648903#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1353,
+                    1366
+                ],
+                "lines": [
+                    10
+                ]
+            },
+            {
+                "name": "endif",
+                "prefix": "$",
+                "inside": null,
+                "fields": null,
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_14554147896#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1368,
+                    1374
+                ],
+                "lines": [
+                    10
+                ]
+            },
+            {
+                "name": "title",
+                "prefix": "$",
+                "inside": "2; Informações extras",
+                "fields": [
+                    {
+                        "value": "2"
+                    },
+                    {
+                        "value": " Informações extras"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_6166395176#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1376,
+                    1404
+                ],
+                "lines": [
+                    10
+                ]
+            },
+            {
+                "name": "description",
+                "prefix": "$",
+                "inside": "2;\n> :1000174281: **Status**: $replaceText[$replaceText[$replaceText[$replaceText[$userStatus[$get[a]];online;:1000174286:;1];invisible;:1000174287:;1];dnd;⛔;1];idle;🌙;1]\n> :1000174281: **Maior cargo**: $userHighestRole[$get[a];$guildID;mention]\n> :1000174281: **Avatar Costumizado?**: $replaceText[$replaceText[$checkCondition[$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]];true;Sim, esse usuário usa um avatar padrão;1];false;Não, esse usuário possui um avatar customizado;1]",
+                "fields": [
+                    {
+                        "value": "2"
+                    },
+                    {
+                        "value": "\n> :1000174281: **Status**: $replaceText[$replaceText[$replaceText[$replaceText[$userStatus[$get[a]];online;:1000174286:;1];invisible;:1000174287:;1];dnd;⛔;1];idle;🌙;1]\n> :1000174281: **Maior cargo**: $userHighestRole[$get[a];$guildID;mention]\n> :1000174281: **Avatar Costumizado?**: $replaceText[$replaceText[$checkCondition[$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]];true;Sim, esse usuário usa um avatar padrão;1];false;Não, esse usuário possui um avatar customizado;1]"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_24266003998#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "replaceText",
+                        "prefix": "$",
+                        "inside": "$replaceText[$replaceText[$replaceText[$userStatus[$get[a]];online;:1000174286:;1];invisible;:1000174287:;1];dnd;⛔;1];idle;🌙;1",
+                        "fields": [
+                            {
+                                "value": "$replaceText[$replaceText[$replaceText[$userStatus[$get[a]];online;:1000174286:;1];invisible;:1000174287:;1];dnd;⛔;1]"
+                            },
+                            {
+                                "value": "idle"
+                            },
+                            {
+                                "value": "🌙"
+                            },
+                            {
+                                "value": "1"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_6332787813#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "replaceText",
+                                "prefix": "$",
+                                "inside": "$replaceText[$replaceText[$userStatus[$get[a]];online;:1000174286:;1];invisible;:1000174287:;1];dnd;⛔;1",
+                                "fields": [
+                                    {
+                                        "value": "$replaceText[$replaceText[$userStatus[$get[a]];online;:1000174286:;1];invisible;:1000174287:;1]"
+                                    },
+                                    {
+                                        "value": "dnd"
+                                    },
+                                    {
+                                        "value": "⛔"
+                                    },
+                                    {
+                                        "value": "1"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_29665168829#",
+                                "path": [
+                                    "$replaceText"
+                                ],
+                                "parent": null,
+                                "children": [
+                                    {
+                                        "name": "replaceText",
+                                        "prefix": "$",
+                                        "inside": "$replaceText[$userStatus[$get[a]];online;:1000174286:;1];invisible;:1000174287:;1",
+                                        "fields": [
+                                            {
+                                                "value": "$replaceText[$userStatus[$get[a]];online;:1000174286:;1]"
+                                            },
+                                            {
+                                                "value": "invisible"
+                                            },
+                                            {
+                                                "value": ":1000174287:"
+                                            },
+                                            {
+                                                "value": "1"
+                                            }
+                                        ],
+                                        "supressed": false,
+                                        "closed": true,
+                                        "id": "#INSTRUCTION_31268626229#",
+                                        "path": [
+                                            "$replaceText"
+                                        ],
+                                        "parent": null,
+                                        "children": [
+                                            {
+                                                "name": "replaceText",
+                                                "prefix": "$",
+                                                "inside": "$userStatus[$get[a]];online;:1000174286:;1",
+                                                "fields": [
+                                                    {
+                                                        "value": "$userStatus[$get[a]]"
+                                                    },
+                                                    {
+                                                        "value": "online"
+                                                    },
+                                                    {
+                                                        "value": ":1000174286:"
+                                                    },
+                                                    {
+                                                        "value": "1"
+                                                    }
+                                                ],
+                                                "supressed": false,
+                                                "closed": true,
+                                                "id": "#INSTRUCTION_27625661741#",
+                                                "path": [
+                                                    "$replaceText"
+                                                ],
+                                                "parent": null,
+                                                "children": [
+                                                    {
+                                                        "name": "userStatus",
+                                                        "prefix": "$",
+                                                        "inside": "$get[a]",
+                                                        "fields": [
+                                                            {
+                                                                "value": "$get[a]"
+                                                            }
+                                                        ],
+                                                        "supressed": false,
+                                                        "closed": true,
+                                                        "id": "#INSTRUCTION_21521221196#",
+                                                        "path": [
+                                                            "$replaceText"
+                                                        ],
+                                                        "parent": null,
+                                                        "children": [
+                                                            {
+                                                                "name": "get",
+                                                                "prefix": "$",
+                                                                "inside": "a",
+                                                                "fields": [
+                                                                    {
+                                                                        "value": "a"
+                                                                    }
+                                                                ],
+                                                                "supressed": false,
+                                                                "closed": true,
+                                                                "id": "#INSTRUCTION_8813101880#",
+                                                                "path": [
+                                                                    "$userStatus"
+                                                                ],
+                                                                "parent": null,
+                                                                "children": [],
+                                                                "from": 0,
+                                                                "data": null,
+                                                                "bounds": [
+                                                                    0,
+                                                                    6
+                                                                ],
+                                                                "lines": [
+                                                                    1
+                                                                ]
+                                                            }
+                                                        ],
+                                                        "from": 0,
+                                                        "data": null,
+                                                        "bounds": [
+                                                            0,
+                                                            19
+                                                        ],
+                                                        "lines": [
+                                                            1
+                                                        ]
+                                                    }
+                                                ],
+                                                "from": 0,
+                                                "data": null,
+                                                "bounds": [
+                                                    0,
+                                                    55
+                                                ],
+                                                "lines": [
+                                                    1
+                                                ]
+                                            }
+                                        ],
+                                        "from": 0,
+                                        "data": null,
+                                        "bounds": [
+                                            0,
+                                            94
+                                        ],
+                                        "lines": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    116
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            28,
+                            168
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "userHighestRole",
+                        "prefix": "$",
+                        "inside": "$get[a];$guildID;mention",
+                        "fields": [
+                            {
+                                "value": "$get[a]"
+                            },
+                            {
+                                "value": "$guildID"
+                            },
+                            {
+                                "value": "mention"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_14272809228#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "get",
+                                "prefix": "$",
+                                "inside": "a",
+                                "fields": [
+                                    {
+                                        "value": "a"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_25202362075#",
+                                "path": [
+                                    "$userHighestRole"
+                                ],
+                                "parent": null,
+                                "children": [],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    6
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            },
+                            {
+                                "name": "guildID",
+                                "prefix": "$",
+                                "inside": null,
+                                "fields": null,
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_31279534534#",
+                                "path": [
+                                    "$userHighestRole"
+                                ],
+                                "parent": null,
+                                "children": [],
+                                "from": 1,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    8
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            202,
+                            243
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "replaceText",
+                        "prefix": "$",
+                        "inside": "$replaceText[$checkCondition[$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]];true;Sim, esse usuário usa um avatar padrão;1];false;Não, esse usuário possui um avatar customizado;1",
+                        "fields": [
+                            {
+                                "value": "$replaceText[$checkCondition[$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]];true;Sim, esse usuário usa um avatar padrão;1]"
+                            },
+                            {
+                                "value": "false"
+                            },
+                            {
+                                "value": "Não, esse usuário possui um avatar customizado"
+                            },
+                            {
+                                "value": "1"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_6841667281#",
+                        "path": [
+                            "$description"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "replaceText",
+                                "prefix": "$",
+                                "inside": "$checkCondition[$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]];true;Sim, esse usuário usa um avatar padrão;1",
+                                "fields": [
+                                    {
+                                        "value": "$checkCondition[$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]]"
+                                    },
+                                    {
+                                        "value": "true"
+                                    },
+                                    {
+                                        "value": "Sim, esse usuário usa um avatar padrão"
+                                    },
+                                    {
+                                        "value": "1"
+                                    }
+                                ],
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_29974036545#",
+                                "path": [
+                                    "$replaceText"
+                                ],
+                                "parent": null,
+                                "children": [
+                                    {
+                                        "name": "checkCondition",
+                                        "prefix": "$",
+                                        "inside": "$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]",
+                                        "fields": [
+                                            {
+                                                "value": "$userDefaultAvatar[$get[a]]==$userAvatar[$get[a]]"
+                                            }
+                                        ],
+                                        "supressed": false,
+                                        "closed": true,
+                                        "id": "#INSTRUCTION_16282406216#",
+                                        "path": [
+                                            "$replaceText"
+                                        ],
+                                        "parent": null,
+                                        "children": [
+                                            {
+                                                "name": "userDefaultAvatar",
+                                                "prefix": "$",
+                                                "inside": "$get[a]",
+                                                "fields": [
+                                                    {
+                                                        "value": "$get[a]"
+                                                    }
+                                                ],
+                                                "supressed": false,
+                                                "closed": true,
+                                                "id": "#INSTRUCTION_15430673160#",
+                                                "path": [
+                                                    "$checkCondition"
+                                                ],
+                                                "parent": null,
+                                                "children": [
+                                                    {
+                                                        "name": "get",
+                                                        "prefix": "$",
+                                                        "inside": "a",
+                                                        "fields": [
+                                                            {
+                                                                "value": "a"
+                                                            }
+                                                        ],
+                                                        "supressed": false,
+                                                        "closed": true,
+                                                        "id": "#INSTRUCTION_33842500650#",
+                                                        "path": [
+                                                            "$userDefaultAvatar"
+                                                        ],
+                                                        "parent": null,
+                                                        "children": [],
+                                                        "from": 0,
+                                                        "data": null,
+                                                        "bounds": [
+                                                            0,
+                                                            6
+                                                        ],
+                                                        "lines": [
+                                                            1
+                                                        ]
+                                                    }
+                                                ],
+                                                "from": 0,
+                                                "data": null,
+                                                "bounds": [
+                                                    0,
+                                                    26
+                                                ],
+                                                "lines": [
+                                                    1
+                                                ]
+                                            },
+                                            {
+                                                "name": "userAvatar",
+                                                "prefix": "$",
+                                                "inside": "$get[a]",
+                                                "fields": [
+                                                    {
+                                                        "value": "$get[a]"
+                                                    }
+                                                ],
+                                                "supressed": false,
+                                                "closed": true,
+                                                "id": "#INSTRUCTION_13000991412#",
+                                                "path": [
+                                                    "$checkCondition"
+                                                ],
+                                                "parent": null,
+                                                "children": [
+                                                    {
+                                                        "name": "get",
+                                                        "prefix": "$",
+                                                        "inside": "a",
+                                                        "fields": [
+                                                            {
+                                                                "value": "a"
+                                                            }
+                                                        ],
+                                                        "supressed": false,
+                                                        "closed": true,
+                                                        "id": "#INSTRUCTION_30166521512#",
+                                                        "path": [
+                                                            "$userAvatar"
+                                                        ],
+                                                        "parent": null,
+                                                        "children": [],
+                                                        "from": 0,
+                                                        "data": null,
+                                                        "bounds": [
+                                                            0,
+                                                            6
+                                                        ],
+                                                        "lines": [
+                                                            1
+                                                        ]
+                                                    }
+                                                ],
+                                                "from": 0,
+                                                "data": null,
+                                                "bounds": [
+                                                    29,
+                                                    48
+                                                ],
+                                                "lines": [
+                                                    1
+                                                ]
+                                            }
+                                        ],
+                                        "from": 0,
+                                        "data": null,
+                                        "bounds": [
+                                            0,
+                                            65
+                                        ],
+                                        "lines": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    125
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            285,
+                            479
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1406,
+                    1901
+                ],
+                "lines": [
+                    10,
+                    11,
+                    12,
+                    13
+                ]
+            },
+            {
+                "name": "footer",
+                "prefix": "$",
+                "inside": "Requisitado por $username;$authorAvatar",
+                "fields": [
+                    {
+                        "value": "Requisitado por $username"
+                    },
+                    {
+                        "value": "$authorAvatar"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_8310364853#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "username",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_10240096030#",
+                        "path": [
+                            "$footer"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 0,
+                        "data": null,
+                        "bounds": [
+                            16,
+                            25
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "authorAvatar",
+                        "prefix": "$",
+                        "inside": null,
+                        "fields": null,
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_21814619468#",
+                        "path": [
+                            "$footer"
+                        ],
+                        "parent": null,
+                        "children": [],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            13
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1904,
+                    1951
+                ],
+                "lines": [
+                    13
+                ]
+            },
+            {
+                "name": "addTimestamp",
+                "prefix": "$",
+                "inside": null,
+                "fields": null,
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_20294746032#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1953,
+                    1966
+                ],
+                "lines": [
+                    13
+                ]
+            },
+            {
+                "name": "let",
+                "prefix": "$",
+                "inside": "a;$findUser[$message;true]",
+                "fields": [
+                    {
+                        "value": "a"
+                    },
+                    {
+                        "value": "$findUser[$message;true]"
+                    }
+                ],
+                "supressed": false,
+                "closed": true,
+                "id": "#INSTRUCTION_1204548245#",
+                "path": [
+                    "$BDJSEXECUTEDATA"
+                ],
+                "parent": null,
+                "children": [
+                    {
+                        "name": "findUser",
+                        "prefix": "$",
+                        "inside": "$message;true",
+                        "fields": [
+                            {
+                                "value": "$message"
+                            },
+                            {
+                                "value": "true"
+                            }
+                        ],
+                        "supressed": false,
+                        "closed": true,
+                        "id": "#INSTRUCTION_5846416673#",
+                        "path": [
+                            "$let"
+                        ],
+                        "parent": null,
+                        "children": [
+                            {
+                                "name": "message",
+                                "prefix": "$",
+                                "inside": null,
+                                "fields": null,
+                                "supressed": false,
+                                "closed": true,
+                                "id": "#INSTRUCTION_16918542129#",
+                                "path": [
+                                    "$findUser"
+                                ],
+                                "parent": null,
+                                "children": [],
+                                "from": 0,
+                                "data": null,
+                                "bounds": [
+                                    0,
+                                    8
+                                ],
+                                "lines": [
+                                    1
+                                ]
+                            }
+                        ],
+                        "from": 1,
+                        "data": null,
+                        "bounds": [
+                            0,
+                            23
+                        ],
+                        "lines": [
+                            1
+                        ]
+                    }
+                ],
+                "from": 0,
+                "data": null,
+                "bounds": [
+                    1967,
+                    1998
+                ],
+                "lines": [
+                    13
+                ]
+            }
+        ],
+        "from": null,
+        "data": null,
+        "bounds": [
+            0,
+            2017
+        ],
+        "lines": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49
+        ]
+    }
+]

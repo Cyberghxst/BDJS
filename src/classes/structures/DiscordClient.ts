@@ -1,9 +1,8 @@
 import { BDJSCommand, DiscordCommandManager, LoadCommandType } from './Command'
 import { Client, ClientEvents, ClientOptions } from 'discord.js'
-import { EventManager } from '@core/EventManager'
-import { Transpiler } from '@core/Transpiler'
-import ready from '../../events/ready'
+import { EventManager } from '@managers/EventManager'
 import logCommands from '@functions/logCommands'
+// import ready from '../../events/ready'
 
 /**
  * Setup options for prefix.
@@ -13,20 +12,6 @@ interface PrefixSetupOptions<Compile extends boolean = boolean> {
      * The values to take as prefix.
      */
     values: string[]
-    /**
-     * Advanced options for prefix values.
-     */
-    advancedOptions?: {
-        /**
-         * Whether transpile prefix values.
-         * @default false
-         */
-        transpileValues?: Compile
-        /**
-         * The indexes that should be transpiled only.
-         */
-        transpileIndexes?: Compile extends true ? number[] : never
-    }
     /**
      * Whether take client mention as prefix.
      * @default false
@@ -53,13 +38,9 @@ export interface DiscordClientSetupOptions extends ClientOptions {
  */
 export class DiscordClient extends Client {
     /**
-     * BDJS code transpiler.
-     */
-    public readonly transpiler = new Transpiler()
-    /**
      * The discord client command manager.
      */
-    public readonly commands = new DiscordCommandManager(this.transpiler)
+    public readonly commands = new DiscordCommandManager()
 
     constructor(public extraOptions: DiscordClientSetupOptions) {
         super(extraOptions)
@@ -91,20 +72,10 @@ export class DiscordClient extends Client {
             this.extraOptions.prefixes = this.extraOptions.prefixes
         } else {
             const mentionAsPrefix = this.extraOptions.prefixes.mentionAsPrefix ?? false
-            const transpileValues = this.extraOptions.prefixes.advancedOptions?.transpileValues ?? false
-            const transpileIndexes = Array.isArray(this.extraOptions.prefixes.advancedOptions?.transpileIndexes) ? this.extraOptions.prefixes.advancedOptions.transpileIndexes : []
             let values = this.extraOptions.prefixes.values
 
-            if (transpileValues && transpileIndexes.length === 0) {
-                values = values.map((prefix) => this.transpiler.transpile(prefix, false))
-            } else if (transpileValues && transpileIndexes.length > 0) {
-                for (const index of transpileIndexes) {
-                    values[index] = this.transpiler.transpile(values[index], false)
-                }
-            }
-
             if (mentionAsPrefix) {
-                values.push(`<@${this.user.username}>`, `<@!${this.user.username}>`)
+                values.push(`<@${this.user!.username}>`, `<@!${this.user!.username}>`)
             }
 
             this.extraOptions.prefixes = values
@@ -118,12 +89,12 @@ export class DiscordClient extends Client {
      */
     override login(token: string) {
         // Load the events.
-        if (this.extraOptions.events.length) {
+        if (this.extraOptions.events?.length) {
             EventManager.attach(this, 'built-ins', this.extraOptions.events)
         }
 
         // Attaching the ready event.
-        ready.attach(this)
+        // ready.attach(this)
 
         // Log the cached commands.
         logCommands(this.commands)

@@ -1,7 +1,7 @@
 import { AutoModerationActionExecution, AutoModerationRule, BaseChannel, BaseGuildTextChannel, BaseGuildVoiceChannel, CacheType, ClientUser, DMChannel, Emoji, Entitlement, Guild, GuildEmoji, GuildMember, Interaction, InteractionDeferReplyOptions, InteractionDeferUpdateOptions, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, InteractionWebhook, Message, MessageCreateOptions, MessagePayload, MessageReaction, NewsChannel, NonThreadGuildBasedChannel, OmitPartialGroupDMChannel, PartialGuildMember, PartialMessage, PartialUser, Presence, PrivateThreadChannel, PublicThreadChannel, Role, SendableChannels, Shard, StageChannel, Sticker, TextBasedChannel, TextChannel, ThreadChannel, User, VoiceBasedChannel, Webhook, WebhookClient } from 'discord.js';
 import { DiscordClient } from './DiscordClient';
-import { TranspiledCommand } from './Command';
 import { Container } from './Container';
+import { FormedCommand } from './Command';
 /**
  * Discord.js sendable contexts.
  */
@@ -55,7 +55,7 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
     /**
      * The current command being executed.
      */
-    command: TranspiledCommand<any> | null;
+    command: any | null;
     /**
      * The message container.
      */
@@ -83,31 +83,19 @@ export declare class Runtime<T extends Sendable = Sendable, Cached extends Cache
      * @param command - Command to be set.
      * @returns {Runtime<Sendable, Cached>}
      */
-    setCommand<Type extends string = string, Command extends TranspiledCommand<Type> = TranspiledCommand<Type>>(command: Command): this;
+    setCommand<Type extends string = string, Command extends FormedCommand<Type> = FormedCommand<Type>>(command: Command): this;
     /**
      * Sends a message to the current context.
      * @param message - The message to be sent.
      * @returns {Promise<Shard | Message<boolean> | import('discord.js').APIMessage | null>}
      */
-    send<T extends SendablePayload>(message: T): Promise<Message<true> | Message<false>>;
+    send<T extends SendablePayload>(message: T): Promise<Message<true> | Message<false> | null>;
     /**
      * Set the runtime states.
      * @param states - The states to be set.
      * @returns {void}
      */
     setState(states: RuntimeStates): void;
-    /**
-     * Return the normalized cached instructions.
-     */
-    normalizedInstructions(): {
-        name: string;
-        description: string;
-        returnType: import("../core/BaseInstruction").ReturnType;
-        params: import("../core/BaseInstruction").IParamDef[];
-        version: string;
-        brackets: boolean;
-        usage: string;
-    }[];
     /**
      * Check whether current runtime has guild support.
      * @returns {this is this & { guild: Guild }}

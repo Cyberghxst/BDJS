@@ -66,7 +66,7 @@ export declare class Container {
      * @param i - Embed index to get.
      * @returns {EmbedBuilder}
      */
-    getEmbed(i?: number): EmbedBuilder;
+    getEmbed(i?: number): EmbedBuilder | undefined;
     /**
      * Full with action row components till the provided index.
      * @param i - Index to fullfill to.

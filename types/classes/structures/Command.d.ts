@@ -1,5 +1,5 @@
-import { Transpiler } from '../core/Transpiler';
 import { Runtime } from './Runtime';
+import { InstructionToken } from '../core/Lexer';
 /**
  * Command types that Discord contexts provide.
  */
@@ -35,15 +35,11 @@ export interface IRawCommand<Type extends string = string> {
     /**
      * The native code of this command.
      */
-    code: string | CommandExecutor;
+    code: string;
     /**
      * The transpiled code of the command.
      */
-    transpiled?: string | null;
-    /**
-     * The transpiled code without any minification/beautification filter.
-     */
-    rawTranspiledCode: string | null;
+    compiled?: InstructionToken[] | null;
     /**
      * The path of this command.
      * If `null`, command was added from main file.
@@ -69,13 +65,13 @@ export interface BDJSCommand extends IRawCommand<CommandTypes> {
 /**
  * Represents a transpiled command.
  */
-export declare class TranspiledCommand<Types extends string | IRawCommand> {
+export declare class FormedCommand<Types extends string | IRawCommand> {
     #private;
     private data;
     /**
      * Starts the command instance.
      */
-    constructor(data: Types extends string ? IRawCommand<Types> : Types, transpiler: Transpiler);
+    constructor(data: Types extends string ? IRawCommand<Types> : Types);
     /**
      * Call this command.
      * @param runtime - Runtime context to be used.
@@ -104,11 +100,11 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
     /**
      * Returns the command code.
      */
-    get code(): CommandExecutor;
+    get code(): string;
     /**
      * Returns the name of this command.
      */
-    get name(): string | RegExp;
+    get name(): string | RegExp | undefined;
     /**
      * Returns the name of this command for the log table.
      */
@@ -116,7 +112,7 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
     /**
      * Returns the command path.
      */
-    get path(): string;
+    get path(): string | null;
     /**
      * Whether send the result of the command evaluation.
      */
@@ -124,7 +120,7 @@ export declare class TranspiledCommand<Types extends string | IRawCommand> {
     /**
      * Returns the transpiled code.
      */
-    get transpiledCode(): string;
+    get transpiledCode(): InstructionToken[];
     /**
      * Returns the command type.
      */
@@ -142,16 +138,15 @@ export declare enum LoadCommandType {
  */
 export declare class BaseCommandManager<Types extends string> {
     #private;
-    private transpiler;
     /**
      * Command cache.
      */
-    cache: Map<string, TranspiledCommand<Types>>;
+    cache: Map<string, FormedCommand<Types>>;
     /**
      * Creates an instance of BaseCommandManager class.
      * @param transpiler - Transpiler instance to use.
      */
-    constructor(transpiler: Transpiler);
+    constructor();
     /**
      * Add a command into the cache.
      * @param command
@@ -161,9 +156,9 @@ export declare class BaseCommandManager<Types extends string> {
     /**
      * Get the cached commands by type.
      * @param type - The command type.
-     * @returns {TranspiledCommand<Types>[]}
+     * @returns {FormedCommand<Types>[]}
      */
-    getType(type: Types): TranspiledCommand<Types>[];
+    getType(type: Types): FormedCommand<Types>[];
     /**
      * Load commands from source.
      * @param path

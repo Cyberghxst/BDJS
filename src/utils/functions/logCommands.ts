@@ -1,5 +1,5 @@
-import { BaseCommandManager } from "@structures/Command"
-import { AsciiTable3, AlignmentEnum } from "ascii-table3"
+import { BaseCommandManager } from '@structures/Command'
+import { AsciiTable3, AlignmentEnum } from 'ascii-table3'
 
 /**
  * Log all commands cached in a command manager.

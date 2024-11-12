@@ -88,23 +88,6 @@ class Runtime {
         this.states = states;
     }
     /**
-     * Return the normalized cached instructions.
-     */
-    normalizedInstructions() {
-        return [...this.client.transpiler.lexer.competences.values()].slice(0, -1)
-            .map((it) => {
-            return {
-                name: '$' + it.identifier.split('$')[1],
-                description: it.description,
-                returnType: it.returnType,
-                params: it.params,
-                version: it.version,
-                brackets: !!it.params,
-                usage: !!it.params ? it.params.map((p) => `${p.spread ? '...' : ''}${p.name.split(' ').join('')}${p.required ? '' : '?'}`).join(';') : null
-            };
-        });
-    }
-    /**
      * Check whether current runtime has guild support.
      * @returns {this is this & { guild: Guild }}
      */
@@ -144,7 +127,7 @@ class Runtime {
      * @returns {BaseChannel | null}
      */
     get channel() {
-        return this.data instanceof discord_js_1.BaseChannel ? this.data : "channel" in this.data && this.data.channel instanceof discord_js_1.BaseChannel ? this.data.channel : null;
+        return this.data instanceof discord_js_1.BaseChannel ? this.data : 'channel' in this.data && this.data.channel instanceof discord_js_1.BaseChannel ? this.data.channel : null;
     }
     /**
      * Points to the current emoji context.
@@ -220,7 +203,7 @@ class Runtime {
      * @returns {User | null}
      */
     get user() {
-        return this.data instanceof discord_js_1.User ? this.data : this.data instanceof discord_js_1.Message ? this.data.author : "user" in this.data ? this.data.user : null;
+        return this.data instanceof discord_js_1.User ? this.data : this.data instanceof discord_js_1.Message ? this.data.author : 'user' in this.data ? this.data.user : null;
     }
     /**
      * Retrieves the name of the current command.

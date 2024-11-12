@@ -11,13 +11,13 @@
         "skipDefaultLibCheck": true,
         "strict": true,
         "skipLibCheck": true,
-        "strictNullChecks": false,
+        "strictNullChecks": true,
         "forceConsistentCasingInFileNames": true,
-        // "types": [],
         "tsBuildInfoFile": "./__dump__/.tsbuildinfo",
         "paths": {
             "@core/*": ["./src/classes/core/*"],
             "@functions/*": ["./src/utils/functions/*"],
+            "@managers/*": ["./src/classes/managers/*"],
             "@structures/*": ["./src/classes/structures/*"],
         }
     },

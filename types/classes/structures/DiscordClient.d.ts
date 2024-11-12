@@ -1,6 +1,5 @@
 import { BDJSCommand, DiscordCommandManager } from './Command';
 import { Client, ClientEvents, ClientOptions } from 'discord.js';
-import { Transpiler } from '../core/Transpiler';
 /**
  * Setup options for prefix.
  */
@@ -9,20 +8,6 @@ interface PrefixSetupOptions<Compile extends boolean = boolean> {
      * The values to take as prefix.
      */
     values: string[];
-    /**
-     * Advanced options for prefix values.
-     */
-    advancedOptions?: {
-        /**
-         * Whether transpile prefix values.
-         * @default false
-         */
-        transpileValues?: Compile;
-        /**
-         * The indexes that should be transpiled only.
-         */
-        transpileIndexes?: Compile extends true ? number[] : never;
-    };
     /**
      * Whether take client mention as prefix.
      * @default false
@@ -47,10 +32,6 @@ export interface DiscordClientSetupOptions extends ClientOptions {
  */
 export declare class DiscordClient extends Client {
     extraOptions: DiscordClientSetupOptions;
-    /**
-     * BDJS code transpiler.
-     */
-    readonly transpiler: Transpiler;
     /**
      * The discord client command manager.
      */

@@ -1,14 +1,13 @@
 import { collectFiles } from '@functions/collectFiles'
 import createString from '@functions/createString'
-import { Transpiler } from '@core/Transpiler'
+import { isAsyncFunction } from 'node:util/types'
+import logCommands from '@functions/logCommands'
 import { AsciiTable3 } from 'ascii-table3'
 import { Logger } from '@core/Logger'
 import { Runtime } from './Runtime'
 import { minify } from 'uglify-js'
 import color from 'cli-color'
-import { isAsyncFunction } from 'node:util/types'
-import runCode from '@functions/runCode'
-import logCommands from '@functions/logCommands'
+import { InstructionToken, Lexer } from '@core/Lexer'
 
 /**
  * Command types that Discord contexts provide.
@@ -134,15 +133,11 @@ export interface IRawCommand<Type extends string = string> {
     /**
      * The native code of this command.
      */
-    code: string | CommandExecutor
+    code: string
     /**
      * The transpiled code of the command.
      */
-    transpiled?: string | null
-    /**
-     * The transpiled code without any minification/beautification filter.
-     */
-    rawTranspiledCode: string | null
+    compiled?: InstructionToken[] | null
     /**
      * The path of this command.
      * If `null`, command was added from main file.
@@ -169,12 +164,12 @@ export interface BDJSCommand extends IRawCommand<CommandTypes> {}
 /**
  * A BDJS transpiled command.
  */
-type BDJSTranspiledCommand = BDJSCommand & { transpiled: string, rawTranspiledCode: string }
+type BDJSFormedCommand = BDJSCommand & { compiled: InstructionToken[] }
 
 /**
  * Represents a transpiled command.
  */
-export class TranspiledCommand<Types extends string | IRawCommand> {
+export class FormedCommand<Types extends string | IRawCommand> {
     /**
      * Additional information about the command to be logged.
      */
@@ -192,75 +187,12 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
      * Starts the command instance.
      */
     constructor(
-        private data: Types extends string ? IRawCommand<Types> : Types,
-        transpiler: Transpiler
+        private data: Types extends string ? IRawCommand<Types> : Types
     ) {
         this.ensureMinification(); // Ensure the minification option.
         this.ensureName(); // Ensure the command name.
 
-        let executor: CommandExecutor // Creating the executor.
-
-        if (typeof data.code === 'string') {
-            // Transpiling the native code.
-            let transpiledCode = `async function __command_executor__(runtime) {\n${transpiler.transpile(data.code)}\n}`;
-
-            // Assign the raw output to its property.
-            data.rawTranspiledCode = transpiledCode;
-
-            // Checking if it was transpiled.
-            if (typeof transpiledCode === 'string') {
-                // Minify the command
-                if (data.minify) {
-                    const minified = minify(transpiledCode);
-
-                    // Assign the error if any.
-                    if (minified.error instanceof Error) {
-                        this.#logOptions.error = minified.error;
-                        this.#logOptions.pass = false;
-                    }
-
-                    // Assign the warning if any.
-                    if (Array.isArray(minified.warnings)) {
-                        this.#logOptions.warnings = minified.warnings;
-                    }
-
-                    // Assign the minified code.
-                    transpiledCode = minified.code;
-                } else {
-                    const beautified = minify(transpiledCode, {
-                        compress: false,
-                        mangle: false,
-                        output: {
-                            comments: 'all',
-                            beautify: true,
-                        },
-                    });
-
-                    // Assign the error if any.
-                    if (beautified.error instanceof Error) {
-                        this.#logOptions.error = beautified.error;
-                        this.#logOptions.pass = false;
-                    }
-
-                    // Assign the warning if any.
-                    if (Array.isArray(beautified.warnings)) {
-                        this.#logOptions.warnings = beautified.warnings;
-                    }
-
-                    // Assign the beautified code.
-                    transpiledCode = beautified.code;
-                }
-
-                // Assign the transpiled code to the command.
-                data.transpiled = transpiledCode;
-                executor = eval(`${transpiledCode}\n__command_executor__`) as CommandExecutor
-                
-            }
-        } else {
-            executor = data.code
-        }
-
-        data.code = executor
+        data.compiled = new Lexer(data.code).toAST()
     }
 
     /**
@@ -268,15 +200,13 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
      * @param runtime - Runtime context to be used.
      */
     public async call(runtime: Runtime) {
-        runtime.setCommand<CommandTypes>(this as TranspiledCommand<any>)
+        runtime.setCommand<CommandTypes>(this as FormedCommand<any>)
 
-        if (typeof this.code === 'function' && isAsyncFunction(this.code)) {
+        /*if (isAsyncFunction(this.code)) {
             await this.code(runtime);
-        } else if (typeof this.code === 'function' && !isAsyncFunction(this.code)) {
+        } else if (!isAsyncFunction(this.code)) {
             this.code(runtime);
-        } else {
-            runCode(this.transpiledCode, runtime)
-        }
+        }*/
     }
 
     /**
@@ -328,7 +258,7 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
      * Returns the command code.
      */
     public get code() {
-        return this.data.code as CommandExecutor
+        return this.data.code
     }
 
     /**
@@ -363,7 +293,7 @@ export class TranspiledCommand<Types extends string | IRawCommand> {
      * Returns the transpiled code.
      */
     public get transpiledCode() {
-        return this.data.transpiled as string
+        return this.data.compiled as InstructionToken[]
     }
 
     /**
@@ -394,13 +324,13 @@ export class BaseCommandManager<Types extends string> {
     /**
      * Command cache.
      */
-    public cache: Map<string, TranspiledCommand<Types>> = new Map()
+    public cache: Map<string, FormedCommand<Types>> = new Map()
 
     /**
      * Creates an instance of BaseCommandManager class.
      * @param transpiler - Transpiler instance to use.
      */
-    constructor(private transpiler: Transpiler) {}
+    constructor() {}
 
     /**
      * Add a command into the cache.
@@ -411,10 +341,7 @@ export class BaseCommandManager<Types extends string> {
         command: Types extends string ? IRawCommand<Types> : Types,
         loadType = LoadCommandType.Main
     ) {
-        const transpiledCommand = new TranspiledCommand(
-            command,
-            this.transpiler
-        )
+        const transpiledCommand = new FormedCommand(command)
 
         transpiledCommand.setPath(loadType === LoadCommandType.Main ? null : command.path)
 
@@ -424,7 +351,7 @@ export class BaseCommandManager<Types extends string> {
     /**
      * Get the cached commands by type.
      * @param type - The command type.
-     * @returns {TranspiledCommand<Types>[]}
+     * @returns {FormedCommand<Types>[]}
      */
     public getType(type: Types) {
         return Array.from(this.cache.values()).filter((c) => c.type === type)

@@ -27,6 +27,7 @@
     "@types/node": "^22.7.3",
     "@types/uglify-js": "^3.17.5",
     "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.10",
     "typescript": "^5.6.2"
   },

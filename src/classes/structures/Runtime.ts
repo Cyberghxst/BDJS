@@ -1,8 +1,8 @@
 import { AutoModerationActionExecution, AutoModerationRule, BaseChannel, BaseGuildTextChannel, BaseGuildVoiceChannel, BaseInteraction, CacheType, ClientUser, DMChannel, Emoji, Entitlement, Guild, GuildEmoji, GuildMember, Interaction, InteractionDeferReplyOptions, InteractionDeferUpdateOptions, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, InteractionWebhook, Message, MessageContextMenuCommandInteraction, MessageCreateOptions, MessagePayload, MessageReaction, NewsChannel, NonThreadGuildBasedChannel, OmitPartialGroupDMChannel, PartialGuildMember, PartialMessage, PartialUser, Presence, PrivateThreadChannel, PublicThreadChannel, Role, SendableChannels, Shard, StageChannel, Sticker, TextBasedChannel, TextChannel, ThreadChannel, User, VoiceBasedChannel, Webhook, WebhookClient } from 'discord.js'
 import { DiscordClient } from './DiscordClient'
-import { TranspiledCommand } from './Command'
+import { Instruction } from './Instruction'
 import { Container } from './Container'
-import { BaseInstruction } from '@core/BaseInstruction'
+import { FormedCommand } from './Command'
 
 /**
  * Discord.js sendable contexts.
@@ -87,7 +87,7 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
     /**
      * The current command being executed.
      */
-    public command: TranspiledCommand<any> | null = null
+    public command: any | null = null
 
     /**
      * The message container.
@@ -124,7 +124,7 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      * @param command - Command to be set.
      * @returns {Runtime<Sendable, Cached>}
      */
-    public setCommand<Type extends string = string, Command extends TranspiledCommand<Type> = TranspiledCommand<Type>>(command: Command) {
+    public setCommand<Type extends string = string, Command extends FormedCommand<Type> = FormedCommand<Type>>(command: Command) {
         this.command = command
         return this
     }
@@ -140,12 +140,12 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
         } else if (this.channel !== null && this.channel.isSendable()) {
             return await this.channel.send(<MessageCreateOptions>message)
         } else if (this.data instanceof User) {
-            const dm: DMChannel = await this.data.createDM(true).catch(e => null)
+            const dm: DMChannel | null = await this.data.createDM(true).catch(e => null)
             if (!dm) return null;
 
             return await dm.send(<MessageCreateOptions>message)
         } else if (this.data instanceof GuildMember) {
-            const dm: DMChannel = await this.data.user.createDM(true).catch(e => null)
+            const dm: DMChannel | null = await this.data.user.createDM(true).catch(e => null)
             if (!dm) return null;
 
             return await dm.send(<MessageCreateOptions>message)
@@ -159,24 +159,6 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      */
     public setState(states: RuntimeStates) {
         this.states = states
-    }
-
-    /**
-     * Return the normalized cached instructions.
-     */
-    public normalizedInstructions() {
-        return [...this.client.transpiler.lexer.competences.values()].slice(0, -1)
-        .map((it: BaseInstruction) => {
-            return {
-                name: '$' + it.identifier.split('$')[1],
-                description: it.description,
-                returnType: it.returnType,
-                params: it.params,
-                version: it.version,
-                brackets: !!it.params,
-                usage: !!it.params ? it.params.map((p) => `${p.spread ? '...' : ''}${p.name.split(' ').join('')}${p.required ? '' : '?'}`).join(';') : null
-            }
-        })
     }
 
     /**
@@ -224,7 +206,7 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      * @returns {BaseChannel | null}
      */
     public get channel(): BaseChannel | null {
-        return this.data instanceof BaseChannel ? this.data : "channel" in this.data && this.data.channel instanceof BaseChannel ? this.data.channel : null
+        return this.data instanceof BaseChannel ? this.data : 'channel' in this.data && this.data.channel instanceof BaseChannel ? this.data.channel : null
     }
 
     /**
@@ -311,7 +293,7 @@ export class Runtime<T extends Sendable = Sendable, Cached extends CacheType = C
      * @returns {User | null}
      */
     public get user(): User | null {
-        return this.data instanceof User ? this.data : this.data instanceof Message ? this.data.author : "user" in this.data ? this.data.user : null
+        return this.data instanceof User ? this.data : this.data instanceof Message ? this.data.author : 'user' in this.data ? this.data.user : null
     }
 
     /**

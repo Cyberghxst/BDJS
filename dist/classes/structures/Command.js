@@ -7,90 +7,36 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _TranspiledCommand_logOptions, _BaseCommandManager_path;
+var _FormedCommand_logOptions, _BaseCommandManager_path;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DiscordCommandManager = exports.BaseCommandManager = exports.LoadCommandType = exports.TranspiledCommand = void 0;
+exports.DiscordCommandManager = exports.BaseCommandManager = exports.LoadCommandType = exports.FormedCommand = void 0;
 const collectFiles_1 = require("../../utils/functions/collectFiles");
 const createString_1 = __importDefault(require("../../utils/functions/createString"));
+const logCommands_1 = __importDefault(require("../../utils/functions/logCommands"));
 const ascii_table3_1 = require("ascii-table3");
 const Logger_1 = require("../core/Logger");
-const uglify_js_1 = require("uglify-js");
 const cli_color_1 = __importDefault(require("cli-color"));
-const types_1 = require("node:util/types");
-const runCode_1 = __importDefault(require("../../utils/functions/runCode"));
-const logCommands_1 = __importDefault(require("../../utils/functions/logCommands"));
+const Lexer_1 = require("../core/Lexer");
 /**
  * Represents a transpiled command.
  */
-class TranspiledCommand {
+class FormedCommand {
     /**
      * Starts the command instance.
      */
-    constructor(data, transpiler) {
+    constructor(data) {
         this.data = data;
         /**
          * Additional information about the command to be logged.
          */
-        _TranspiledCommand_logOptions.set(this, {
+        _FormedCommand_logOptions.set(this, {
             pass: true,
             error: undefined,
             warnings: [],
         });
         this.ensureMinification(); // Ensure the minification option.
         this.ensureName(); // Ensure the command name.
-        let executor; // Creating the executor.
-        if (typeof data.code === 'string') {
-            // Transpiling the native code.
-            let transpiledCode = `async function __command_executor__(runtime) {\n${transpiler.transpile(data.code)}\n}`;
-            // Assign the raw output to its property.
-            data.rawTranspiledCode = transpiledCode;
-            // Checking if it was transpiled.
-            if (typeof transpiledCode === 'string') {
-                // Minify the command
-                if (data.minify) {
-                    const minified = (0, uglify_js_1.minify)(transpiledCode);
-                    // Assign the error if any.
-                    if (minified.error instanceof Error) {
-                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").error = minified.error;
-                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass = false;
-                    }
-                    // Assign the warning if any.
-                    if (Array.isArray(minified.warnings)) {
-                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").warnings = minified.warnings;
-                    }
-                    // Assign the minified code.
-                    transpiledCode = minified.code;
-                }
-                else {
-                    const beautified = (0, uglify_js_1.minify)(transpiledCode, {
-                        compress: false,
-                        mangle: false,
-                        output: {
-                            comments: 'all',
-                            beautify: true,
-                        },
-                    });
-                    // Assign the error if any.
-                    if (beautified.error instanceof Error) {
-                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").error = beautified.error;
-                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass = false;
-                    }
-                    // Assign the warning if any.
-                    if (Array.isArray(beautified.warnings)) {
-                        __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").warnings = beautified.warnings;
-                    }
-                    // Assign the beautified code.
-                    transpiledCode = beautified.code;
-                }
-                // Assign the transpiled code to the command.
-                data.transpiled = transpiledCode;
-                executor = eval(`${transpiledCode}\n__command_executor__`);
-            }
-        }
-        else {
-            executor = data.code;
-        }
-        data.code = executor;
+        data.compiled = new Lexer_1.Lexer(data.code).toAST();
     }
     /**
      * Call this command.
@@ -98,15 +44,11 @@ class TranspiledCommand {
      */
     async call(runtime) {
         runtime.setCommand(this);
-        if (typeof this.code === 'function' && (0, types_1.isAsyncFunction)(this.code)) {
+        /*if (isAsyncFunction(this.code)) {
             await this.code(runtime);
-        }
-        else if (typeof this.code === 'function' && !(0, types_1.isAsyncFunction)(this.code)) {
+        } else if (!isAsyncFunction(this.code)) {
             this.code(runtime);
-        }
-        else {
-            (0, runCode_1.default)(this.transpiledCode, runtime);
-        }
+        }*/
     }
     /**
      * Ensure the minification option in the command.
@@ -141,7 +83,7 @@ class TranspiledCommand {
                 ? this.data.name.source
                 : this.data.name || 'Unknown',
             this.data.type,
-            __classPrivateFieldGet(this, _TranspiledCommand_logOptions, "f").pass
+            __classPrivateFieldGet(this, _FormedCommand_logOptions, "f").pass
                 ? cli_color_1.default.green('LOADED')
                 : cli_color_1.default.red('NOT LOADED'),
             this.data.path === null
@@ -183,7 +125,7 @@ class TranspiledCommand {
      * Returns the transpiled code.
      */
     get transpiledCode() {
-        return this.data.transpiled;
+        return this.data.compiled;
     }
     /**
      * Returns the command type.
@@ -192,8 +134,8 @@ class TranspiledCommand {
         return this.data.type;
     }
 }
-exports.TranspiledCommand = TranspiledCommand;
-_TranspiledCommand_logOptions = new WeakMap();
+exports.FormedCommand = FormedCommand;
+_FormedCommand_logOptions = new WeakMap();
 /**
  * Represents the load command source.
  */
@@ -210,8 +152,7 @@ class BaseCommandManager {
      * Creates an instance of BaseCommandManager class.
      * @param transpiler - Transpiler instance to use.
      */
-    constructor(transpiler) {
-        this.transpiler = transpiler;
+    constructor() {
         /**
          * Saves the command path for later loading.
          */
@@ -231,14 +172,14 @@ class BaseCommandManager {
      * @param loadType
      */
     addCommand(command, loadType = LoadCommandType.Main) {
-        const transpiledCommand = new TranspiledCommand(command, this.transpiler);
+        const transpiledCommand = new FormedCommand(command);
         transpiledCommand.setPath(loadType === LoadCommandType.Main ? null : command.path);
         this.cache.set(transpiledCommand.stringifiedName, transpiledCommand);
     }
     /**
      * Get the cached commands by type.
      * @param type - The command type.
-     * @returns {TranspiledCommand<Types>[]}
+     * @returns {FormedCommand<Types>[]}
      */
     getType(type) {
         return Array.from(this.cache.values()).filter((c) => c.type === type);

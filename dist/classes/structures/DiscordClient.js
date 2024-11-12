@@ -6,9 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscordClient = void 0;
 const Command_1 = require("./Command");
 const discord_js_1 = require("discord.js");
-const EventManager_1 = require("../core/EventManager");
-const Transpiler_1 = require("../core/Transpiler");
-const ready_1 = __importDefault(require("../../events/ready"));
+const EventManager_1 = require("../managers/EventManager");
 const logCommands_1 = __importDefault(require("../../utils/functions/logCommands"));
 /**
  * The class representing a Discord client.
@@ -18,13 +16,9 @@ class DiscordClient extends discord_js_1.Client {
         super(extraOptions);
         this.extraOptions = extraOptions;
         /**
-         * BDJS code transpiler.
-         */
-        this.transpiler = new Transpiler_1.Transpiler();
-        /**
          * The discord client command manager.
          */
-        this.commands = new Command_1.DiscordCommandManager(this.transpiler);
+        this.commands = new Command_1.DiscordCommandManager();
         EventManager_1.EventManager.loadBuiltIns();
     }
     /**
@@ -52,17 +46,7 @@ class DiscordClient extends discord_js_1.Client {
         }
         else {
             const mentionAsPrefix = this.extraOptions.prefixes.mentionAsPrefix ?? false;
-            const transpileValues = this.extraOptions.prefixes.advancedOptions?.transpileValues ?? false;
-            const transpileIndexes = Array.isArray(this.extraOptions.prefixes.advancedOptions?.transpileIndexes) ? this.extraOptions.prefixes.advancedOptions.transpileIndexes : [];
             let values = this.extraOptions.prefixes.values;
-            if (transpileValues && transpileIndexes.length === 0) {
-                values = values.map((prefix) => this.transpiler.transpile(prefix, false));
-            }
-            else if (transpileValues && transpileIndexes.length > 0) {
-                for (const index of transpileIndexes) {
-                    values[index] = this.transpiler.transpile(values[index], false);
-                }
-            }
             if (mentionAsPrefix) {
                 values.push(`<@${this.user.username}>`, `<@!${this.user.username}>`);
             }
@@ -76,11 +60,11 @@ class DiscordClient extends discord_js_1.Client {
      */
     login(token) {
         // Load the events.
-        if (this.extraOptions.events.length) {
+        if (this.extraOptions.events?.length) {
             EventManager_1.EventManager.attach(this, 'built-ins', this.extraOptions.events);
         }
         // Attaching the ready event.
-        ready_1.default.attach(this);
+        // ready.attach(this)
         // Log the cached commands.
         (0, logCommands_1.default)(this.commands);
         return super.login(token);

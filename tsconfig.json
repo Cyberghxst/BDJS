@@ -19,6 +19,7 @@
             "@functions/*": ["./src/utils/functions/*"],
             "@managers/*": ["./src/classes/managers/*"],
             "@structures/*": ["./src/classes/structures/*"],
+            "@typings/*": ["./src/typings/*"]
         }
     },
     "include": [

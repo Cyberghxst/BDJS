@@ -1,5 +1,5 @@
+import { InstructionManager } from '@managers/InstructionManager'
 import { Instruction } from '@structures/Instruction'
-import { InstructionManager } from '../managers/InstructionManager'
 
 /**
  * Represents an AST token.
@@ -124,6 +124,14 @@ export class InstructionToken implements IBaseToken {
     ) {
         this.bounds = bounds ?? [] as unknown as [number, number]
         this.lines = lines ?? []
+    }
+
+    /**
+     * Check whether this token has instruction metadata pulled.
+     * @returns {this is this & { data: Instruction }}
+     */
+    public hasData(): this is this & { data: Instruction } {
+        return this.data !== null && this.data instanceof Instruction
     }
 
     /**

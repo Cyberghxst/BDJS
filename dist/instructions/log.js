@@ -6,7 +6,7 @@ exports.default = new Instruction_1.Instruction({
     description: 'Log the given content into the console.',
     brackets: true,
     compile: true,
-    params: [
+    fields: [
         {
             name: 'Content',
             description: 'The content to log.',

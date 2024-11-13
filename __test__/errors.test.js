@@ -1,7 +1,7 @@
 const { InvalidInstructionError } = require('../dist/classes/core/Errors')
+const { InstructionToken } = require('../dist/classes/core/Lexer')
 const assert = require('node:assert/strict')
 const test = require('node:test')
-const { InstructionToken } = require('../dist/classes/core/Lexer')
 
 test.describe('should throw an invalid instruction error', () => {
     const token = new InstructionToken()
@@ -15,6 +15,4 @@ test.describe('should throw an invalid instruction error', () => {
     assert.throws(() => {
         throw new InvalidInstructionError(token)
     })
-
-    throw new InvalidInstructionError(token)
 })

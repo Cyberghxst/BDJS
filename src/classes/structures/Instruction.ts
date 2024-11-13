@@ -126,7 +126,7 @@ interface _Instruction<Args extends [...ArgData[]] = ArgData[], Brackets extends
     /**
      * The parameters this instruction requires.
      */
-    params?: [...Args]
+    fields?: [...Args]
     /**
      * The executor of this instruction.
      */

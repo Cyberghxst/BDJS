@@ -1,5 +1,4 @@
-import { InstructionThisArg } from '../../classes/core/ThisArg';
-import { InstructionToken } from '../../classes/core/Lexer';
+import { InstructionThisArg, InstructionToken } from '../../classes/core/Lexer';
 import { Runtime } from '../../classes/structures/Runtime';
 /**
  * Creates a "this" context for an instruction.

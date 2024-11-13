@@ -25,11 +25,11 @@ var FieldLevel;
      */
     FieldLevel[FieldLevel["None"] = 0] = "None";
     /**
-     * Argument can be left empty.
+     * Fieldument can be left empty.
      */
     FieldLevel[FieldLevel["Optional"] = 1] = "Optional";
     /**
-     * Argument must be provided and required.
+     * Fieldument must be provided and required.
      */
     FieldLevel[FieldLevel["Required"] = 2] = "Required";
     /**
@@ -45,6 +45,11 @@ var FieldLevel;
  * Represents an instruction.
  */
 class Instruction {
+    data;
+    /**
+     * Whether this instruction is async.
+     */
+    async;
     /**
      * Creates a new instance of the `Instruction` class.
      * @param data - The instruction metadata.

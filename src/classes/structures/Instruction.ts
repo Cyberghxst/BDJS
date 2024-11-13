@@ -1,4 +1,4 @@
-import { InstructionThisArg as ThisArg } from '@core/ThisArg'
+import { InstructionThisArg as ThisArg } from '@core/Lexer'
 import { isAsyncFunction } from 'util/types'
 import type { Nullable } from '../../typings'
 import type { Runtime } from './Runtime'
@@ -26,11 +26,11 @@ export enum FieldLevel {
      */
     None,
     /**
-     * Argument can be left empty.
+     * Fieldument can be left empty.
      */
     Optional,
     /**
-     * Argument must be provided and required.
+     * Fieldument must be provided and required.
      */
     Required,
     /**
@@ -46,9 +46,10 @@ export enum FieldLevel {
 /**
  * The structure representing a field data.
  */
-export interface ArgData<Type extends DataType = DataType, Level extends FieldLevel = FieldLevel, Spread extends boolean = boolean, Enum = unknown> {
+export interface FieldData<Type extends DataType = DataType, Level extends FieldLevel = FieldLevel, Spread extends boolean = boolean, Enum = unknown> {
     /**
-     * The name of this field.
+     * The name of this 
+     * field.
      */
     name: string
     /**
@@ -86,27 +87,27 @@ export type MarkSpread<State extends boolean, Type> = State extends true ? Type[
 /**
  * Converts a value to its native type.
  */
-export type ConvertArg<T extends DataType, Data> = T extends DataType.String ? string : T extends DataType.Integer ? number : T extends DataType.Enum ? keyof Data : T extends DataType.Nullable ? Nullable<Data> : T extends DataType.Unknown ? unknown : T extends DataType.Boolean ? boolean : never;
+export type ConvertField<T extends DataType, Data> = T extends DataType.String ? string : T extends DataType.Integer ? number : T extends DataType.Enum ? keyof Data : T extends DataType.Nullable ? Nullable<Data> : T extends DataType.Unknown ? unknown : T extends DataType.Boolean ? boolean : never;
 
 /**
  * Unwrap the instruction argument.
  */
-export type UnwrapArg<T> = T extends ArgData<infer Type, infer Level, infer Spread, infer Enum> ? MarkSpread<Spread, MarkNullable<ConvertArg<Type, Enum>, Level>> : never;
+export type UnwrapField<T> = T extends FieldData<infer Type, infer Level, infer Spread, infer Enum> ? MarkSpread<Spread, MarkNullable<ConvertField<Type, Enum>, Level>> : never;
 
 /**
  * Unwrap various instruction arguments.
  */
-export type UnwrapArgs<T> = T extends [infer L, ...infer R] ? [UnwrapArg<L>, ...UnwrapArgs<R>] : []
+export type UnwrapFields<T> = T extends [infer L, ...infer R] ? [UnwrapField<L>, ...UnwrapFields<R>] : []
 
 /**
  * The instruction executor.
  */
-export type InstructionExecutor<Brackets extends boolean = boolean, Args extends [...ArgData[]] = ArgData[]> = Brackets extends true ? (this: ThisArg, runtime: Runtime, ...args: UnwrapArgs<Args>) => Promise<Return> | Return : (this: ThisArg, runtime: Runtime) => Promise<Return> | Return
+export type InstructionExecutor<Brackets extends boolean = boolean, Fields extends [...FieldData[]] = FieldData[]> = Brackets extends true ? (this: ThisArg, runtime: Runtime, ...args: UnwrapFields<Fields>) => Promise<Return> | Return : (this: ThisArg, runtime: Runtime) => Promise<Return> | Return
 
 /**
  * Structure representing an instruction.
  */
-interface _Instruction<Args extends [...ArgData[]] = ArgData[], Brackets extends boolean = boolean, Compile extends boolean = boolean> {
+interface _Instruction<Fields extends [...FieldData[]] = FieldData[], Brackets extends boolean = boolean, Compile extends boolean = boolean> {
     /**
      * The name this instruction has.
      */
@@ -126,17 +127,17 @@ interface _Instruction<Args extends [...ArgData[]] = ArgData[], Brackets extends
     /**
      * The parameters this instruction requires.
      */
-    fields?: [...Args]
+    fields?: [...Fields]
     /**
      * The executor of this instruction.
      */
-    run: InstructionExecutor<Brackets, Args>
+    run: InstructionExecutor<Brackets, Fields>
 }
 
 /**
  * Represents an instruction.
  */
-export class Instruction<T extends [...ArgData[]] = ArgData[], Brackets extends boolean = boolean, Compile extends boolean = boolean> {
+export class Instruction<T extends [...FieldData[]] = FieldData[], Brackets extends boolean = boolean, Compile extends boolean = boolean> {
     /**
      * Whether this instruction is async.
      */

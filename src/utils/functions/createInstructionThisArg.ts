@@ -1,5 +1,4 @@
-import { InstructionThisArg } from '@core/ThisArg'
-import { InstructionToken } from '@core/Lexer'
+import { InstructionThisArg, InstructionToken } from '@core/Lexer'
 import { Runtime } from '@structures/Runtime'
 
 /**

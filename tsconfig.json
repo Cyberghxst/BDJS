@@ -3,7 +3,7 @@
         "incremental": true,
         "declaration": true,
         "module": "CommonJS",
-        "target": "ES2020",
+        "target": "ES2023",
         "esModuleInterop": true,
         "outDir": "./dist",
         "rootDir": "./src",

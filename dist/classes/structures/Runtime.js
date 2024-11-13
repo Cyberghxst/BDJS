@@ -7,32 +7,39 @@ const Container_1 = require("./Container");
  * This class stores the current context of discord.js
  */
 class Runtime {
+    data;
+    client;
+    /**
+     * Global runtime values that
+     * can be retrieved between commands.
+     */
+    static globalValues = new Map();
+    /**
+     * Command arguments.
+     */
+    args = [];
+    /**
+     * The current command being executed.
+     */
+    command = null;
+    /**
+     * The message container.
+     */
+    container = new Container_1.Container();
+    /**
+     * Runtime states.
+     */
+    states = {};
+    /**
+     * Variables this runtime has.
+     */
+    variables = new Map();
     /**
      * Creates an instance of Runtime.
      */
     constructor(data, client) {
         this.data = data;
         this.client = client;
-        /**
-         * Command arguments.
-         */
-        this.args = [];
-        /**
-         * The current command being executed.
-         */
-        this.command = null;
-        /**
-         * The message container.
-         */
-        this.container = new Container_1.Container();
-        /**
-         * Runtime states.
-         */
-        this.states = {};
-        /**
-         * Variables this runtime has.
-         */
-        this.variables = new Map();
     }
     /**
      * Set the arguments for this runtime.
@@ -227,8 +234,3 @@ class Runtime {
     }
 }
 exports.Runtime = Runtime;
-/**
- * Global runtime values that
- * can be retrieved between commands.
- */
-Runtime.globalValues = new Map();

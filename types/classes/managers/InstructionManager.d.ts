@@ -6,7 +6,13 @@ export declare class InstructionManager {
     /**
      * The instruction registry.
      */
-    static cache: Map<string, Instruction<import("../structures/Instruction").ArgData<import("../structures/Instruction").DataType, import("../structures/Instruction").FieldLevel, boolean, unknown>[], boolean, boolean>>;
+    static cache: Map<string, Instruction<import("../structures/Instruction").FieldData<import("../structures/Instruction").DataType, import("../structures/Instruction").FieldLevel, boolean, unknown>[], boolean, boolean>>;
+    /**
+     * Adds the given instructions to the manager.
+     * @param instructions - Instructions to be added.
+     * @returns {void}
+     */
+    static add(...instructions: Instruction[]): void;
     /**
      * Pulls an instruction by name.
      * @param name - The name of the instruction.
@@ -23,5 +29,5 @@ export declare class InstructionManager {
      * Returns the cached instruction as array.
      * @returns {Instruction[]}
      */
-    static toArray(): Instruction<import("../structures/Instruction").ArgData<import("../structures/Instruction").DataType, import("../structures/Instruction").FieldLevel, boolean, unknown>[], boolean, boolean>[];
+    static toArray(): Instruction<import("../structures/Instruction").FieldData<import("../structures/Instruction").DataType, import("../structures/Instruction").FieldLevel, boolean, unknown>[], boolean, boolean>[];
 }

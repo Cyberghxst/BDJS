@@ -10,6 +10,17 @@ export class InstructionManager {
     public static cache = new Map<string, Instruction>()
 
     /**
+     * Adds the given instructions to the manager.
+     * @param instructions - Instructions to be added.
+     * @returns {void}
+     */
+    public static add(...instructions: Instruction[]) {
+        instructions.forEach((i) => {
+            InstructionManager.cache.set(i.name, i)
+        })
+    }
+
+    /**
      * Pulls an instruction by name.
      * @param name - The name of the instruction.
      * @returns {?Instruction}

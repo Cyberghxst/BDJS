@@ -1,4 +1,6 @@
 import { Instruction } from '../structures/Instruction';
+import { type Runtime } from '../structures/Runtime';
+import { Return, ReturnType } from './Return';
 /**
  * Represents an AST token.
  */
@@ -80,7 +82,6 @@ export declare class InstructionToken implements IBaseToken {
      * The parent instruction this child may have.
      * Fallbacks to `null` if no parent.
      */
-    parent: InstructionToken | null;
     /**
      * The children instructions this parent may have.
      */
@@ -143,6 +144,50 @@ export declare class InstructionToken implements IBaseToken {
      * @returns {string}
      */
     toString(): string;
+}
+/**
+ * The "this" context of a compiled instruction.
+ */
+export declare class InstructionThisArg extends InstructionToken {
+    private runtime;
+    /**
+     * Creates a new instance of the `InstructionThisArg` class.
+     * @param token - The token to be inherited.
+     * @param runtime - The current runtime context.
+     * @returns {InstructionThisArg}
+     */
+    constructor(token: InstructionToken, runtime: Runtime);
+    /**
+     * Returns a success statement.
+     * @returns {Return<ReturnType.Success, unknown>}
+     */
+    ok(): Return<ReturnType.Success, unknown>;
+    /**
+     * Returns a value.
+     * @param value - The value to return.
+     * @returns {Return<ReturnType.ReturnKeyword, string | undefined>}
+     */
+    return(value?: string): Return<ReturnType.ReturnKeyword, string | undefined>;
+}
+/**
+ * Represents a compiled instruction by the lexer.
+ */
+export declare class CompiledInstruction extends InstructionToken {
+    private runtime;
+    /**
+     * The "this" context for the instruction executor.
+     */
+    private thisArg;
+    /**
+     * Creates a new instance of the `CompiledInstruction` class.
+     * @param token - The token to be used as reference.
+     * @param runtime - The current runtime context.
+     */
+    constructor(token: InstructionToken, runtime: Runtime);
+    /**
+     * Calls the instruction executor.
+     */
+    call(values?: any[]): Promise<Return<ReturnType, unknown>>;
 }
 /**
  * The main instruction of a BDJS code.

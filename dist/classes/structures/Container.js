@@ -6,28 +6,30 @@ const discord_js_1 = require("discord.js");
  * Message payload container.
  */
 class Container {
-    constructor() {
-        /**
-         * Allowed mentions for this message.
-         */
-        this.allowedMentions = {};
-        /**
-         * Attachments this message has.
-         */
-        this.files = [];
-        /**
-         * Message action rows.
-         */
-        this.components = [];
-        /**
-         * Embeds this message has.
-         */
-        this.embeds = [];
-        /**
-         * Stickers this message has.
-         */
-        this.stickers = [];
-    }
+    /**
+     * Allowed mentions for this message.
+     */
+    allowedMentions = {};
+    /**
+     * Content this message has.
+     */
+    content;
+    /**
+     * Attachments this message has.
+     */
+    files = [];
+    /**
+     * Message action rows.
+     */
+    components = [];
+    /**
+     * Embeds this message has.
+     */
+    embeds = [];
+    /**
+     * Stickers this message has.
+     */
+    stickers = [];
     /**
      * Adds an action row to the container.
      * @returns {void}

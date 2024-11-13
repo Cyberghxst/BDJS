@@ -1,13 +1,7 @@
 "use strict";
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _FormedCommand_logOptions, _BaseCommandManager_path;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscordCommandManager = exports.BaseCommandManager = exports.LoadCommandType = exports.FormedCommand = void 0;
 const collectFiles_1 = require("../../utils/functions/collectFiles");
@@ -21,19 +15,20 @@ const Lexer_1 = require("../core/Lexer");
  * Represents a transpiled command.
  */
 class FormedCommand {
+    data;
+    /**
+     * Additional information about the command to be logged.
+     */
+    #logOptions = {
+        pass: true,
+        error: undefined,
+        warnings: [],
+    };
     /**
      * Starts the command instance.
      */
     constructor(data) {
         this.data = data;
-        /**
-         * Additional information about the command to be logged.
-         */
-        _FormedCommand_logOptions.set(this, {
-            pass: true,
-            error: undefined,
-            warnings: [],
-        });
         this.ensureMinification(); // Ensure the minification option.
         this.ensureName(); // Ensure the command name.
         data.compiled = new Lexer_1.Lexer(data.code).toAST();
@@ -83,7 +78,7 @@ class FormedCommand {
                 ? this.data.name.source
                 : this.data.name || 'Unknown',
             this.data.type,
-            __classPrivateFieldGet(this, _FormedCommand_logOptions, "f").pass
+            this.#logOptions.pass
                 ? cli_color_1.default.green('LOADED')
                 : cli_color_1.default.red('NOT LOADED'),
             this.data.path === null
@@ -135,7 +130,6 @@ class FormedCommand {
     }
 }
 exports.FormedCommand = FormedCommand;
-_FormedCommand_logOptions = new WeakMap();
 /**
  * Represents the load command source.
  */
@@ -149,23 +143,18 @@ var LoadCommandType;
  */
 class BaseCommandManager {
     /**
+     * Saves the command path for later loading.
+     */
+    #path = null;
+    /**
+     * Command cache.
+     */
+    cache = new Map();
+    /**
      * Creates an instance of BaseCommandManager class.
      * @param transpiler - Transpiler instance to use.
      */
-    constructor() {
-        /**
-         * Saves the command path for later loading.
-         */
-        _BaseCommandManager_path.set(this, null
-        /**
-         * Command cache.
-         */
-        );
-        /**
-         * Command cache.
-         */
-        this.cache = new Map();
-    }
+    constructor() { }
     /**
      * Add a command into the cache.
      * @param command
@@ -206,7 +195,7 @@ class BaseCommandManager {
      * @returns {boolean}
      */
     reload() {
-        if (!__classPrivateFieldGet(this, _BaseCommandManager_path, "f"))
+        if (!this.#path)
             return Logger_1.Logger.error('Cannot find a commands directory.');
         const size = this.cache.size;
         for (const command of this.cache.values()) {
@@ -214,13 +203,12 @@ class BaseCommandManager {
                 continue;
             this.cache.delete(command.stringifiedName);
         }
-        this.load(__classPrivateFieldGet(this, _BaseCommandManager_path, "f"));
+        this.load(this.#path);
         (0, logCommands_1.default)(this);
         return size !== this.cache.size;
     }
 }
 exports.BaseCommandManager = BaseCommandManager;
-_BaseCommandManager_path = new WeakMap();
 /**
  * The default discord command manager.
  */

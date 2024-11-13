@@ -14,6 +14,8 @@ var ReturnType;
  * Represents an instruction return.
  */
 class Return {
+    type;
+    content;
     /**
      * Creates a new instance of the `Return` class.
      * @param type - The type of return.

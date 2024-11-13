@@ -13,13 +13,14 @@ const ready_1 = __importDefault(require("../../events/ready"));
  * The class representing a Discord client.
  */
 class DiscordClient extends discord_js_1.Client {
+    extraOptions;
+    /**
+     * The discord client command manager.
+     */
+    commands = new Command_1.DiscordCommandManager();
     constructor(extraOptions) {
         super(extraOptions);
         this.extraOptions = extraOptions;
-        /**
-         * The discord client command manager.
-         */
-        this.commands = new Command_1.DiscordCommandManager();
         EventManager_1.EventManager.loadBuiltIns();
     }
     /**

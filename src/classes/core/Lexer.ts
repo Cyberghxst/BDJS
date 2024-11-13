@@ -1,5 +1,8 @@
+import createInstructionThisArg from '@functions/createInstructionThisArg'
 import { InstructionManager } from '@managers/InstructionManager'
 import { Instruction } from '@structures/Instruction'
+import { type Runtime } from '@structures/Runtime'
+import { Return, ReturnType } from './Return'
 
 /**
  * Represents an AST token.
@@ -94,7 +97,7 @@ export class InstructionToken implements IBaseToken {
      * The parent instruction this child may have.
      * Fallbacks to `null` if no parent.
      */
-    public parent: InstructionToken | null = null
+    // public parent: InstructionToken | null = null
 
     /**
      * The children instructions this parent may have.
@@ -184,6 +187,70 @@ export class InstructionToken implements IBaseToken {
         if (!this.inside) return this.prefix + this.name;
 
         return `${this.prefix}${this.name}[${this.inside}]`
+    }
+}
+
+/**
+ * The "this" context of a compiled instruction.
+ */
+export class InstructionThisArg extends InstructionToken {
+    /**
+     * Creates a new instance of the `InstructionThisArg` class.
+     * @param token - The token to be inherited.
+     * @param runtime - The current runtime context.
+     * @returns {InstructionThisArg}
+     */
+    constructor(token: InstructionToken, private runtime: Runtime) {
+        super(token.bounds, token.lines)
+        Object.assign(this, token)
+    }
+
+    /**
+     * Returns a success statement.
+     * @returns {Return<ReturnType.Success, unknown>}
+     */
+    public ok() {
+        return Return.success()
+    }
+
+    /**
+     * Returns a value.
+     * @param value - The value to return.
+     * @returns {Return<ReturnType.ReturnKeyword, string | undefined>}
+     */
+    public return(value?: string) {
+        return new Return(ReturnType.ReturnKeyword, value)
+    }
+}
+
+/**
+ * Represents a compiled instruction by the lexer.
+ */
+export class CompiledInstruction extends InstructionToken {
+    /**
+     * The "this" context for the instruction executor.
+     */
+    private thisArg: InstructionThisArg
+
+    /**
+     * Creates a new instance of the `CompiledInstruction` class.
+     * @param token - The token to be used as reference.
+     * @param runtime - The current runtime context.
+     */
+    constructor(token: InstructionToken, private runtime: Runtime) {
+        super(token.bounds, token.lines)
+        Object.assign(this, token)
+        this.thisArg = createInstructionThisArg(token, runtime)
+    }
+
+    /**
+     * Calls the instruction executor.
+     */
+    public async call(values: any[] = []) {
+        if (!this.data!.data.compile) return this.data!.run.call(this.thisArg, this.runtime);
+
+        // @ts-ignore
+        return this.data!.run.call(this.thisArg, this.runtime, values)
     }
 }
 

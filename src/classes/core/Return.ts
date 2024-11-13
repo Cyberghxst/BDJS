@@ -18,7 +18,7 @@ export class Return<Type extends ReturnType = ReturnType, Content = unknown> {
      * @param content - The content to return.
      * @returns {Return}
      */
-    constructor(private type: Type, private content: Content) {}
+    constructor(private type: Type, public content: Content) {}
 
     /**
      * @template T

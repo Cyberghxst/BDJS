@@ -10,7 +10,7 @@ export declare enum ReturnType {
  */
 export declare class Return<Type extends ReturnType = ReturnType, Content = unknown> {
     private type;
-    private content;
+    content: Content;
     /**
      * Creates a new instance of the `Return` class.
      * @param type - The type of return.

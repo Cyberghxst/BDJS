@@ -7,6 +7,10 @@ const collectFiles_1 = require("../../utils/functions/collectFiles");
  */
 class EventManager {
     /**
+     * Cached events in this manager.
+     */
+    static cache = {};
+    /**
      * Attach the events to the Discord Client.
      * @param client - Client to attach the events to.
      * @returns {void}
@@ -42,7 +46,3 @@ class EventManager {
     }
 }
 exports.EventManager = EventManager;
-/**
- * Cached events in this manager.
- */
-EventManager.cache = {};

@@ -16,6 +16,7 @@ export default new Instruction({
     ],
     run(runtime, values) {
         console.log(...values)
+
         return this.ok()
     }
 })

@@ -1,88 +1,90 @@
 "use strict";
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _Lexer_instances, _a, _Lexer_code, _Lexer_count, _Lexer_path, _Lexer_position, _Lexer_line, _Lexer_tokens, _Lexer_addToken, _Lexer_advance, _Lexer_chars, _Lexer_createInstruction, _Lexer_isFunctionStart, _Lexer_makeId, _Lexer_parseInstruction, _Lexer_parseInside;
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Lexer = exports.mainInstruction = exports.InstructionToken = void 0;
+exports.Lexer = exports.mainInstruction = exports.CompiledInstruction = exports.InstructionThisArg = exports.InstructionToken = void 0;
+const createInstructionThisArg_1 = __importDefault(require("../../utils/functions/createInstructionThisArg"));
 const InstructionManager_1 = require("../managers/InstructionManager");
 const Instruction_1 = require("../structures/Instruction");
+const Return_1 = require("./Return");
 /**
  * Represents an instruction in the AST.
  */
 class InstructionToken {
+    /**
+     * The bounds the token is in.
+     */
+    bounds;
+    /**
+     * The lines that this token is on.
+     */
+    lines;
+    /**
+     * The name this instruction has.
+     */
+    name = '';
+    /**
+     * The prefix this instruction has.
+     */
+    prefix = '$';
+    /**
+     * The content inside the instruction.
+     * Fallbacks to `null` if no content.
+     */
+    inside = null;
+    /**
+     * The splitted fields inside the instruction.
+     * Fallbacks to `null` if no fields.
+     */
+    fields = null;
+    /**
+     * Whether this instruction is supressed.
+     * @default false
+     */
+    supressed = false;
+    /**
+     * Whether this instruction is closed.
+     * @default false
+     */
+    closed = false;
+    /**
+     * The ID of this instruction in the AST.
+     * @default '#INSTRUCTION_0#'
+     */
+    id = '#INSTRUCTION_0#';
+    /**
+     * The path of this instruction.
+     * @example
+     * '$log[$toLowerCase[$get[name]]]' // ['$log', '$toLowerCase', '$get']
+     */
+    path = [];
+    /**
+     * The parent instruction this child may have.
+     * Fallbacks to `null` if no parent.
+     */
+    // public parent: InstructionToken | null = null
+    /**
+     * The children instructions this parent may have.
+     */
+    children = [];
+    /**
+     * The field this instruction is located in the parent function.
+     * Fallbacks to `null` if no parent.
+     */
+    from = null;
+    /**
+     * Instruction metadata pulled from the instruction manager.
+     * Fallbacks to `null` if no data found.
+     */
+    data = null;
     /**
      * Creates a new instance of the `InstructionToken` class.
      * @param bounds - The bounds the token is in.
      * @param lines - The lines that this token is on.
      */
     constructor(bounds, lines) {
-        /**
-         * The name this instruction has.
-         */
-        this.name = '';
-        /**
-         * The prefix this instruction has.
-         */
-        this.prefix = '$';
-        /**
-         * The content inside the instruction.
-         * Fallbacks to `null` if no content.
-         */
-        this.inside = null;
-        /**
-         * The splitted fields inside the instruction.
-         * Fallbacks to `null` if no fields.
-         */
-        this.fields = null;
-        /**
-         * Whether this instruction is supressed.
-         * @default false
-         */
-        this.supressed = false;
-        /**
-         * Whether this instruction is closed.
-         * @default false
-         */
-        this.closed = false;
-        /**
-         * The ID of this instruction in the AST.
-         * @default '#INSTRUCTION_0#'
-         */
-        this.id = '#INSTRUCTION_0#';
-        /**
-         * The path of this instruction.
-         * @example
-         * '$log[$toLowerCase[$get[name]]]' // ['$log', '$toLowerCase', '$get']
-         */
-        this.path = [];
-        /**
-         * The parent instruction this child may have.
-         * Fallbacks to `null` if no parent.
-         */
-        this.parent = null;
-        /**
-         * The children instructions this parent may have.
-         */
-        this.children = [];
-        /**
-         * The field this instruction is located in the parent function.
-         * Fallbacks to `null` if no parent.
-         */
-        this.from = null;
-        /**
-         * Instruction metadata pulled from the instruction manager.
-         * Fallbacks to `null` if no data found.
-         */
-        this.data = null;
         this.bounds = bounds ?? [];
         this.lines = lines ?? [];
     }
@@ -142,6 +144,70 @@ class InstructionToken {
 }
 exports.InstructionToken = InstructionToken;
 /**
+ * The "this" context of a compiled instruction.
+ */
+class InstructionThisArg extends InstructionToken {
+    runtime;
+    /**
+     * Creates a new instance of the `InstructionThisArg` class.
+     * @param token - The token to be inherited.
+     * @param runtime - The current runtime context.
+     * @returns {InstructionThisArg}
+     */
+    constructor(token, runtime) {
+        super(token.bounds, token.lines);
+        this.runtime = runtime;
+        Object.assign(this, token);
+    }
+    /**
+     * Returns a success statement.
+     * @returns {Return<ReturnType.Success, unknown>}
+     */
+    ok() {
+        return Return_1.Return.success();
+    }
+    /**
+     * Returns a value.
+     * @param value - The value to return.
+     * @returns {Return<ReturnType.ReturnKeyword, string | undefined>}
+     */
+    return(value) {
+        return new Return_1.Return(Return_1.ReturnType.ReturnKeyword, value);
+    }
+}
+exports.InstructionThisArg = InstructionThisArg;
+/**
+ * Represents a compiled instruction by the lexer.
+ */
+class CompiledInstruction extends InstructionToken {
+    runtime;
+    /**
+     * The "this" context for the instruction executor.
+     */
+    thisArg;
+    /**
+     * Creates a new instance of the `CompiledInstruction` class.
+     * @param token - The token to be used as reference.
+     * @param runtime - The current runtime context.
+     */
+    constructor(token, runtime) {
+        super(token.bounds, token.lines);
+        this.runtime = runtime;
+        Object.assign(this, token);
+        this.thisArg = (0, createInstructionThisArg_1.default)(token, runtime);
+    }
+    /**
+     * Calls the instruction executor.
+     */
+    async call(values = []) {
+        if (!this.data.data.compile)
+            return this.data.run.call(this.thisArg, this.runtime);
+        // @ts-ignore
+        return this.data.run.call(this.thisArg, this.runtime, values);
+    }
+}
+exports.CompiledInstruction = CompiledInstruction;
+/**
  * The main instruction of a BDJS code.
  */
 exports.mainInstruction = '$BDJSEXECUTEDATA';
@@ -150,60 +216,39 @@ exports.mainInstruction = '$BDJSEXECUTEDATA';
  */
 class Lexer {
     /**
+     * The input code to be analyzed.
+     */
+    #code = '';
+    /**
+     * The count of compiled instructions.
+     */
+    #count = 0;
+    /**
+     * The current instruction path of the lexer.
+     */
+    #path = [];
+    /**
+     * The position of the cursor in the code.
+     */
+    #position = 0;
+    /**
+     * The line the cursor is on.
+     */
+    #line = 1;
+    /**
+     * The compiled tokens from input code.
+     */
+    #tokens = [];
+    /**
+     * The lexer setup options.
+     */
+    options;
+    /**
      * Creates a new instance of the `Lexer` class.
      * @param code - The code to be analyzed.
      * @param options - Lexer setup options.
      */
     constructor(code, options) {
-        _Lexer_instances.add(this);
-        /**
-         * The input code to be analyzed.
-         */
-        _Lexer_code.set(this, ''
-        /**
-         * The count of compiled instructions.
-         */
-        );
-        /**
-         * The count of compiled instructions.
-         */
-        _Lexer_count.set(this, 0
-        /**
-         * The current instruction path of the lexer.
-         */
-        );
-        /**
-         * The current instruction path of the lexer.
-         */
-        _Lexer_path.set(this, []
-        /**
-         * The position of the cursor in the code.
-         */
-        );
-        /**
-         * The position of the cursor in the code.
-         */
-        _Lexer_position.set(this, 0
-        /**
-         * The line the cursor is on.
-         */
-        );
-        /**
-         * The line the cursor is on.
-         */
-        _Lexer_line.set(this, 1
-        /**
-         * The compiled tokens from input code.
-         */
-        );
-        /**
-         * The compiled tokens from input code.
-         */
-        _Lexer_tokens.set(this, []
-        /**
-         * The lexer setup options.
-         */
-        );
         this.options = {
             addMainInstruction: options?.addMainInstruction ?? true,
             path: options?.path ?? [],
@@ -218,149 +263,191 @@ class Lexer {
      */
     setInput(code) {
         if (this.options?.addMainInstruction)
-            __classPrivateFieldSet(this, _Lexer_code, `${exports.mainInstruction}[${code}]`, "f");
+            this.#code = `${exports.mainInstruction}[${code}]`;
         else
-            __classPrivateFieldSet(this, _Lexer_code, code, "f");
-        __classPrivateFieldSet(this, _Lexer_position, 0, "f"); // Moving to start.
+            this.#code = code;
+        this.#position = 0; // Moving to start.
         this.path.push(...this.options?.path ?? []); // Pushing inherited paths.
-        __classPrivateFieldSet(this, _Lexer_count, this.options?.count ?? __classPrivateFieldGet(this, _Lexer_count, "f"), "f"); // Seting the inherited count.
+        this.#count = this.options?.count ?? this.#count; // Seting the inherited count.
     }
     /**
      * Tokenizes the input code to an AST.
      * @returns {InstructionToken<boolean>[]}
      */
     toAST() {
-        while (this.position < __classPrivateFieldGet(this, _Lexer_code, "f").length) {
-            if (__classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_isFunctionStart).call(this)) {
-                __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_parseInstruction).call(this);
+        while (this.position < this.#code.length) {
+            if (this.#isFunctionStart()) {
+                this.#parseInstruction();
             }
-            __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_advance).call(this);
+            this.#advance();
         }
-        return __classPrivateFieldGet(this, _Lexer_tokens, "f");
+        return this.#tokens;
+    }
+    /**
+     * Adds a token to the token registry.
+     * @param token - The token to be added.
+     * @returns {void}
+     */
+    #addToken(token) {
+        this.#tokens.push(token);
+    }
+    /**
+     * Advances the given amount of positions in the code.
+     * @param amount - The amount to advance in the code.
+     * @returns {void}
+     */
+    #advance(amount = 1) {
+        this.#position += amount;
+    }
+    /**
+     * Returns the current characters based on the current position.
+     * @returns {Record<'current' | 'next', string>}
+     */
+    #chars() {
+        return {
+            current: this.#code[this.position],
+            next: this.#code[this.position + 1]
+        };
+    }
+    /**
+     * Creates an instruction token.
+     * @returns {InstructionToken}
+     */
+    #createInstruction(id) {
+        const instruction = new InstructionToken();
+        instruction.id = id;
+        return instruction;
+    }
+    /**
+     * Check whether current characters indicates a function start.
+     * @returns {boolean}
+     */
+    #isFunctionStart() {
+        return this.#chars().current === '$' && this.#chars().next && !!this.#chars().next.match(/[\.a-z]/i);
+    }
+    /**
+     * Makes an instruction ID.
+     * @returns {InstructionToken['id']}
+     */
+    #makeId() {
+        return `#INSTRUCTION_${Math.floor(this.#count++ * Math.random() * 999999999)}#`;
+    }
+    /**
+     * Parses an instruction from the input code.
+     * @returns {void}
+     */
+    #parseInstruction() {
+        const i = this.#createInstruction(this.#makeId());
+        i.bounds.push(this.position);
+        i.lines.push(this.line);
+        this.#advance(); // Omit "$".
+        if (this.#chars().current === '.') {
+            i.setSupressed(); // Mark as supressed.
+            this.#advance(); // Omit suppression char.
+        }
+        // While current char is letter.
+        while (this.#chars().current && this.#chars().current.match(/[a-zA-Z]/)) {
+            i.name += this.#chars().current;
+            this.#advance();
+        }
+        // Pulling the instruction metadata.
+        i.pullMetadata();
+        if (this.#chars().current !== '[') {
+            i.setFieldless();
+            i.bounds.push(this.position);
+            i.setClosed();
+            this.#addToken(i);
+            return;
+        }
+        let depth = 0; // Instruction depth control.
+        i.inside = ''; // Preparing the instruction inside.
+        while (this.#chars().current) {
+            if (this.#chars().current === '[')
+                depth++;
+            else if (this.#chars().current === ']')
+                depth--;
+            i.inside += this.#chars().current;
+            if (this.#chars().current === ']' && depth === 0)
+                break;
+            this.#advance();
+        }
+        i.inside = i.inside.slice(1, -1); // Remove "[" and "]".
+        const fields = this.#parseInside(i, i.inside);
+        i.fields = fields;
+        i.bounds.push(this.position);
+        i.setClosed();
+        this.#addToken(i);
+    }
+    /**
+     * Parses the "inside" of an instruction.
+     * @param {InstructionToken} token - The token of the instruction.
+     * @param {string} args - The string args of the instruction.
+     * @returns {InstructionFieldValue[]}
+     */
+    #parseInside(token, args) {
+        const splits = [];
+        let current = '', depth = 0;
+        for (const char of args) {
+            if (char === '[')
+                depth++;
+            else if (char === ']')
+                depth--;
+            if (char === ';' && depth === 0) {
+                splits.push(current);
+                current = '';
+            }
+            else
+                current += char;
+            if (char === '\n') {
+                this.#line++;
+                token.lines.push(this.line);
+            }
+        }
+        if (current !== '')
+            splits.push(current);
+        return splits.map((value, i) => {
+            if (!value.includes(token.prefix))
+                return { value };
+            else {
+                const lexer = new _a(value, {
+                    addMainInstruction: false,
+                    count: this.#count + 1
+                });
+                const nested = lexer.toAST();
+                token.children.push(...nested.map(x => {
+                    x.path = [...this.path, token.prefix + token.name];
+                    // x.parent = token
+                    x.from = i;
+                    return x;
+                }));
+                return { value };
+            }
+        });
     }
     /**
      * Returns the current line the cursor is on.
      * @returns {number}
      */
     get line() {
-        return __classPrivateFieldGet(this, _Lexer_line, "f");
+        return this.#line;
     }
     /**
      * Returns the current instruction path of the lexer.
      * @returns {string[]}
      */
     get path() {
-        return __classPrivateFieldGet(this, _Lexer_path, "f");
+        return this.#path;
     }
     /**
      * Returns the position of the cursor in the code.
      * @returns {string}
      */
     get position() {
-        return __classPrivateFieldGet(this, _Lexer_position, "f");
+        return this.#position;
     }
 }
 exports.Lexer = Lexer;
-_a = Lexer, _Lexer_code = new WeakMap(), _Lexer_count = new WeakMap(), _Lexer_path = new WeakMap(), _Lexer_position = new WeakMap(), _Lexer_line = new WeakMap(), _Lexer_tokens = new WeakMap(), _Lexer_instances = new WeakSet(), _Lexer_addToken = function _Lexer_addToken(token) {
-    __classPrivateFieldGet(this, _Lexer_tokens, "f").push(token);
-}, _Lexer_advance = function _Lexer_advance(amount = 1) {
-    __classPrivateFieldSet(this, _Lexer_position, __classPrivateFieldGet(this, _Lexer_position, "f") + amount, "f");
-}, _Lexer_chars = function _Lexer_chars() {
-    return {
-        current: __classPrivateFieldGet(this, _Lexer_code, "f")[this.position],
-        next: __classPrivateFieldGet(this, _Lexer_code, "f")[this.position + 1]
-    };
-}, _Lexer_createInstruction = function _Lexer_createInstruction(id) {
-    const instruction = new InstructionToken();
-    instruction.id = id;
-    return instruction;
-}, _Lexer_isFunctionStart = function _Lexer_isFunctionStart() {
-    return __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current === '$' && __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).next && !!__classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).next.match(/[\.a-z]/i);
-}, _Lexer_makeId = function _Lexer_makeId() {
-    var _b, _c;
-    return `#INSTRUCTION_${Math.floor((__classPrivateFieldSet(this, _Lexer_count, (_c = __classPrivateFieldGet(this, _Lexer_count, "f"), _b = _c++, _c), "f"), _b) * Math.random() * 999999999)}#`;
-}, _Lexer_parseInstruction = function _Lexer_parseInstruction() {
-    const i = __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_createInstruction).call(this, __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_makeId).call(this));
-    i.bounds.push(this.position);
-    i.lines.push(this.line);
-    __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_advance).call(this); // Omit "$".
-    if (__classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current === '.') {
-        i.setSupressed(); // Mark as supressed.
-        __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_advance).call(this); // Omit suppression char.
-    }
-    // While current char is letter.
-    while (__classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current && __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current.match(/[a-zA-Z]/)) {
-        i.name += __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current;
-        __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_advance).call(this);
-    }
-    // Pulling the instruction metadata.
-    i.pullMetadata();
-    if (__classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current !== '[') {
-        i.setFieldless();
-        i.bounds.push(this.position);
-        i.setClosed();
-        __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_addToken).call(this, i);
-        return;
-    }
-    let depth = 0; // Instruction depth control.
-    i.inside = ''; // Preparing the instruction inside.
-    while (__classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current) {
-        if (__classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current === '[')
-            depth++;
-        else if (__classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current === ']')
-            depth--;
-        i.inside += __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current;
-        if (__classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_chars).call(this).current === ']' && depth === 0)
-            break;
-        __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_advance).call(this);
-    }
-    i.inside = i.inside.slice(1, -1); // Remove "[" and "]".
-    const fields = __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_parseInside).call(this, i, i.inside);
-    i.fields = fields;
-    i.bounds.push(this.position);
-    i.setClosed();
-    __classPrivateFieldGet(this, _Lexer_instances, "m", _Lexer_addToken).call(this, i);
-}, _Lexer_parseInside = function _Lexer_parseInside(token, args) {
-    var _b;
-    const splits = [];
-    let current = '', depth = 0;
-    for (const char of args) {
-        if (char === '[')
-            depth++;
-        else if (char === ']')
-            depth--;
-        if (char === ';' && depth === 0) {
-            splits.push(current);
-            current = '';
-        }
-        else
-            current += char;
-        if (char === '\n') {
-            __classPrivateFieldSet(this, _Lexer_line, (_b = __classPrivateFieldGet(this, _Lexer_line, "f"), _b++, _b), "f");
-            token.lines.push(this.line);
-        }
-    }
-    if (current !== '')
-        splits.push(current);
-    return splits.map((value, i) => {
-        if (!value.includes(token.prefix))
-            return { value };
-        else {
-            const lexer = new _a(value, {
-                addMainInstruction: false,
-                count: __classPrivateFieldGet(this, _Lexer_count, "f") + 1
-            });
-            const nested = lexer.toAST();
-            token.children.push(...nested.map(x => {
-                x.path = [...this.path, token.prefix + token.name];
-                // x.parent = token
-                x.from = i;
-                return x;
-            }));
-            return { value };
-        }
-    });
-};
+_a = Lexer;
 /**
  * Various error reasons the AST generator can throw.
  */
@@ -374,6 +461,10 @@ var LexerErrorReason;
  */
 class LexerError extends Error {
     /**
+     * The name of this error.
+     */
+    name = 'LexerError';
+    /**
      * Creates a new instance of the LexerError class.
      * @param {LexerErrorReason} reason - The error reason.
      * @param {string[]} values - The values to replace in the reason text.
@@ -381,10 +472,6 @@ class LexerError extends Error {
      */
     constructor(reason, ...values) {
         super(resolvePlaceholders(reason, ...values));
-        /**
-         * The name of this error.
-         */
-        this.name = 'LexerError';
     }
 }
 ;

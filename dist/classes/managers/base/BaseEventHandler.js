@@ -5,6 +5,7 @@ exports.BaseEventHandler = void 0;
  * Represents a base BDJS event handler.
  */
 class BaseEventHandler {
+    data;
     /**
      * Initializes a new instance of `BaseEventHandler`.
      * @param data - Event data to load to the instance.

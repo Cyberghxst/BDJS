@@ -10,7 +10,7 @@ const cli_color_1 = __importDefault(require("cli-color"));
 * @param token - The token to be used as reference.
 * @returns {string}
 */
-function makeErrorString(token, message) {
+function makeErrorString(token, message, stack) {
     const result = [
         cli_color_1.default.bold(cli_color_1.default.red(message)),
         `|--> ${cli_color_1.default.italic(cli_color_1.default.bold(cli_color_1.default.red('at:')))} ${cli_color_1.default.bold(cli_color_1.default.red(token.toString()))}`,

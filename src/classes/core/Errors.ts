@@ -6,24 +6,24 @@ import color from 'cli-color'
 * @param token - The token to be used as reference.
 * @returns {string}
 */
-function makeErrorString(token: InstructionToken, message: string) {
-   const result = [
-       color.bold(color.red(message)),
-       `|--> ${color.italic(color.bold(color.red('at:')))} ${color.bold(color.red(token.toString()))}`,
-       `|--> ${color.red(`${' '.repeat(3)} ${'^'.repeat(token.toString().length)}`)}`,
-       `|--> ${color.italic(color.bold(color.red(`at line${token.lines.length > 1 ? 's' : ''}:`)))} ${color.bold(color.red(token.lines.join(' - ')))}`,
-       `|--> ${color.italic(color.bold(color.red('at bounds:')))} ${color.bold(color.red(token.bounds.join(':')))}`
-   ]
+function makeErrorString(token: InstructionToken, message: string, stack?: string) {
+    const result = [
+        color.bold(color.red(message)),
+        `|--> ${color.italic(color.bold(color.red('at:')))} ${color.bold(color.red(token.toString()))}`,
+        `|--> ${color.red(`${' '.repeat(3)} ${'^'.repeat(token.toString().length)}`)}`,
+        `|--> ${color.italic(color.bold(color.red(`at line${token.lines.length > 1 ? 's' : ''}:`)))} ${color.bold(color.red(token.lines.join(' - ')))}`,
+        `|--> ${color.italic(color.bold(color.red('at bounds:')))} ${color.bold(color.red(token.bounds.join(':')))}`
+    ]
 
-   if (token.path.length > 0) {
-       let stringPath = token.toString()
-       const paths = token.path.reverse()
-       paths.forEach(p => stringPath = `${p}[...;${stringPath}]`)
+    if (token.path.length > 0) {
+        let stringPath = token.toString()
+        const paths = token.path.reverse()
+        paths.forEach(p => stringPath = `${p}[...;${stringPath}]`)
 
-       result.push(`|--> ${color.italic(color.bold(color.red('at path:')))} ${color.bold(color.red(stringPath))}`)
-   }
+        result.push(`|--> ${color.italic(color.bold(color.red('at path:')))} ${color.bold(color.red(stringPath))}`)
+    }
 
-   return result.join('\n')
+    return result.join('\n')
 }
 
 /**

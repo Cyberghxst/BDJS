@@ -247,7 +247,8 @@ export class CompiledInstruction extends InstructionToken {
      * Calls the instruction executor.
      */
     public async call(values: any[] = []) {
-        if (!this.data!.data.compile) return this.data!.run.call(this.thisArg, this.runtime);
+        // @ts-ignore
+        if (!this.data!.data.compile) return this.data!.run.call(this.thisArg, this.runtime, ...(this.fields || []));
 
         // @ts-ignore
         return this.data!.run.call(this.thisArg, this.runtime, values)
